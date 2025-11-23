@@ -49,7 +49,6 @@ const ApplyForm = () => {
   });
 
   const onSubmit = async (values: ApplyFormValues) => {
-    console.log('Application Data:', values);
     try {
       setLoading(true);
       let fileUrl = null;
