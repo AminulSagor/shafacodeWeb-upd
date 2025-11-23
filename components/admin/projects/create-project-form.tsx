@@ -65,7 +65,6 @@ const CreateProjectForm = () => {
   });
 
   const onSubmit = async (data: ProjectFormValues) => {
-    console.log('New Project:', data);
     const projectData = await createProject(data);
 
     if (projectData.success) {

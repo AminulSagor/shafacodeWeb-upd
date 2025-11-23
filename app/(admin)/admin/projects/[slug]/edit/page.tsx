@@ -10,6 +10,7 @@ export default async function EditPage({
 }) {
   const { slug } = await params;
   const data = await getProjectById(slug);
+
   const title = data?.title;
   const description = data?.description;
   const client = data?.client;

@@ -56,7 +56,6 @@ const CreateJobForm = () => {
   });
 
   const onSubmit = async (data: JobFormValues) => {
-    console.log('New Project:', data);
     const jobData = await createJob(data);
 
     if (jobData.success) {

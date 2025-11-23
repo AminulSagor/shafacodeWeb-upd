@@ -90,7 +90,6 @@ const AffiliateLeadForm = () => {
       }
       toast.success('Email sent successfully');
       const result = await res.json();
-      console.log('Email sent result:', result);
       form.reset({
         fullName: '',
         email: '',
