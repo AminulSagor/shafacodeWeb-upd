@@ -56,9 +56,12 @@ const JobDetailsPage = async ({
 
         {/* Apply Button */}
         <div className="pt-6">
-          <button className="inline-flex items-center justify-center bg-sky-500 hover:bg-sky-600 text-slate-900 font-semibold px-6 py-3 rounded-xl transition w-full sm:w-auto hover:cursor-pointer">
+          <Link
+            href={'/careers/' + slug + '/apply'}
+            className="inline-flex items-center justify-center bg-sky-500 hover:bg-sky-600 text-slate-900 font-semibold px-6 py-3 rounded-xl transition w-full sm:w-auto hover:cursor-pointer"
+          >
             Apply for this role
-          </button>
+          </Link>
         </div>
       </div>
     </section>
