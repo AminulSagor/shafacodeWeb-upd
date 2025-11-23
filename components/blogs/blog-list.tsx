@@ -50,6 +50,7 @@ const BlogList = () => {
                     <div className="text-sky-600 text-sm font-medium">
                       {blog.date}
                     </div>
+                    
                   </div>
                 </div>
               ))}

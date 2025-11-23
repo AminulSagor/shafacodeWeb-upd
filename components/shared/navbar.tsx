@@ -1,43 +1,34 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { Separator } from '../ui/separator';
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Become a Partner', href: '/affiliate' },
-  { label: 'Blog', href: '/blogs' },
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Contact', href: '/#contact' },
+  { label: "Home", href: "/" },
+  { label: "Become a Partner", href: "/affiliate" },
+  { label: "Blog", href: "/blogs" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Careers", href: "/careers" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
-  const [isAdmin, setIsAdmin] = useState(false);
   const [open, setOpen] = useState(false);
-
-  // Check localStorage for admin_auth (client only)
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const storedUser = localStorage.getItem('admin_auth');
-    setIsAdmin(!!storedUser);
-  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
@@ -61,8 +52,8 @@ export function Navbar() {
           <ul className="flex items-center gap-6 text-sm font-medium">
             {navLinks.map((item) => {
               const isActive =
-                item.href === '/'
-                  ? pathname === '/'
+                item.href === "/"
+                  ? pathname === "/"
                   : pathname === item.href || pathname.startsWith(item.href);
 
               return (
@@ -70,8 +61,8 @@ export function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      'rounded-md px-1.5 py-1 text-slate-300 transition-colors hover:text-sky-400',
-                      isActive && 'text-sky-400 '
+                      "rounded-md px-1.5 py-1 text-slate-300 transition-colors hover:text-sky-400",
+                      isActive && "text-sky-400 ",
                     )}
                   >
                     {item.label}
@@ -79,20 +70,6 @@ export function Navbar() {
                 </li>
               );
             })}
-
-            {isAdmin && (
-              <li>
-                <Link
-                  href="/admin/dashboard"
-                  className={cn(
-                    'rounded-md px-1.5 py-1 text-slate-300 transition-colors hover:text-sky-400',
-                    pathname.startsWith('/admin') && 'text-sky-400'
-                  )}
-                >
-                  Admin
-                </Link>
-              </li>
-            )}
           </ul>
         </nav>
 
@@ -161,25 +138,13 @@ export function Navbar() {
                             href={item.href}
                             onClick={() => setOpen(false)}
                             className={cn(
-                              'block rounded-md px-3 py-2 text-slate-200 hover:bg-slate-900 hover:text-sky-400'
+                              "block rounded-md px-3 py-2 text-slate-200 hover:bg-slate-900 hover:text-sky-400",
                             )}
                           >
                             {item.label}
                           </Link>
                         </li>
                       ))}
-
-                      {isAdmin && (
-                        <li>
-                          <Link
-                            href="/admin/dashboard"
-                            onClick={() => setOpen(false)}
-                            className="block rounded-md px-3 py-2 text-slate-200 hover:bg-slate-900 hover:text-sky-400"
-                          >
-                            Admin
-                          </Link>
-                        </li>
-                      )}
                     </ul>
                   </nav>
 

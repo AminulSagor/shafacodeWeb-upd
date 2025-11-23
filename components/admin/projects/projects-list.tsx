@@ -18,15 +18,17 @@ import toast from 'react-hot-toast';
 export interface Project {
   id: string;
   title: string;
-  summary: string;
+  summary?: string;
   description: string;
   client: string;
   contactEmail: string;
-  status: 'delivered' | 'in-progress' | 'draft';
+  status: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ProjectsListProps {
-  projects: Project[];
+  projects: any;
 }
 const ProjectsList = ({ projects }: ProjectsListProps) => {
   const router = useRouter();
@@ -58,7 +60,7 @@ const ProjectsList = ({ projects }: ProjectsListProps) => {
         </TableHeader>
 
         <TableBody>
-          {projects.map((project) => (
+          {projects.map((project: Project) => (
             <TableRow key={project.id}>
               <TableCell className="font-medium">{project.title}</TableCell>
               <TableCell>{project.client}</TableCell>
