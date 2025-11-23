@@ -1,5 +1,5 @@
 'use client';
-import { Calendar, Home, Inbox } from 'lucide-react';
+import { Calendar, Home, Inbox, Building2 } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -33,6 +33,14 @@ const items = [
   },
 ];
 
+const careerItems = [
+  {
+    title: 'Jobs',
+    url: '/admin/jobs',
+    icon: Building2,
+  },
+];
+
 export function AppSidebar() {
   const pathname = usePathname();
   return (
@@ -48,6 +56,30 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => {
+                const isActive = pathname.startsWith(item.url);
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      className={cn(isActive && 'bg-white')}
+                      asChild
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Careers</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {careerItems.map((item) => {
                 const isActive = pathname.startsWith(item.url);
                 return (
                   <SidebarMenuItem key={item.title}>
