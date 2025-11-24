@@ -2,7 +2,13 @@ import React from 'react';
 import { Button } from '../ui/button';
 import { Star } from 'lucide-react';
 
-const HeroSection = () => {
+const HeroSection = ({
+  delivered,
+  inprogress,
+}: {
+  delivered: number;
+  inprogress: number;
+}) => {
   return (
     <section className="bg-linear-to-r from-slate-800  to-slate-700">
       <div className="max-w-6xl mx-auto py-20 px-4 sm:py-24 sm:px-6 lg:px-8">
@@ -55,10 +61,12 @@ const HeroSection = () => {
           {/* Metrics */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm sm:text-base text-slate-300">
             <span>
-              <span className="font-semibold">3</span> projects ongoing
+              <span className="font-semibold">{inprogress}</span> projects
+              ongoing
             </span>
             <span>
-              <span className="font-semibold">1</span> project delivered
+              <span className="font-semibold">{delivered}</span> project
+              delivered
             </span>
             <span className="flex items-center gap-1">
               <span className="font-semibold">5</span>

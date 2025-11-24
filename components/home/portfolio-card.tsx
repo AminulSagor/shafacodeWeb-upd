@@ -45,7 +45,7 @@ const PortfolioCard = ({
           ) : (
             <Hourglass className="mr-1 text-orange-500" size={16} />
           )}
-          {status}
+          {status === 'delivered' ? 'Delivered' : 'Ongoing'}
         </p>
         <p className="text-sm text-slate-800">
           <strong className="text-slate-900 mr-1">Contact:</strong>

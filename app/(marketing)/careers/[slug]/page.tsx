@@ -1,4 +1,5 @@
 import { getJobBySlug } from '@/actions/jobs/get-job-by-slug';
+import capitalizeWords from '@/helper/capitalized-words';
 import { ArrowLeft, Briefcase, MapPin, Clock } from 'lucide-react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
@@ -32,7 +33,7 @@ const JobDetailsPage = async ({
           <div className="flex flex-wrap gap-4 text-slate-400 text-sm">
             <span className="inline-flex items-center gap-1">
               <Briefcase className="w-4 h-4 text-sky-400" />
-              {job?.department}
+              {capitalizeWords(job?.department)}
             </span>
 
             <span className="inline-flex items-center gap-1">

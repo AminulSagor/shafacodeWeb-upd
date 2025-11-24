@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 
 const CtaSection = () => {
   return (
-    <>
+    <section id="contact">
       <div className="py-10 md:py-20 bg-linear-to-r from-slate-950 to-slate-800">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-semibold text-slate-200 text-center mb-8">
@@ -70,20 +70,20 @@ const CtaSection = () => {
 
       <div className="py-10 md:py-20 bg-linear-to-r from-slate-800 to-slate-800">
         <div className="max-w-7xl mx-auto">
-          <div className="flex md:flex-row flex-col gap-4 items-center justify-between px-8">
-            <p className="text-slate-200 text-center md:text-left text-3xl font-semibold">
-              Have an idea? Let’s build it—beautifully and reliably.
-            </p>
-            <Button
+          <p className="text-slate-200 text-center text-3xl font-semibold">
+            Have an idea? Let’s build it—beautifully and reliably.
+          </p>
+          {/* <div className="flex md:flex-row flex-col gap-4 items-center justify-between px-8"> */}
+          {/* <Button
               size={'lg'}
               className="bg-slate-100 text-slate-900 font-semibold text-xl px-4 py-6 rounded-md hover:bg-slate-200 transition-all duration-200 ease-in-out cursor-pointer"
             >
               Start a Project
-            </Button>
-          </div>
+            </Button> */}
+          {/* </div> */}
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

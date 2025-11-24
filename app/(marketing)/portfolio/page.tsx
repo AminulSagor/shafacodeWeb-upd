@@ -6,9 +6,16 @@ import { notFound } from 'next/navigation';
 const PortfolioPage = async () => {
   const projects = await getProjects();
   if (!projects) return notFound();
+  const delivered = projects.filter(
+    (item) => item.status === 'delivered'
+  ).length;
+  const onprogress = projects.filter(
+    (item) => item.status === 'in-progress'
+  ).length;
+
   return (
     <div>
-      <PortfolioHero />
+      <PortfolioHero delivered={delivered} onprogress={onprogress} />
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Title */}
         <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 text-center mb-12">

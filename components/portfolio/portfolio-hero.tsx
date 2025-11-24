@@ -1,4 +1,10 @@
-const PortfolioHero = () => {
+const PortfolioHero = ({
+  delivered,
+  onprogress,
+}: {
+  delivered: number;
+  onprogress: number;
+}) => {
   return (
     <section className="relative bg-linear-to-r from-slate-800 to-slate-700 text-slate-100">
       <div className="max-w-7xl mx-auto px-6 py-20 md:py-28 flex items-center flex-col">
@@ -22,27 +28,29 @@ const PortfolioHero = () => {
         </p>
 
         {/* Stats Row */}
-        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 max-w-4xl">
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3  gap-6 max-w-4xl">
           {/* Stat */}
           <div className="bg-slate-900/30 rounded-xl p-4 text-center border border-slate-700/40 shadow-sm">
-            <h3 className="text-3xl font-semibold text-sky-400">50+</h3>
+            <h3 className="text-3xl font-semibold text-sky-400">{delivered}</h3>
             <p className="text-xs text-slate-300 mt-1">Completed Projects</p>
           </div>
 
           <div className="bg-slate-900/30 rounded-xl p-4 text-center border border-slate-700/40 shadow-sm">
-            <h3 className="text-3xl font-semibold text-sky-400">15+</h3>
-            <p className="text-xs text-slate-300 mt-1">Industries Served</p>
+            <h3 className="text-3xl font-semibold text-sky-400">
+              {onprogress}
+            </h3>
+            <p className="text-xs text-slate-300 mt-1">Ongoing Projects</p>
           </div>
 
           <div className="bg-slate-900/30 rounded-xl p-4 text-center border border-slate-700/40 shadow-sm">
-            <h3 className="text-3xl font-semibold text-sky-400">5+</h3>
+            <h3 className="text-3xl font-semibold text-sky-400">3+</h3>
             <p className="text-xs text-slate-300 mt-1">Years Experience</p>
           </div>
 
-          <div className="bg-slate-900/30 rounded-xl p-4 text-center border border-slate-700/40 shadow-sm sm:col-span-1 col-span-2">
+          {/* <div className="bg-slate-900/30 rounded-xl p-4 text-center border border-slate-700/40 shadow-sm sm:col-span-1 col-span-2">
             <h3 className="text-3xl font-semibold text-sky-400">100%</h3>
             <p className="text-xs text-slate-300 mt-1">Client Satisfaction</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

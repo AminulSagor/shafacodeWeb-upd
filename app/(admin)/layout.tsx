@@ -14,9 +14,6 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: 'Shafacode - Admin Layout',
   description: 'Shafacode - Next Generation Software Development',
-  icons: {
-    icon: [{ url: '/images/fav.svg', sizes: 'any', type: 'image/svg+xml' }],
-  },
 };
 
 export default function AdminLayout({

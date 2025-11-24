@@ -20,7 +20,7 @@ import { cn } from '@/lib/utils';
 const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'Become a Partner', href: '/affiliate' },
-  { label: 'Blog', href: '/blogs' },
+  // { label: 'Blog', href: '/blogs' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Careers', href: '/careers' },
   { label: 'Contact', href: '/#contact' },

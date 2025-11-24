@@ -1,8 +1,10 @@
 import React from 'react';
 import PortfolioCard from './portfolio-card';
-import { projects } from '@/data/projects';
+// import { projects } from '@/data/projects';
+import { getProjects } from '@/actions/projects/get-projects';
 
-const PortfolioSection = () => {
+const PortfolioSection = async () => {
+  const projects = await getProjects();
   return (
     <section id="#portfolio" className="py-10 md:py-20 ">
       <div className="max-w-7xl mx-auto">
@@ -18,7 +20,7 @@ const PortfolioSection = () => {
               title={project.title}
               description={project.description}
               status={project.status}
-              contact={project.contact}
+              contact={project.contactEmail}
             />
           ))}
         </div>
