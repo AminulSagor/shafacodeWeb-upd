@@ -14,20 +14,17 @@ const PortfolioCard = ({
       className={cn(
         'p-4 rounded-md border border-slate-200 hover:-translate-y-1 transition-all duration-200 ease-in-out flex flex-col justify-between',
         status === 'delivered' ? 'bg-sky-50 border-sky-400' : 'bg-slate-50',
-        'h-[280px]' // fixed height, adjust as needed
+        'h-[280px]'
       )}
     >
       <div className="flex flex-col space-y-2">
         <h3
           className="text-2xl font-semibold tracking-tight text-slate-900 mb-1 line-clamp-2"
-          title={title} // show full title on hover
+          title={title}
         >
           {title}
         </h3>
-        <p
-          className="text-sm text-slate-800 line-clamp-4" // limits description to 3 lines
-          title={description} // show full description on hover
-        >
+        <p className="text-sm text-slate-800 line-clamp-4" title={description}>
           {description}
         </p>
       </div>
