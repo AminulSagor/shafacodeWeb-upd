@@ -1,7 +1,6 @@
 import { cn } from '@/lib/utils';
 import { ProjectType } from '@/types';
 import { Check, Hourglass } from 'lucide-react';
-import React from 'react';
 
 const PortfolioCard = ({
   title,
@@ -50,10 +49,10 @@ const PortfolioCard = ({
         <p className="text-sm text-slate-800">
           <strong className="text-slate-900 mr-1">Contact:</strong>
           <a
-            href={`mailto:${contact}`}
+            href={contact!.includes('@') ? `mailto:${contact}` : contact}
             className="text-sky-600 hover:underline truncate block"
           >
-            {contact}
+            {contact!.includes('@') ? 'Contact via email' : 'Facebook'}
           </a>
         </p>
       </div>
