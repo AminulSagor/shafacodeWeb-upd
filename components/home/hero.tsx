@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '../ui/button';
 import { Star } from 'lucide-react';
+import Link from 'next/link';
 
 const HeroSection = ({
   delivered,
@@ -40,6 +41,7 @@ const HeroSection = ({
           {/* CTA */}
           <div>
             <Button
+              asChild
               className="inline-flex items-center justify-center gap-2
                          w-full sm:w-auto
                          bg-sky-600 border border-sky-700
@@ -54,7 +56,7 @@ const HeroSection = ({
                          rounded-md
                          transition-all duration-200"
             >
-              Let&apos;s Build Together
+              <Link href="/#contact">Let&apos;s Build Together</Link>
             </Button>
           </div>
 
