@@ -106,7 +106,7 @@ export function Navbar() {
                   <div className="flex justify-between">
                     <div className="flex items-center gap-2">
                       <Image
-                        src="/logo/logo.png"
+                        src="/logo/logo.jpg"
                         alt="ShafaCode Logo"
                         width={32}
                         height={32}
@@ -132,19 +132,28 @@ export function Navbar() {
                 <div className=" flex flex-col gap-4">
                   <nav className="mt-4">
                     <ul className="flex flex-col gap-1 text-sm font-medium">
-                      {navLinks.map((item) => (
-                        <li key={item.href}>
-                          <Link
-                            href={item.href}
-                            onClick={() => setOpen(false)}
-                            className={cn(
-                              'block rounded-md px-3 py-2 text-slate-200 hover:bg-slate-900 hover:text-sky-400'
-                            )}
-                          >
-                            {item.label}
-                          </Link>
-                        </li>
-                      ))}
+                      {navLinks.map((item) => {
+                        const isActive =
+                          item.href === '/'
+                            ? pathname === '/'
+                            : pathname === item.href ||
+                              pathname.startsWith(item.href);
+
+                        return (
+                          <li key={item.href}>
+                            <Link
+                              href={item.href}
+                              onClick={() => setOpen(false)}
+                              className={cn(
+                                'block rounded-md px-3 py-2 text-slate-200 hover:bg-slate-900 hover:text-sky-400',
+                                isActive && 'bg-slate-900 text-sky-400'
+                              )}
+                            >
+                              {item.label}
+                            </Link>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </nav>
 

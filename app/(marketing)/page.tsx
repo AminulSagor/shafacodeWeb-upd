@@ -14,6 +14,7 @@ const Homepage = async () => {
   const inprogress = projects.filter(
     (item) => item.status === 'in-progress'
   ).length;
+
   return (
     <>
       <HeroSection delivered={delivered} inprogress={inprogress} />
