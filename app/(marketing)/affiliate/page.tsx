@@ -11,7 +11,7 @@ const AffiliatePage = () => {
       </div>
 
       {/* Overlay message */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-center justify-center px-4">
         <div className="bg-black/60 backdrop-blur-md text-white px-8 py-6 rounded-xl text-center shadow-lg">
           <h2 className="text-2xl font-bold">🚧 Under Construction</h2>
           <p className="text-sm mt-2">

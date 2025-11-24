@@ -25,7 +25,7 @@ const PortfolioCard = ({
           {title}
         </h3>
         <p
-          className="text-sm text-slate-800 line-clamp-3" // limits description to 3 lines
+          className="text-sm text-slate-800 line-clamp-4" // limits description to 3 lines
           title={description} // show full description on hover
         >
           {description}
@@ -46,7 +46,7 @@ const PortfolioCard = ({
           )}
           {status === 'delivered' ? 'Delivered' : 'Ongoing'}
         </p>
-        <p className="text-sm text-slate-800">
+        <p className="text-sm text-slate-800 flex gap-2 items-center">
           <strong className="text-slate-900 mr-1">Contact:</strong>
           <a
             href={contact!.includes('@') ? `mailto:${contact}` : contact}
