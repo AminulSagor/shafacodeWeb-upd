@@ -1,4 +1,4 @@
-import { openPositions } from '@/data/open-positions';
+import { getJobBySlug } from '@/actions/jobs/get-job-by-slug';
 import { ArrowLeft, Briefcase, MapPin, Clock } from 'lucide-react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
@@ -10,7 +10,7 @@ const JobDetailsPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const job = openPositions.find((j) => j.slug === slug);
+  const job = await getJobBySlug(slug);
   return (
     <section className="bg-slate-900 min-h-screen py-20 px-4">
       <div className="max-w-4xl mx-auto space-y-10">

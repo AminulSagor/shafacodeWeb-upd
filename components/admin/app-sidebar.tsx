@@ -1,5 +1,5 @@
 'use client';
-import { Calendar, Home, Inbox, Building2 } from 'lucide-react';
+import { Calendar, Home, Inbox, Building2, Baby } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -39,6 +39,11 @@ const careerItems = [
     url: '/admin/jobs',
     icon: Building2,
   },
+  {
+    title: 'Job Applications',
+    url: '/admin/job-applications',
+    icon: Baby,
+  },
 ];
 
 export function AppSidebar() {
@@ -52,7 +57,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent className="bg-slate-200">
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Main Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => {

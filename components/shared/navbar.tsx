@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
 
 import {
   Sheet,
@@ -13,17 +13,17 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Become a Partner", href: "/affiliate" },
-  { label: "Blog", href: "/blogs" },
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "Careers", href: "/careers" },
-  { label: "Contact", href: "/#contact" },
+  { label: 'Home', href: '/' },
+  { label: 'Become a Partner', href: '/affiliate' },
+  { label: 'Blog', href: '/blogs' },
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 export function Navbar() {
@@ -31,12 +31,12 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 p-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/logo/logo.png"
+            src="/logo/logo.jpg"
             alt="ShafaCode Logo"
             width={48}
             height={48}
@@ -52,8 +52,8 @@ export function Navbar() {
           <ul className="flex items-center gap-6 text-sm font-medium">
             {navLinks.map((item) => {
               const isActive =
-                item.href === "/"
-                  ? pathname === "/"
+                item.href === '/'
+                  ? pathname === '/'
                   : pathname === item.href || pathname.startsWith(item.href);
 
               return (
@@ -61,8 +61,8 @@ export function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "rounded-md px-1.5 py-1 text-slate-300 transition-colors hover:text-sky-400",
-                      isActive && "text-sky-400 ",
+                      'rounded-md px-1.5 py-1 text-slate-300 transition-colors hover:text-sky-400',
+                      isActive && 'text-sky-400 '
                     )}
                   >
                     {item.label}
@@ -138,7 +138,7 @@ export function Navbar() {
                             href={item.href}
                             onClick={() => setOpen(false)}
                             className={cn(
-                              "block rounded-md px-3 py-2 text-slate-200 hover:bg-slate-900 hover:text-sky-400",
+                              'block rounded-md px-3 py-2 text-slate-200 hover:bg-slate-900 hover:text-sky-400'
                             )}
                           >
                             {item.label}

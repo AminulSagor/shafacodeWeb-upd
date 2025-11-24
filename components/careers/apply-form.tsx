@@ -62,6 +62,7 @@ const ApplyForm = () => {
 
         if (uploadError) {
           console.error('Upload error:', uploadError);
+          toast.error('Try again later.');
           return;
         }
 
@@ -84,6 +85,7 @@ const ApplyForm = () => {
 
       if (appliedJob.success) {
         toast.success('Application submitted successfully!');
+        form.reset();
       } else {
         toast.error('Try again later.');
       }
@@ -117,7 +119,8 @@ const ApplyForm = () => {
                   <FormControl>
                     <Input
                       placeholder="Your full name"
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      text-slate-200"
                       {...field}
                     />
                   </FormControl>
@@ -138,7 +141,8 @@ const ApplyForm = () => {
                   <FormControl>
                     <Input
                       placeholder="example@mail.com"
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      text-slate-200"
                       {...field}
                     />
                   </FormControl>
@@ -159,7 +163,8 @@ const ApplyForm = () => {
                   <FormControl>
                     <Input
                       placeholder="+8801XXXXXXXXX"
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      text-slate-200"
                       {...field}
                     />
                   </FormControl>
@@ -179,7 +184,8 @@ const ApplyForm = () => {
                   <FormControl>
                     <Input
                       placeholder="Application for Software Engineer"
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      text-slate-200"
                       {...field}
                     />
                   </FormControl>
@@ -198,7 +204,8 @@ const ApplyForm = () => {
                   <FormControl>
                     <Textarea
                       placeholder="Write a short introduction..."
-                      className="h-40 bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                      className="h-40 bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      text-slate-200"
                       {...field}
                       onChange={(e) => field.onChange(e)}
                     />
@@ -221,7 +228,8 @@ const ApplyForm = () => {
                     <Input
                       type="file"
                       accept="application/pdf"
-                      className=" bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200 file:text-muted"
+                      className=" bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      text-slate-200 file:text-muted"
                       onChange={(e) =>
                         field.onChange(e.target.files?.[0] || undefined)
                       }

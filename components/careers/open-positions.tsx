@@ -2,9 +2,12 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { openPositions } from '@/data/open-positions';
 import { groupPositionsByDepartment } from '@/helper/group-positions-by-dept';
+import { getJobs } from '@/actions/jobs/get-jobs';
+import capitalizeWords from '@/helper/capitalized-words';
 
-const OpenPositions = () => {
-  const positions = groupPositionsByDepartment(openPositions);
+const OpenPositions = async () => {
+  const jobs = await getJobs();
+  const positions = groupPositionsByDepartment(jobs);
   return (
     <section className="bg-slate-800 py-20 px-4">
       <div className="max-w-6xl mx-auto space-y-14">
@@ -24,7 +27,7 @@ const OpenPositions = () => {
           {positions.map((section, idx) => (
             <div key={idx} className="space-y-6">
               <h3 className="text-xl font-semibold text-slate-200 border-l-4 border-sky-400 pl-4">
-                {section.department}
+                {capitalizeWords(section.department)}
               </h3>
 
               <div className="space-y-4">

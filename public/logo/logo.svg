@@ -1,0 +1,19 @@
+<svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#0BA34E"/>
+      <stop offset="100%" stop-color="#B4F242"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Infinity shape -->
+  <path d="M240 250c0-85 70-155 155-155s155 70 155 155-70 155-155 155-155-70-155-155z"
+        fill="none" stroke="url(#grad)" stroke-width="70" stroke-linecap="round"/>
+
+  <path d="M560 250c0-85-70-155-155-155S250 165 250 250s70 155 155 155 155-70 155-155z"
+        fill="none" stroke="url(#grad)" stroke-width="70" stroke-linecap="round"/>
+
+  <!-- Handshake -->
+  <path d="M320 245c20-10 40-15 60-10 20-5 40 0 60 10l20 15c5 5 5 12 0 17l-25 25c-5 5-12 5-17 0l-12-12-10 10c-5 5-12 5-17 0l-10-10-12 12c-5 5-12 5-17 0l-25-25c-5-5-5-12 0-17l20-15z"
+        fill="url(#grad)"/>
+</svg>
