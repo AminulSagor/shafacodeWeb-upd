@@ -4,6 +4,8 @@ import '../globals.css';
 import { Toaster } from 'react-hot-toast';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/admin/app-sidebar';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -16,11 +18,16 @@ export const metadata: Metadata = {
   description: 'Shafacode - Next Generation Software Development',
 };
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const auth = cookieStore.get('admin_auth');
+  if (!auth || auth.value !== 'true') {
+    redirect('/login');
+  }
   return (
     <html lang="en">
       <body className={`${poppins.className}  antialiased`}>
