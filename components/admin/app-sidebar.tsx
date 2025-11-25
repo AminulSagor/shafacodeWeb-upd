@@ -1,5 +1,13 @@
 'use client';
-import { Calendar, Home, Inbox, Building2, Baby, Image } from 'lucide-react';
+import {
+  Calendar,
+  Home,
+  Inbox,
+  Building2,
+  Baby,
+  Image,
+  HomeIcon,
+} from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -16,11 +24,6 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 const items = [
-  {
-    title: 'Dashboard',
-    url: '/admin/dashboard',
-    icon: Home,
-  },
   {
     title: 'Projects',
     url: '/admin/projects',
@@ -51,12 +54,20 @@ const careerItems = [
   },
 ];
 
+const websiteItems = [
+  {
+    title: 'Home',
+    url: '/',
+    icon: HomeIcon,
+  },
+];
+
 export function AppSidebar() {
   const pathname = usePathname();
   return (
     <Sidebar>
       <SidebarHeader className="bg-slate-200 border-b border-slate-300 py-4.5">
-        <Link href="/" className="font-bold font-4xl">
+        <Link href="/admin" className="font-bold font-4xl">
           Shafacode
         </Link>
       </SidebarHeader>
@@ -97,6 +108,26 @@ export function AppSidebar() {
                       className={cn(isActive && 'bg-white')}
                       asChild
                     >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Website</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {websiteItems.map((item) => {
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
                       <Link href={item.url}>
                         <item.icon />
                         <span>{item.title}</span>

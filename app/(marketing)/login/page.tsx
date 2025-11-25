@@ -15,7 +15,7 @@ export default function AdminLogin() {
     });
 
     if (res.ok) {
-      window.location.href = '/admin/dashboard';
+      window.location.href = '/admin';
     } else {
       setError('Invalid credentials');
     }
