@@ -1,5 +1,5 @@
 'use client';
-import { Calendar, Home, Inbox, Building2, Baby } from 'lucide-react';
+import { Calendar, Home, Inbox, Building2, Baby, Image } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -30,6 +30,11 @@ const items = [
     title: 'Blogs',
     url: '/admin/blogs',
     icon: Calendar,
+  },
+  {
+    title: 'Media',
+    url: '/admin/media',
+    icon: Image,
   },
 ];
 
