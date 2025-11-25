@@ -86,11 +86,13 @@ const BlogList = async () => {
                   <div className="p-5 space-y-3">
                     <Link
                       href={'/blogs/' + blog.slug}
-                      className="text-lg font-semibold text-slate-900 hover:text-sky-600 transition-all duration-200 ease-in-out hover:underline"
+                      className="text-lg font-semibold text-slate-900 hover:text-sky-600 transition-all duration-200 ease-in-out hover:underline line-clamp-1"
                     >
                       {blog.title}
                     </Link>
-                    <p className="text-slate-600 text-sm">{blog.excerpt}</p>
+                    <p className="text-slate-600 text-sm line-clamp-1">
+                      {blog.excerpt}
+                    </p>
 
                     <div className="text-sky-600 text-xs font-medium">
                       {new Date(blog.updatedAt).toLocaleDateString('en-US', {
