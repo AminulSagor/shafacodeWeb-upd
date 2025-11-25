@@ -1,6 +1,9 @@
+import BlogList from '@/components/admin/blogs/blog-list';
+import BlogListLoader from '@/components/admin/blogs/blog-list-loader';
+import LoadingTable from '@/components/shared/loading-table';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const BlogsPage = () => {
   return (
@@ -11,7 +14,16 @@ const BlogsPage = () => {
           <Link href={'/admin/blogs/create'}>Create Blog</Link>
         </Button>
       </div>
-      {/* <ProjectsList projects={data} /> */}
+      <Suspense
+        fallback={
+          <>
+            <LoadingTable />
+            <LoadingTable />
+          </>
+        }
+      >
+        <BlogListLoader />
+      </Suspense>
     </div>
   );
 };
