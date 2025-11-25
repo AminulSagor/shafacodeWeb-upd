@@ -20,6 +20,7 @@ export interface Blog {
   title: string;
   category: string;
   excerpt: string;
+  slug: string;
 }
 
 export interface BlogListProps {
@@ -54,13 +55,18 @@ const BlogList = ({ blogs }: BlogListProps) => {
         <TableBody>
           {blogs.map((blog) => (
             <TableRow key={blog.id}>
-              <TableCell className="font-medium">{blog.title}</TableCell>
+              <TableCell className="font-medium min-w-[400px]">
+                {blog.title}
+              </TableCell>
               <TableCell>{blog.category}</TableCell>
-              <TableCell>{blog.excerpt}</TableCell>
+              <TableCell>
+                {blog.excerpt.split(' ').slice(0, 6).join(' ')}
+                {blog.excerpt.split(' ').length > 6 ? '...' : ''}
+              </TableCell>
               <TableCell className="text-right space-x-2">
                 <Button
                   variant="outline"
-                  onClick={() => router.push(`/admin/blogs/${blog.id}`)}
+                  onClick={() => router.push(`/blogs/${blog.slug}`)}
                 >
                   <EyeIcon />
                 </Button>
