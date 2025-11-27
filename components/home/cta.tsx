@@ -39,7 +39,7 @@ const CtaSection = () => {
                 <strong>Linkedin:&nbsp;</strong>
                 <span className="text-sky-400 text-sm">
                   <a
-                    href="https://www.linkedin.com/company/108744292"
+                    href="https://www.linkedin.com/company/shafacodedotcom/"
                     className="hover:underline"
                   >
                     Connect on Linkedin

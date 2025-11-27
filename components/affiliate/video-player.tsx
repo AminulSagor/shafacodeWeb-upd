@@ -15,8 +15,8 @@ const VideoPlayer = () => {
   const [open, setOpen] = useState(true); // show popup initially
   const [allowSound, setAllowSound] = useState(false);
 
-  const videoIdBangla = 'qrqlHdevfOc';
-  const videoIdEnglish = 'B7EHdqms3hU';
+  const videoIdBangla = '8_j7NZsCiRI';
+  const videoIdEnglish = 'ZliPBGFF7rY';
 
   const autoplayUrlBangla = `https://www.youtube.com/embed/${videoIdBangla}?autoplay=1&mute=${
     allowSound ? '0' : '1'

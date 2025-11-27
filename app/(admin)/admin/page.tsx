@@ -1,12 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
-import {
-  Home,
-  Inbox,
-  Calendar,
-  Image,
-  Building2,
-  FileText,
-} from 'lucide-react';
+import { Inbox, Calendar, Image, Building2, FileText } from 'lucide-react';
 import Link from 'next/link';
 
 const routes = [
