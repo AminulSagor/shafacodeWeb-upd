@@ -4,49 +4,28 @@ const BriefSummary = () => {
   return (
     <div className="border rounded-lg border-slate-700">
       <h2 className="text-xl font-semibold mb-4 px-4 pt-4">Brief Summary</h2>
-      <div className="max-h-[400px] overflow-y-auto">
-        <p className="text-slate-300 text-sm px-4">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-          exercitationem dicta dignissimos deserunt odio explicabo ea harum odit
-          dolores praesentium a quam aspernatur fugiat similique, vel eligendi
-          cum porro. Fuga nihil, magni quis doloremque, atque officiis, vel quo
-          similique beatae assumenda perferendis. Ullam laboriosam Lorem ipsum
-          dolor sit amet consectetur, adipisicing elit. Voluptatum atque
-          aspernatur incidunt quam delectus maiores consequuntur, pariatur,
-          ducimus quis sed reiciendis placeat deserunt eos cumque voluptatibus
-          esse cum vero, soluta voluptates itaque repellendus eius ipsa.
-          Perferendis, tempora deserunt. Delectus, neque repudiandae alias rem
-          incidunt molestiae, laudantium error cumque numquam nobis pariatur
-          mollitia sed illum quidem rerum sunt, doloribus dignissimos deserunt!
-          Magnam aut suscipit minus tempora neque, exercitationem iusto eligendi
-          necessitatibus reprehenderit nobis nemo alias, excepturi quia facere
-          fugiat incidunt fuga numquam laboriosam velit asperiores ratione id.
-          Adipisci, dicta modi saepe accusantium labore doloribus animi aliquam
-          provident excepturi harum veniam dolores odio nisi delectus, dolore ad
-          laborum. Eligendi nisi libero quam velit fugit, rerum natus,
-          praesentium ratione delectus aliquam voluptatum, voluptas nihil
-          veritatis quaerat explicabo impedit enim quae magnam non voluptate
-          repudiandae illum doloribus architecto eveniet! Quisquam accusantium
-          temporibus harum pariatur dolorum obcaecati, consequuntur recusandae
-          iure? Corporis consequatur aliquam deserunt odit est accusantium
-          asperiores alias quaerat distinctio, explicabo eos ipsa atque ab
-          consequuntur fugit dolore labore laudantium iusto illum! Quos aut
-          dolore quasi? Officiis, eveniet repellat consequatur autem
-          exercitationem officia voluptate. Ipsam dolore minus hic quae veniam
-          quibusdam consectetur, rerum officiis delectus sapiente, itaque esse
-          eveniet repellendus necessitatibus. Illum, nihil molestias! Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Vel numquam, iusto
-          alias aliquam vitae atque incidunt, dolorem nam, ad dicta odio
-          reiciendis! Ut aut iste, atque quibusdam odit nihil ipsam perspiciatis
-          qui reprehenderit mollitia dolorum incidunt, quod quidem? Consectetur
-          voluptates iure harum maiores ex. Laborum deserunt architecto nulla
-          hic labore illum consectetur exercitationem enim provident culpa,
-          dicta perferendis necessitatibus voluptatum quaerat saepe veritatis
-          fugiat, blanditiis iusto. Omnis libero nam ratione, non saepe
-          reprehenderit perferendis laborum ad beatae molestiae aspernatur
-          maxime praesentium ea numquam culpa eveniet et quam similique dolores
-          recusandae! Odio quibusdam, neque voluptate excepturi tenetur adipisci
-          nesciunt totam aut dolorem voluptas!
+      <div className="max-h-[400px] overflow-y-auto py-2">
+        <p className="text-slate-300 text-base px-4">
+          Assalamualaikum everyone, and welcome to ShafaCode. This program is
+          designed for anyone who wants to earn by simply connecting clients
+          with us. The idea is very simple: if you refer a client and that
+          client gives us a project, we will share 4% to 6% of the total project
+          budget with you as a token of appreciation. Let me give you a quick
+          example to make it clearer: Suppose a client pays us 2,00,000 BDT for
+          a project. In that case, you will receive 8,000 to 12,000 BDT as a
+          thank-you reward for referring that client. Now you might wonder: How
+          will we know that you referred the client? The process is easy. If the
+          client mentions your name when contacting us, or if you notify us
+          beforehand, we will record the referral under your name. You can reach
+          us through our website, social media pages like Facebook and LinkedIn,
+          or even WhatsApp. As long as the referral is genuine, we will make
+          sure your contribution is recognized. The core idea is simple: You
+          connect the client → We complete the project → You get your share. We
+          will always reach out to you and provide your reward once the project
+          begins. If you’re interested in becoming a partner, it’s also
+          important to know the services we currently provide. At ShafaGot, we
+          offer: App Development Web Development IoT Solutions Thank you
+          everyone for supporting ShafaGot.
         </p>
       </div>
     </div>
