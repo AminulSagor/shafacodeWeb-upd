@@ -23,9 +23,9 @@ const BriefSummary = () => {
           connect the client → We complete the project → You get your share. We
           will always reach out to you and provide your reward once the project
           begins. If you’re interested in becoming a partner, it’s also
-          important to know the services we currently provide. At ShafaGot, we
+          important to know the services we currently provide. At ShafaCode, we
           offer: App Development Web Development IoT Solutions Thank you
-          everyone for supporting ShafaGot.
+          everyone for supporting ShafaCode.
         </p>
       </div>
     </div>
