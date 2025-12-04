@@ -1,4 +1,3 @@
-import { JobFormValues } from '@/components/admin/jobs/create-job-form';
 import { db } from '@/db/firebase-admin';
 
 export interface Job {
