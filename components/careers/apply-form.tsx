@@ -79,6 +79,7 @@ const ApplyForm = () => {
         phone: values.phone,
         coverLetter: values.coverLetter,
         resumeUrl: fileUrl,
+        isViewed: false,
       };
 
       const appliedJob = await createApply(payload);

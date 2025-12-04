@@ -11,8 +11,9 @@ import { EyeIcon, TrashIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { firebaseClient } from '@/db/firebase-client';
-import { doc, deleteDoc } from 'firebase/firestore';
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
+import { Badge } from '@/components/ui/badge';
 
 const JobApplicationsList = ({ applications }: any) => {
   const router = useRouter();
@@ -35,6 +36,7 @@ const JobApplicationsList = ({ applications }: any) => {
           <TableRow>
             <TableHead className="w-[200px]">Name</TableHead>
             <TableHead>Subject</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -42,14 +44,34 @@ const JobApplicationsList = ({ applications }: any) => {
         <TableBody>
           {applications.map((app: any) => (
             <TableRow key={app.id}>
-              <TableCell className="font-medium">{app.name}</TableCell>
+              <TableCell className="font-medium w-[300px]">
+                {app.name}
+              </TableCell>
               <TableCell className="font-medium">{app.subject}</TableCell>
+              <TableCell className="font-medium">
+                {app.isViewed ? (
+                  <Badge variant="default">Viewed</Badge>
+                ) : (
+                  <Badge variant="outline">Not Viewed</Badge>
+                )}
+              </TableCell>
               <TableCell className="text-right space-x-2">
                 <Button
                   variant="outline"
-                  onClick={() =>
-                    router.push(`/admin/job-applications/${app.id}`)
-                  }
+                  onClick={async () => {
+                    try {
+                      await updateDoc(
+                        doc(firebaseClient, 'apply-jobs', app.id),
+                        {
+                          isViewed: true,
+                        }
+                      );
+                      router.push(`/admin/job-applications/${app.id}`);
+                    } catch (error) {
+                      console.log(error);
+                      toast.error('Failed to update view status');
+                    }
+                  }}
                 >
                   <EyeIcon />
                 </Button>

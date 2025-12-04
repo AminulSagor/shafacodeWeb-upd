@@ -14,6 +14,7 @@ export const getJobApplications = async () => {
         phone: data.phone || '',
         subject: data.subject || '',
         resumeUrl: data.resumeUrl || '',
+        isViewed: data.isViewed || false,
       };
     });
     return applicationsFromFirestore;
