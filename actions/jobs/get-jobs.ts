@@ -12,7 +12,7 @@ export interface Job {
 }
 
 export const getJobs = async () => {
-  noStore(); // 🔥 THIS IS THE KEY
+  noStore();
   try {
     const snapshot = await db.collection("jobs").get();
     const jobsFromFirestore: Job[] = snapshot.docs.map((doc) => {
