@@ -1,12 +1,15 @@
-import { ArrowRight } from 'lucide-react';
-import Link from 'next/link';
-import { groupPositionsByDepartment } from '@/helper/group-positions-by-dept';
-import { getJobs } from '@/actions/jobs/get-jobs';
-import capitalizeWords from '@/helper/capitalized-words';
+export const dynamic = "force-dynamic";
+
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { groupPositionsByDepartment } from "@/helper/group-positions-by-dept";
+import { getJobs } from "@/actions/jobs/get-jobs";
+import capitalizeWords from "@/helper/capitalized-words";
 
 const OpenPositions = async () => {
   const jobs = await getJobs();
   const positions = groupPositionsByDepartment(jobs);
+
   return (
     <section className="bg-slate-800 py-20 px-4">
       <div className="max-w-6xl mx-auto space-y-14">
