@@ -1,4 +1,5 @@
 import { db } from "@/db/firebase-admin";
+import { unstable_noStore as noStore } from "next/cache";
 
 export interface Job {
   id: string;
@@ -11,6 +12,7 @@ export interface Job {
 }
 
 export const getJobs = async () => {
+  noStore(); // 🔥 THIS IS THE KEY
   try {
     const snapshot = await db.collection("jobs").get();
     const jobsFromFirestore: Job[] = snapshot.docs.map((doc) => {
