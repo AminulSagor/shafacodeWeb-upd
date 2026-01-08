@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   Form,
   FormControl,
@@ -6,29 +6,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import toast from 'react-hot-toast';
-import { useState } from 'react';
-import { supabase } from '@/lib/supabase-client';
-import createApply from '@/actions/apply/create-apply';
-import { Loader2 } from 'lucide-react';
+} from "@/components/ui/form";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import { supabase } from "@/lib/supabase-client";
+import createApply from "@/actions/apply/create-apply";
+import { Loader2 } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const applySchema = z.object({
-  fullName: z.string().min(1, 'Full name is required'),
-  email: z.email('Invalid email address'),
-  phone: z.string().min(8, 'Phone number is required'),
-  subject: z.string().min(1, 'Subject is required'),
+  fullName: z.string().min(1, "Full name is required"),
+  email: z.email("Invalid email address"),
+  phone: z.string().min(8, "Phone number is required"),
+  subject: z.string().min(1, "Subject is required"),
   resume: z
-    .instanceof(File, { message: 'Resume (PDF) is required' })
-    .refine((file) => file.type === 'application/pdf', {
-      message: 'Resume must be a PDF file',
+    .instanceof(File, { message: "Resume (PDF) is required" })
+    .refine((file) => file.type === "application/pdf", {
+      message: "Resume must be a PDF file",
     }),
   coverLetter: z.string().optional(),
 });
@@ -36,15 +37,19 @@ const applySchema = z.object({
 type ApplyFormValues = z.infer<typeof applySchema>;
 
 const ApplyForm = () => {
+  const pathname = usePathname();
+  const segments = pathname.split("/");
+  const slug = segments[segments.length - 2];
+
   const [loading, setLoading] = useState(false);
   const form = useForm<ApplyFormValues>({
     resolver: zodResolver(applySchema),
     defaultValues: {
-      fullName: '',
-      email: '',
-      subject: '',
-      phone: '',
-      coverLetter: '',
+      fullName: "",
+      email: "",
+      subject: "",
+      phone: "",
+      coverLetter: "",
     },
   });
 
@@ -57,17 +62,17 @@ const ApplyForm = () => {
         const fileName = `${Date.now()}-${file.name}`;
 
         const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('shafacode')
+          .from("shafacode")
           .upload(fileName, file);
 
         if (uploadError) {
-          console.error('Upload error:', uploadError);
-          toast.error('Try again later.');
+          console.error("Upload error:", uploadError);
+          toast.error("Try again later.");
           return;
         }
 
         const { data: publicUrlData } = supabase.storage
-          .from('shafacode')
+          .from("shafacode")
           .getPublicUrl(fileName);
         fileUrl = publicUrlData?.publicUrl;
       }
@@ -80,15 +85,16 @@ const ApplyForm = () => {
         coverLetter: values.coverLetter,
         resumeUrl: fileUrl,
         isViewed: false,
+        slug: slug,
       };
 
       const appliedJob = await createApply(payload);
 
       if (appliedJob.success) {
-        toast.success('Application submitted successfully!');
+        toast.success("Application submitted successfully!");
         form.reset();
       } else {
-        toast.error('Try again later.');
+        toast.error("Try again later.");
       }
     } catch (error) {
       console.log(error);
@@ -249,7 +255,7 @@ const ApplyForm = () => {
               {loading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                'Submit Application'
+                "Submit Application"
               )}
             </Button>
           </form>

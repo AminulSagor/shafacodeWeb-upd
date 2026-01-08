@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   Table,
   TableBody,
@@ -6,15 +6,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { EyeIcon, EditIcon, TrashIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { firebaseClient } from '@/db/firebase-client';
-import { doc, deleteDoc } from 'firebase/firestore';
-import toast from 'react-hot-toast';
-import capitalizeWords from '@/helper/capitalized-words';
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { EyeIcon, EditIcon, TrashIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { firebaseClient } from "@/db/firebase-client";
+import { doc, deleteDoc } from "firebase/firestore";
+import toast from "react-hot-toast";
+import capitalizeWords from "@/helper/capitalized-words";
 
 export interface Job {
   id: string;
@@ -32,14 +32,14 @@ export interface JobListProps {
 const JobList = ({ jobs }: JobListProps) => {
   const router = useRouter();
   const getHref = (contact: string) => {
-    if (contact.includes('@')) return `mailto:${contact}`;
-    if (!contact.startsWith('http')) return `https://${contact}`;
+    if (contact.includes("@")) return `mailto:${contact}`;
+    if (!contact.startsWith("http")) return `https://${contact}`;
     return contact;
   };
   async function handleDelete(id: string) {
     try {
-      await deleteDoc(doc(firebaseClient, 'jobs', id));
-      toast.error('Job deleted successfully.');
+      await deleteDoc(doc(firebaseClient, "jobs", id));
+      toast.error("Job deleted successfully.");
       router.refresh();
     } catch (error) {
       console.log(error);
@@ -65,7 +65,7 @@ const JobList = ({ jobs }: JobListProps) => {
               <TableCell>{capitalizeWords(job.department)}</TableCell>
               <TableCell>
                 <Badge
-                  variant={job.type === 'Full-time' ? 'default' : 'secondary'}
+                  variant={job.type === "Full-time" ? "default" : "secondary"}
                 >
                   {capitalizeWords(job.type)}
                 </Badge>
@@ -77,13 +77,13 @@ const JobList = ({ jobs }: JobListProps) => {
 
               <TableCell className="text-right space-x-2">
                 <Button
-                  variant={'outline'}
+                  variant={"outline"}
                   onClick={() => router.push(`/admin/jobs/${job.id}`)}
                 >
                   <EyeIcon />
                 </Button>
                 <Button
-                  variant={'outline'}
+                  variant={"outline"}
                   onClick={() => {
                     router.push(`/admin/jobs/${job.id}/edit`);
                   }}
@@ -91,7 +91,7 @@ const JobList = ({ jobs }: JobListProps) => {
                   <EditIcon />
                 </Button>
                 <Button
-                  variant={'destructive'}
+                  variant={"destructive"}
                   onClick={() => {
                     handleDelete(job.id);
                   }}

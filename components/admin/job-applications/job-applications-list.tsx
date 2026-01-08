@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   Table,
   TableBody,
@@ -6,26 +6,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { EyeIcon, TrashIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { firebaseClient } from '@/db/firebase-client';
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
-import toast from 'react-hot-toast';
-import { Badge } from '@/components/ui/badge';
+} from "@/components/ui/table";
+import { EyeIcon, TrashIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { firebaseClient } from "@/db/firebase-client";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+import toast from "react-hot-toast";
+import { Badge } from "@/components/ui/badge";
 
 const JobApplicationsList = ({ applications }: any) => {
   const router = useRouter();
 
   async function handleDelete(id: string) {
     try {
-      await deleteDoc(doc(firebaseClient, 'apply-jobs', id));
-      toast.success('Application deleted successfully.');
+      await deleteDoc(doc(firebaseClient, "apply-jobs", id));
+      toast.success("Application deleted successfully.");
       router.refresh();
     } catch (error) {
       console.log(error);
-      toast.error('Failed to delete application.');
+      toast.error("Failed to delete application.");
     }
   }
 
@@ -61,7 +61,7 @@ const JobApplicationsList = ({ applications }: any) => {
                   onClick={async () => {
                     try {
                       await updateDoc(
-                        doc(firebaseClient, 'apply-jobs', app.id),
+                        doc(firebaseClient, "apply-jobs", app.id),
                         {
                           isViewed: true,
                         }
@@ -69,7 +69,7 @@ const JobApplicationsList = ({ applications }: any) => {
                       router.push(`/admin/job-applications/${app.id}`);
                     } catch (error) {
                       console.log(error);
-                      toast.error('Failed to update view status');
+                      toast.error("Failed to update view status");
                     }
                   }}
                 >

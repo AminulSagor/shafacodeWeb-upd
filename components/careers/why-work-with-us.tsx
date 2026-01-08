@@ -1,4 +1,3 @@
-import React from "react";
 import { Sparkles, Users, Rocket, Lightbulb } from "lucide-react";
 
 const WhyWorkWithUs = () => {
