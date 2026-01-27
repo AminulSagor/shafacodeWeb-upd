@@ -2,16 +2,15 @@ import { db } from '@/db/firebase-admin';
 
 export const getProjectById = async (id: string) => {
   try {
-    const docRef = db.collection('projects').doc(id); // reference to a single doc
+    const docRef = db.collection('projects').doc(id); 
     const docSnap = await docRef.get();
 
     if (!docSnap.exists) {
-      return null; // document not found
+      return null; 
     }
 
     const data = docSnap.data();
 
-    // Serialize timestamps to strings if needed
     return {
       id: docSnap.id,
       title: data?.title || '',

@@ -12,14 +12,10 @@ export async function updateProject(id: string, data: ProjectFormValues) {
     contactEmail: data.contact,
   };
   try {
-    await db
-      .collection('projects')
-      .doc(id)
-      .update({
-        ...payload,
-        updatedAt: new Date(),
-      });
+    await db.collection('projects').doc(id).update({...payload,updatedAt: new Date(),});
+
     return { success: true, message: 'Project updated successfully' };
+    
   } catch (error) {
     console.error('Error updating project:', error);
     return { success: false, error: 'Failed to update project' };

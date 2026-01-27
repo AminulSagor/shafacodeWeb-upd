@@ -12,6 +12,7 @@ export interface Project {
   updatedAt?: string;
 }
 export const getProjects = async () => {
+  
   try {
     const snapshot = await db.collection('projects').get();
 

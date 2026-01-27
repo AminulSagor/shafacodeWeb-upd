@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="flex flex-col items-center justify-center py-10 gap-2">
             <div>
               <p className="text-slate-200 text-sm md:text-base">
-                © 2025 ShafaCode. All Rights Reserved.
+                © 2026 ShafaCode. All Rights Reserved.
               </p>
             </div>
             <div className="flex  text-slate-200">

@@ -36,9 +36,9 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/logo/logo.jpg"
+            src="/logo/logo.png"
             alt="ShafaCode Logo"
-            width={48}
+            width={70}
             height={48}
             className="h-12 w-auto object-contain"
           />

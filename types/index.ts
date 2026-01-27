@@ -14,3 +14,15 @@ export type JobType = {
   location: string;
   jobDescription: string;
 };
+
+
+
+export type SOPType = {
+   id: string;
+  title?: string;
+  category?: string;
+  status?: "pending" | "active";
+  procedureSteps?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};

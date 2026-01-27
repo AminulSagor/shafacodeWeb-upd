@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Inbox, Calendar, Image, Building2, FileText } from 'lucide-react';
+import { Inbox, Calendar, Image, Building2, FileText, EthernetPort } from 'lucide-react';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 
 const routes = [
@@ -25,6 +26,13 @@ const routes = [
     icon: Image,
   },
   {
+    title: 'SOP',
+    description:
+      'Manage and update the standard operating procedures for various processes.',
+    url: '/admin/sop',
+    icon: EthernetPort,
+  },
+  {
     title: 'Jobs',
     description:
       'Create and manage open job positions listed in the careers page.',
@@ -40,13 +48,20 @@ const routes = [
   },
 ];
 
-export default function AdminPage() {
+export default async function AdminPage() {
+
+  const cookie = await cookies()
+
+  const auth = cookie.get('admin_auth');
+  const role = cookie.get('role')?.value;
+  const email = cookie.get('email')?.value;
+
   return (
     <section className="py-16 px-6 max-w-6xl mx-auto">
       {/* Welcome Header */}
       <div className="text-center mb-14">
         <h1 className="text-4xl font-bold text-slate-900">
-          Welcome to the Admin Panel
+          Welcome to the Admin Panel {role ? `- ${role}` : ''} {email ? `- ${email}` : ''}
         </h1>
         <p className="mt-3 text-slate-600 text-lg max-w-2xl mx-auto">
           This dashboard gives you control over your website content, media, job
