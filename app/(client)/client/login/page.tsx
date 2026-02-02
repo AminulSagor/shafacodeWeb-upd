@@ -8,7 +8,7 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [strength, setStrength] = useState<"Weak" | "Medium" | "Strong" | "">(
-    ""
+    "",
   );
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -36,24 +36,26 @@ export default function AdminLogin() {
     try {
       const form = new FormData(e.currentTarget);
 
-      // const res = await fetch("/api/login", {
-      //   method: "POST",
-      //   body: form,
-      // });
+      const res = await fetch("/api/client/login", {
+        method: "POST",
+        body: form,
+      });
 
-      // const data = await res.json();
+      const data = await res.json();
 
       toast.dismiss(loadingId);
       setLoading(false);
 
-      // if (!data?.success) {
-      //   toast.error(data?.message || "Login failed");
-      //   setError(data?.message || "Login failed");
-      //   return;
-      // }
+      if (!data?.success) {
+        toast.error(data?.message || "Login failed");
+        setError(data?.message || "Login failed");
+        return;
+      }
 
       toast.success("Logged in successfully");
-      window.location.href = "/client";
+
+      // ✅ client dashboard redirect
+      window.location.href = "/client/dashboard/projects";
     } catch {
       toast.dismiss(loadingId);
       setLoading(false);
@@ -67,7 +69,9 @@ export default function AdminLogin() {
       <div className="w-full max-w-md rounded-xl border bg-white p-8 sm:p-10 shadow-sm">
         {/* Header */}
         <div className="mb-6 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">Client Login</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Client Login
+          </h1>
           <p className="mt-1 text-sm text-gray-500">
             Sign in to continue to your dashboard
           </p>
@@ -114,9 +118,6 @@ export default function AdminLogin() {
               }}
               required
             />
-
-           
-            
           </div>
 
           {/* Error */}
@@ -149,7 +150,10 @@ export default function AdminLogin() {
         {/* Footer */}
         <div className="mt-6 text-center text-sm text-gray-600">
           <span>Don&apos;t have an account?</span>
-          <Link href="/client/register" className="text-blue-600 hover:underline ml-1">
+          <Link
+            href="/client/register"
+            className="text-blue-600 hover:underline ml-1"
+          >
             Register
           </Link>
         </div>

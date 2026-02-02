@@ -10,19 +10,18 @@ import {
   ExternalLink,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useClient } from "@/context/ClientContext";
 
 type ClientProfile = {
-  username?: string;
+  name?: string;
   email?: string;
-  role?: string; // "client"
+  role?: string; 
   verified?: boolean;
-
   kycStatus?: "pending" | "approved" | "rejected" | "not_submitted" | string;
   kycFrontUrl?: string;
   kycBackUrl?: string;
-
   createdAt?: number;
-  kycUpdatedAt?: number;
+  updatedAt?: number;
 };
 
 function formatDate(ms?: number) {
@@ -44,34 +43,18 @@ function statusPill(status?: string) {
   return "bg-slate-100 text-slate-700 border-slate-200";
 }
 
-/* ================= DEMO DATA ================= */
 
-const DEMO_CLIENT: ClientProfile = {
-  username: "Aminul Islam",
-  email: "aminul@client.com",
-  role: "client",
-  verified: true,
 
-  kycStatus: "approved",
-  kycFrontUrl:
-    "https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?q=80&w=1200&auto=format&fit=crop",
-  kycBackUrl:
-    "https://images.unsplash.com/photo-1523475472560-d2df97ec485c?q=80&w=1200&auto=format&fit=crop",
-
-  createdAt: Date.now() - 1000 * 60 * 60 * 24 * 10,
-  kycUpdatedAt: Date.now() - 1000 * 60 * 60 * 6,
-};
-
-/* ================================================= */
 
 export default function ClientProfilePage() {
-  const [user] = useState<ClientProfile>(DEMO_CLIENT);
+
+  const { client } = useClient() as { client: ClientProfile };
 
   const initials = useMemo(() => {
-    const name = (user?.username || "User").trim();
+    const name = (client?.name || "User").trim();
     const parts = name.split(" ").filter(Boolean);
     return ((parts[0]?.[0] || "U") + (parts[1]?.[0] || "")).toUpperCase();
-  }, [user?.username]);
+  }, [client?.name]);
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-10">
@@ -89,10 +72,10 @@ export default function ClientProfilePage() {
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <h1 className="truncate text-xl font-semibold text-slate-900">
-                    {user.username}
+                        {client?.name || "User"}
                   </h1>
 
-                  {user.verified ? (
+                  {client?.verified ? (
                     <span className="inline-flex items-center gap-1 rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">
                       <BadgeCheck className="h-4 w-4" />
                       Verified
@@ -106,7 +89,7 @@ export default function ClientProfilePage() {
                 </div>
 
                 <p className="truncate text-sm text-slate-600">
-                  {user.email}
+                  {client?.email}
                 </p>
               </div>
             </div>
@@ -114,17 +97,17 @@ export default function ClientProfilePage() {
             <div className="flex flex-wrap gap-2">
               <span className="inline-flex items-center gap-2 rounded-xl border bg-white px-3 py-1.5 text-sm text-slate-700">
                 <User2 className="h-4 w-4 text-slate-500" />
-                Role: <b className="font-semibold">{user.role}</b>
+                Role: <b className="font-semibold">{client?.role || "—"}</b>
               </span>
 
               <span
                 className={[
                   "inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm font-medium",
-                  statusPill(user.kycStatus),
+                  statusPill(client?.kycStatus),
                 ].join(" ")}
               >
                 <BadgeInfo className="h-4 w-4" />
-                KYC: {user.kycStatus}
+                KYC: {client.kycStatus}
               </span>
             </div>
           </div>
@@ -147,21 +130,21 @@ export default function ClientProfilePage() {
                 <Mail className="mt-0.5 h-4 w-4 text-slate-500" />
                 <div>
                   <p className="text-xs text-slate-500">Email</p>
-                  <p className="text-sm font-medium text-slate-900">{user.email}</p>
+                  <p className="text-sm font-medium text-slate-900">{client?.email}</p>
                 </div>
               </div>
 
               <div className="rounded-xl border bg-white p-3">
                 <p className="text-xs text-slate-500">Created at</p>
                 <p className="text-sm font-medium text-slate-900">
-                  {formatDate(user.createdAt)}
+                  {formatDate(client?.createdAt)}
                 </p>
               </div>
 
               <div className="rounded-xl border bg-white p-3">
-                <p className="text-xs text-slate-500">KYC updated at</p>
+                <p className="text-xs text-slate-500">Updated at</p>
                 <p className="text-sm font-medium text-slate-900">
-                  {formatDate(user.kycUpdatedAt)}
+                  {formatDate(client?.updatedAt)}
                 </p>
               </div>
             </div>
@@ -186,11 +169,11 @@ export default function ClientProfilePage() {
               <span
                 className={[
                   "mt-2 inline-flex w-fit items-center gap-2 rounded-xl border px-3 py-1.5 text-sm font-medium sm:mt-0",
-                  statusPill(user.kycStatus),
+                  statusPill(client?.kycStatus),
                 ].join(" ")}
               >
                 <BadgeInfo className="h-4 w-4" />
-                Status: {user.kycStatus}
+                Status: {client?.kycStatus || "—"}
               </span>
             </div>
 
@@ -200,7 +183,7 @@ export default function ClientProfilePage() {
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-semibold">Front ID</p>
                   <a
-                    href={user.kycFrontUrl}
+                    href={client?.kycFrontUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1 text-xs font-medium text-slate-700 hover:text-black"
@@ -212,7 +195,7 @@ export default function ClientProfilePage() {
                 <div className="mt-3 overflow-hidden rounded-xl border bg-white">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={user.kycFrontUrl}
+                    src={client?.kycFrontUrl}
                     alt="Front"
                     className="h-56 w-full object-cover"
                   />
@@ -224,7 +207,7 @@ export default function ClientProfilePage() {
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-semibold">Back ID</p>
                   <a
-                    href={user.kycBackUrl}
+                    href={client?.kycBackUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1 text-xs font-medium text-slate-700 hover:text-black"
@@ -236,7 +219,7 @@ export default function ClientProfilePage() {
                 <div className="mt-3 overflow-hidden rounded-xl border bg-white">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={user.kycBackUrl}
+                    src={client?.kycBackUrl}
                     alt="Back"
                     className="h-56 w-full object-cover"
                   />

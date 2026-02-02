@@ -5,6 +5,7 @@ import { Navbar } from "@/components/shared/navbar";
 import Footer from "@/components/shared/footer";
 import { Toaster } from "react-hot-toast";
 import { UserProvider } from "@/context/UserContext";
+import ClientShell from "@/components/client/client-shell";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],

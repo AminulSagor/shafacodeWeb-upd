@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
 
 type FileState = {
   file: File | null;
@@ -105,7 +106,7 @@ export default function UploadIdPage() {
 
       toast.dismiss(loadingId);
       toast.success(data?.message || "ID uploaded successfully!");
-      window.location.href = "/client/login";
+      redirect("/client/login");
     } catch (err: any) {
       toast.dismiss(loadingId);
       toast.error(err?.message || "Upload failed. Try again.");
