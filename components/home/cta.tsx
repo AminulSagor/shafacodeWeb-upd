@@ -57,9 +57,11 @@ const CtaSection = () => {
                   </a>
                 </span>
               </p>
-              <p className="mt-4">
-                📍 Barishal, Swarupkathi
+              <p className="mt-4 text-slate-200/80 text-sm">
+  <span className="font-semibold text-slate-200">Location:</span>{" "}
+  Barishal, Swarupkathi
               </p>
+
             </div>
             <FooterContactForm />
           </div>
