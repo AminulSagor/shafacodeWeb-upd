@@ -9,6 +9,14 @@ import {
   EthernetPort,
   LogOut,
   User,
+  FolderKanban,
+  FileText,
+  BookOpenCheck,
+  Users,
+  Briefcase,
+  FileUser,
+  Home,
+  UserCircle,
 } from "lucide-react";
 import {
   Sidebar,
@@ -38,46 +46,53 @@ const mainItems: MenuItem[] = [
   {
     title: "Projects",
     url: "/admin/projects",
-    icon: Inbox,
+    icon: FolderKanban, // project / workflow
     roles: ["admin", "employee"],
   },
   {
     title: "Blogs",
     url: "/admin/blogs",
-    icon: Calendar,
+    icon: FileText, // articles / content
     roles: ["admin"],
   },
   {
     title: "Media",
     url: "/admin/media",
-    icon: Image,
+    icon: Image, // images & files
     roles: ["admin"],
   },
   {
     title: "SOP",
     url: "/admin/sop",
-    icon: EthernetPort,
+    icon: BookOpenCheck, // procedures / documentation
     roles: ["admin", "employee"],
   },
   {
     title: "Employees",
     url: "/admin/employees",
-    icon: EthernetPort,
+    icon: Users, // staff / team
+    roles: ["admin"],
+  },
+  {
+    title: "Clients",
+    url: "/admin/clients",
+    icon: Building2, // organizations / clients
     roles: ["admin"],
   },
 ];
+
 
 const careerItems: MenuItem[] = [
   {
     title: "Jobs",
     url: "/admin/jobs",
-    icon: Building2,
+    icon: Briefcase, // job listings / careers
     roles: ["admin"],
   },
   {
     title: "Job Applications",
     url: "/admin/job-applications",
-    icon: Baby,
+    icon: FileUser, // resumes / applicants
     roles: ["admin"],
   },
 ];
@@ -86,7 +101,7 @@ const websiteItems: MenuItem[] = [
   {
     title: "Home",
     url: "/",
-    icon: HomeIcon,
+    icon: Home, // website home
     roles: ["admin", "employee", "client"],
   },
 ];
@@ -95,10 +110,11 @@ const accountItems: MenuItem[] = [
   {
     title: "Profile",
     url: "/admin/profile",
-    icon: User,
+    icon: UserCircle, // account / identity
     roles: ["admin", "employee", "client"],
   },
 ];
+
 
 export function AppSidebar({ role }: { role: string }) {
   const pathname = usePathname();

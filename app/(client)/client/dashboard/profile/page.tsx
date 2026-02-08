@@ -57,7 +57,7 @@ export default function ClientProfilePage() {
   }, [client?.name]);
 
   return (
-    <div className="min-h-screen bg-slate-50 px-4 py-10">
+    <div className="min-h-screen bg-slate-50 ">
       <div className="mx-auto w-full max-w-5xl space-y-6">
 
         {/* ===== Top Card ===== */}
