@@ -58,9 +58,7 @@ const CtaSection = () => {
                 </span>
               </p>
               <p className="mt-4">
-                📍 We don’t have a physical office right now, but our team
-                members are located across major cities. We can arrange project
-                meetings almost anywhere that’s convenient for you.
+                📍 Barishal, Swarupkathi
               </p>
             </div>
             <FooterContactForm />
