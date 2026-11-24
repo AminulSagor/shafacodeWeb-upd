@@ -30,7 +30,7 @@ const VideoPlayer = () => {
     <>
       {/* POPUP */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-md text-center">
+        <DialogContent className="max-w-md border-white/10 bg-panel text-center text-white">
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold">
               Play Video With Sound?
@@ -42,7 +42,7 @@ const VideoPlayer = () => {
 
           <div className="flex items-center flex-col">
             <Button
-              className="mt-4 w-full  hover:cursor-pointer bg-sky-600 hover:bg-sky-500 text-white font-semibold"
+              className="mt-4 w-full  hover:cursor-pointer bg-brand hover:bg-brand/90 text-black font-semibold"
               onClick={() => {
                 setAllowSound(true);
                 setOpen(false);
@@ -53,7 +53,7 @@ const VideoPlayer = () => {
 
             <Button
               variant="outline"
-              className="mt-2 w-full hover:cursor-pointer font-semibold"
+              className="mt-2 w-full border border-white/15 bg-transparent text-white hover:bg-white/10 hover:cursor-pointer font-semibold"
               onClick={() => {
                 setAllowSound(false);
                 setOpen(false);
@@ -66,13 +66,13 @@ const VideoPlayer = () => {
       </Dialog>
 
       {/* MAIN VIDEO PLAYER */}
-      <div className="border border-slate-700 rounded-lg p-4">
+      <div className="rounded-2xl border border-white/10 bg-panel/60 p-6">
         <Tabs defaultValue="bangla">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
               See how the affiliate program works
             </h2>
-            <TabsList className="bg-transparent border border-slate-700 ">
+            <TabsList className="bg-transparent border border-white/15 ">
               <TabsTrigger
                 className="text-white data-[state=active]:bg-background data-[state=active]:text-foreground"
                 value="bangla"

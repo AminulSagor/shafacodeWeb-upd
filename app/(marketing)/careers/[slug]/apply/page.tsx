@@ -3,12 +3,12 @@ import ApplyHero from '@/components/careers/apply-hero';
 
 const JobApplyPage = () => {
   return (
-    <div className="bg-slate-950 border-b border-b-slate-700">
+    <main>
       <ApplyHero />
-      <div className="max-w-4xl mx-auto space-y-8 my-10">
+      <div className="mx-auto max-w-3xl px-4 pb-24">
         <ApplyForm />
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -1,84 +1,89 @@
-import React from 'react';
-import { Button } from '../ui/button';
-import { Star } from 'lucide-react';
 import Link from 'next/link';
+import { Fingerprint, MousePointer2, PlayCircle, Tag, Zap } from 'lucide-react';
+import { Button } from '../ui/button';
+import { trustedBrands } from '@/data/home';
 
-const HeroSection = ({
-  delivered,
-  inprogress,
-}: {
-  delivered: number;
-  inprogress: number;
-}) => {
+const floaters = [
+  { Icon: Zap, className: 'left-[9%] top-[38%] h-16 w-16' },
+  { Icon: Fingerprint, className: 'left-[18%] top-[44%] h-12 w-12' },
+  { Icon: Tag, className: 'left-[14%] top-[66%] h-14 w-14' },
+];
+
+const HeroSection = () => {
   return (
-    <section className="bg-linear-to-r from-slate-800  to-slate-700">
-      <div className="max-w-6xl mx-auto py-20 px-4 sm:py-24 sm:px-6 lg:px-8">
-        <div className="text-slate-100 text-center space-y-8">
-          {/* Small label */}
-          <div className="inline-flex items-center rounded-full border border-sky-500/40 bg-slate-900/40 px-4 py-1 text-xs font-medium tracking-wide text-sky-300 backdrop-blur">
-            <span className="mr-2 h-2 w-2 rounded-full bg-emerald-500" />
-            Transparent Software Partner for Growing Teams
-          </div>
+    <>
+      <section className="relative overflow-hidden bg-[radial-gradient(ellipse_80%_55%_at_50%_0%,rgba(110,170,10,0.45),transparent_70%)] pb-24 pt-44 sm:pt-52">
+        {floaters.map(({ Icon, className }, i) => (
+          <span
+            key={i}
+            aria-hidden
+            className={`absolute hidden place-items-center rounded-full bg-brand/10 text-brand lg:grid ${className}`}
+          >
+            <Icon className="h-1/2 w-1/2" />
+          </span>
+        ))}
+        <MousePointer2
+          aria-hidden
+          className="absolute right-[10%] top-[48%] hidden h-14 w-14 fill-brand text-brand lg:block"
+        />
 
-          {/* Heading + description */}
-          <div className="space-y-4">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-              Empowering Innovation with{' '}
-              <span className="text-sky-400">Transparent Code</span>
-            </h1>
-            <p className="text-slate-200/80 text-sm sm:text-base leading-relaxed max-w-4xl mx-auto">
-              At <span className="font-semibold">ShafaCode</span>, we believe in
-              the <i>Win-Win Paradigm</i> — your success fuels our success. We
-              build with{' '}
-              <span className="font-semibold">full transparency</span>, so every
-              milestone and decision is clear and accountable. Backed by a{' '}
-              <span className="font-semibold">proactive work culture</span>, we
-              anticipate challenges, innovate ahead of time, and deliver
-              solutions that grow with you.
-            </p>
-          </div>
-
-          {/* CTA */}
-          <div>
+        <div className="relative mx-auto max-w-5xl px-4 text-center">
+          <h1 className="font-display text-5xl leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">
+            Transparent Software Partner for{' '}
+            <em className="block text-brand/90">Growing Teams</em>
+          </h1>
+          <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-slate-300 sm:text-lg">
+            ShafaCode helps growing businesses build websites, apps, SaaS
+            platforms, custom software, and IoT solutions with clear
+            communication, transparent milestones, and scalable engineering.
+          </p>
+          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Button
               asChild
-              className="inline-flex items-center justify-center gap-2
-                         w-full sm:w-auto
-                         bg-sky-600 border border-sky-700
-                         text-slate-900
-                         hover:text-slate-100 hover:bg-sky-700 hover:border-sky-800
-                         shadow-sm hover:shadow-lg
-                         hover:cursor-pointer
-                         text-sm sm:text-base md:text-lg
-                         font-semibold
-                         py-3 sm:py-3.5 md:py-6
-                         px-4 sm:px-6 md:px-8
-                         rounded-md
-                         transition-all duration-200"
+              size="lg"
+              className="h-12 w-full rounded-lg bg-brand px-6 font-semibold text-black shadow-[0_0_24px_-4px_var(--color-brand)] hover:bg-brand/90 sm:w-auto"
             >
-              <Link href="/#contact">Let&apos;s Build Together</Link>
+              <Link href="/#contact">Get Free Consultation</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="h-12 w-full rounded-lg border-white/15 bg-white/5 px-6 text-white hover:bg-white/10 hover:text-white sm:w-auto"
+            >
+              <Link href="/portfolio">
+                <PlayCircle className="mr-1 h-5 w-5" />
+                Watch Demo
+              </Link>
             </Button>
           </div>
+        </div>
+      </section>
 
-          {/* Metrics */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm sm:text-base text-slate-300">
-            <span>
-              <span className="font-semibold">{inprogress}</span> projects
-              ongoing
-            </span>
-            <span>
-              <span className="font-semibold">{delivered}</span> project
-              delivered
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="font-semibold">5</span>
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span>client satisfaction</span>
-            </span>
+      <section
+        aria-label="Trusted by"
+        className="border-y border-white/5 py-10"
+      >
+        <p className="text-center text-xs font-medium uppercase tracking-[0.2em] text-slate-300">
+          Trusted by teams around the world
+        </p>
+        <div className="relative mt-8 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
+          <div className="animate-marquee flex w-max gap-16 pr-16">
+            {[...trustedBrands, ...trustedBrands, ...trustedBrands, ...trustedBrands].map(
+              (brand, i) => (
+                <span
+                  key={i}
+                  aria-hidden={i >= trustedBrands.length}
+                  className="text-4xl font-bold tracking-tight text-white/15"
+                >
+                  {brand}
+                </span>
+              )
+            )}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
