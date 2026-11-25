@@ -12,11 +12,13 @@ const ServiceCard = ({
   align: 'left' | 'right';
 }) => (
   <div
-    className={`rounded-xl border border-white/10 bg-surface/80 p-8 ${
+    className={`rounded-xl border border-white/10 bg-surface/80 p-8 transition-all duration-300 ease-out group-hover:-translate-y-2 group-hover:scale-[1.03] group-hover:border-brand/60 group-hover:shadow-[0_15px_40px_-10px_var(--color-brand)] ${
       align === 'right' ? 'md:text-right' : ''
     }`}
   >
-    <h3 className="text-2xl leading-snug">{service.title}</h3>
+    <h3 className="text-2xl leading-snug transition-colors duration-300 group-hover:text-brand">
+      {service.title}
+    </h3>
     <p className="mt-3 text-slate-300">{service.description}</p>
     <Link
       href={service.href}
@@ -25,20 +27,21 @@ const ServiceCard = ({
       }`}
     >
       {service.cta}
-      <ArrowRight className="h-4 w-4 shrink-0" />
+      <ArrowRight className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-2" />
     </Link>
   </div>
 );
 
 const Node = ({ n }: { n: number }) => (
-  <span className="relative z-10 grid h-14 w-14 shrink-0 place-items-center rounded-full border-2 border-brand bg-surface text-sm text-brand">
+  <span className="relative z-10 grid h-14 w-14 shrink-0 place-items-center rounded-full border-2 border-brand bg-surface text-sm text-brand transition-all duration-300 group-hover:scale-110 group-hover:bg-brand group-hover:text-black">
+    <span className="pointer-events-none absolute inset-0 rounded-full border border-brand opacity-0 group-hover:animate-[offer-ping_1.2s_ease-out_infinite]" />
     {String(n).padStart(2, '0')}
   </span>
 );
 
 const IconBubble = ({ service }: { service: Service }) => (
-  <span className="grid h-20 w-20 place-items-center rounded-full border border-white/10 bg-panel shadow-[0_0_30px_-8px_var(--color-brand)]">
-    <service.icon className="h-8 w-8 text-brand" />
+  <span className="grid h-20 w-20 place-items-center rounded-full border border-white/10 bg-panel shadow-[0_0_30px_-8px_var(--color-brand)] transition-all duration-300 group-hover:scale-110 group-hover:border-brand/60 group-hover:shadow-[0_0_45px_-4px_var(--color-brand)]">
+    <service.icon className="h-8 w-8 text-brand transition-transform duration-500 group-hover:rotate-360 group-hover:scale-110" />
   </span>
 );
 
@@ -58,6 +61,11 @@ const Offer = () => {
         </p>
       </div>
 
+      <style>{`
+        @keyframes offer-ping { 0% { transform: scale(1); opacity: .8 } 100% { transform: scale(1.9); opacity: 0 } }
+        @media (prefers-reduced-motion: reduce) { .group * { animation: none !important; transition: none !important } }
+      `}</style>
+
       {/* Desktop: alternating timeline */}
       <div className="relative mx-auto mt-16 hidden max-w-5xl md:block">
         <div className="absolute inset-y-0 left-1/2 w-px bg-gradient-to-b from-brand/60 via-brand/30 to-transparent" />
@@ -67,7 +75,7 @@ const Offer = () => {
             return (
               <li
                 key={service.title}
-                className="grid grid-cols-[1fr_auto_1fr] items-center gap-4"
+                className="group grid grid-cols-[1fr_auto_1fr] items-center gap-4"
               >
                 <div className="flex justify-end">
                   {cardLeft ? (
@@ -99,7 +107,7 @@ const Offer = () => {
         <div className="absolute inset-y-0 left-7 w-px bg-brand/30" />
         <ol className="space-y-8">
           {services.map((service, i) => (
-            <li key={service.title} className="flex gap-4">
+            <li key={service.title} className="group flex gap-4">
               <Node n={i + 1} />
               <div className="flex-1">
                 <ServiceCard service={service} align="left" />
