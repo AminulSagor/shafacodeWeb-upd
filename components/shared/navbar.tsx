@@ -41,17 +41,15 @@ export function Navbar() {
     <header className="sticky top-0 z-50 h-0">
       <div className="mx-auto max-w-6xl px-4 pt-4">
         <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-black/40 px-4 py-3 backdrop-blur-xl sm:px-6">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center" aria-label="ShafaCode home">
             <Image
-              src="/logo/logo.png"
-              alt="ShafaCode Logo"
-              width={40}
-              height={40}
-              className="h-9 w-auto object-contain"
+              src="/logo/shafacode-logo-white.png"
+              alt="ShafaCode"
+              width={1783}
+              height={310}
+              priority
+              className="h-8 w-auto object-contain"
             />
-            <span className="text-lg font-semibold leading-none text-white">
-              shafacode
-            </span>
           </Link>
 
           <nav className="hidden md:block" aria-label="Main">

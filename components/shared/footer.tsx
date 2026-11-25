@@ -41,17 +41,14 @@ const Footer = () => {
       <div className="mx-auto max-w-7xl px-6 py-14">
         <div className="grid gap-10 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
           <div>
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center" aria-label="ShafaCode home">
               <Image
-                src="/logo/logo.png"
-                alt="ShafaCode Logo"
-                width={36}
-                height={36}
+                src="/logo/shafacode-logo-white.png"
+                alt="ShafaCode"
+                width={1783}
+                height={310}
                 className="h-9 w-auto object-contain"
               />
-              <span className="text-xl font-semibold text-white">
-                shafacode
-              </span>
             </Link>
             <p className="mt-5 max-w-sm text-sm leading-relaxed">
               ShafaCode builds high performance websites, mobile apps, SaaS
