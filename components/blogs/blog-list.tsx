@@ -1,112 +1,111 @@
 import Image from 'next/image';
-import { blogs } from '@/data/blogs';
 import Link from 'next/link';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { getBlogs } from '@/actions/blogs/get-blogs';
+import capitalizeWords from '@/helper/capitalized-words';
+
+const formatDate = (value: unknown) =>
+  new Date(value as string).toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 
 const BlogList = async () => {
-  // const featured = blogs.filter((b) => b.featured);
-  // const regular = blogs.filter((b) => !b.featured);
-
   const blogs = await getBlogs();
+  const [featured, ...rest] = blogs;
+
+  if (!featured) {
+    return (
+      <p className="px-4 py-20 text-center text-slate-400">
+        No articles yet. Check back soon.
+      </p>
+    );
+  }
 
   return (
-    <section className="py-14 md:py-20 bg-slate-100">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 text-center mb-12">
-          Latest From <span className="text-sky-600">Our Blog</span>
-        </h1>
-
-        {/* Featured Section */}
-        {/* {featured.length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-xl font-semibold text-slate-800 mb-6">
-              Featured
-            </h2>
-
-            <div className="grid md:grid-cols-2 gap-10">
-              {featured.map((blog) => (
-                <div
-                  key={blog.id}
-                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all"
-                >
-                  <div className="relative w-full h-64">
-                    <Image
-                      src={blog.image}
-                      alt={blog.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-
-                  <div className="p-6 space-y-4">
-                    <Link
-                      href={'/blogs/' + blog.id}
-                      className="text-2xl font-semibold text-slate-900 hover:text-sky-600 transition-all duration-200 ease-in-out hover:underline"
-                    >
-                      {blog.title}
-                    </Link>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      {blog.short}
-                    </p>
-
-                    <div className="text-sky-600 text-sm font-medium">
-                      {blog.date}
-                    </div>
-
-                  </div>
-                </div>
-              ))}
-            </div>
+    <section className="px-4 pb-24">
+      <div className="mx-auto max-w-6xl">
+        <article className="grid overflow-hidden rounded-2xl border border-white/10 bg-[#0f1110] md:grid-cols-2">
+          <div className="relative min-h-64">
+            {featured.coverImage && (
+              <Image
+                src={featured.coverImage}
+                alt={featured.title}
+                fill
+                className="object-cover opacity-80"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            )}
           </div>
-        )} */}
+          <div className="flex flex-col justify-center p-8 md:p-10">
+            <p className="text-xs uppercase tracking-wider text-brand">
+              {capitalizeWords(featured.category)}
+              <span className="ml-3 normal-case text-slate-400">
+                {formatDate(featured.updatedAt)}
+              </span>
+            </p>
+            <h2 className="mt-3 text-3xl font-medium leading-tight md:text-4xl">
+              {featured.title}
+            </h2>
+            <p className="mt-4 line-clamp-3 text-slate-300">
+              {featured.excerpt}
+            </p>
+            <Link
+              href={`/blogs/${featured.slug}`}
+              className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-brand hover:underline"
+            >
+              Read Article <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </article>
 
-        {/* All Blogs Section */}
-        <div>
-          <h2 className="text-xl font-semibold text-slate-800 mb-6">
-            All Blogs
-          </h2>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
-            {blogs.map((blog) => {
-              return (
-                <div
+        {rest.length > 0 && (
+          <>
+            <h2 className="mb-8 mt-20 text-2xl font-medium">
+              Latest Technical Insights
+            </h2>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {rest.map((blog) => (
+                <Link
                   key={blog.id}
-                  className="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-all"
+                  href={`/blogs/${blog.slug}`}
+                  className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-[#0f1110] transition-colors hover:border-brand/40"
                 >
-                  <div className="relative w-full h-48">
-                    <Image
-                      src={blog.coverImage}
-                      alt={blog.title}
-                      fill
-                      className="object-cover"
-                    />
+                  <div className="relative h-44 bg-panel">
+                    {blog.coverImage && (
+                      <Image
+                        src={blog.coverImage}
+                        alt={blog.title}
+                        fill
+                        className="object-cover opacity-80 transition-opacity group-hover:opacity-100"
+                        sizes="(max-width: 1024px) 50vw, 33vw"
+                      />
+                    )}
                   </div>
-
-                  <div className="p-5 space-y-3">
-                    <Link
-                      href={'/blogs/' + blog.slug}
-                      className="text-lg font-semibold text-slate-900 hover:text-sky-600 transition-all duration-200 ease-in-out hover:underline line-clamp-1"
-                    >
+                  <div className="flex flex-1 flex-col p-5">
+                    <p className="text-xs text-brand">
+                      {capitalizeWords(blog.category)}
+                      <span className="ml-2 text-slate-400">
+                        • {formatDate(blog.updatedAt)}
+                      </span>
+                    </p>
+                    <h3 className="mt-3 line-clamp-2 text-lg font-medium">
                       {blog.title}
-                    </Link>
-                    <p className="text-slate-600 text-sm line-clamp-1">
+                    </h3>
+                    <p className="mt-2 line-clamp-3 flex-1 text-sm text-slate-400">
                       {blog.excerpt}
                     </p>
-
-                    <div className="text-sky-600 text-xs font-medium">
-                      {new Date(blog.updatedAt).toLocaleDateString('en-US', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })}
-                    </div>
+                    <span className="mt-5 flex items-center justify-between border-t border-white/10 pt-4 text-sm font-medium">
+                      Read full guide
+                      <ArrowUpRight className="h-4 w-4" />
+                    </span>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

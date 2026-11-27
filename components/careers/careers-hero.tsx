@@ -1,41 +1,30 @@
-const CareerHero = () => {
-  return (
-    <section className="bg-linear-to-r from-slate-800 to-slate-700">
-      <div className="max-w-5xl mx-auto py-20 px-4 sm:py-24 sm:px-6 lg:px-8">
-        <div className="text-center text-slate-100 space-y-8">
-          {/* Small label/badge */}
-          <div className="inline-flex items-center rounded-full border border-sky-500/40 bg-slate-900/40 px-4 py-1 text-xs font-medium tracking-wide text-sky-300 backdrop-blur">
-            <span className="mr-2 h-2 w-2 rounded-full bg-sky-400" />
-            Careers
-          </div>
+import Link from 'next/link';
+import PageHero from '@/components/shared/page-hero';
 
-          {/* Heading + description */}
-          <div className="space-y-4">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-              Build Your Future With
-              <span className="text-sky-400"> ShafaCode</span>
-            </h1>
-
-            <p className="text-slate-200/80 text-sm sm:text-base leading-relaxed max-w-3xl mx-auto">
-              Join a passionate team of creators, developers, and innovators.
-              Explore opportunities to grow your career, learn new skills, and
-              make an impact.
-            </p>
-          </div>
-
-          {/* Career categories */}
-          <ul className="flex flex-wrap gap-y-2 gap-4 justify-center text-sky-200 mt-6">
-            <li className="text-sm w-full sm:w-auto">💻 Engineering</li>
-            <li className="text-sm w-full sm:w-auto">🎨 Design & Creative</li>
-            <li className="text-sm w-full sm:w-auto">📈 Marketing & Growth</li>
-            <li className="text-sm w-full sm:w-auto">
-              🤝 Operations & Support
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-};
+const CareerHero = () => (
+  <PageHero
+    title={
+      <>
+        Build Your <em className="text-brand/90">Future</em> With ShafaCode.
+      </>
+    }
+    description="Join a growing team of designers, developers, and innovators working on real products for real businesses."
+  >
+    <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <Link
+        href="#open-positions"
+        className="rounded-full bg-brand px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-black shadow-[0_0_24px_-4px_var(--color-brand)] hover:bg-brand/90"
+      >
+        View Open Positions
+      </Link>
+      <Link
+        href="#culture"
+        className="rounded-full border border-white/15 px-7 py-3.5 text-sm font-semibold uppercase tracking-wide hover:bg-white/5"
+      >
+        Discover Our Culture
+      </Link>
+    </div>
+  </PageHero>
+);
 
 export default CareerHero;

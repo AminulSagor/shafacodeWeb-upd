@@ -3,12 +3,10 @@ import AffiliateInfo from '@/components/affiliate/affiliate-info';
 
 const AffiliatePage = () => {
   return (
-    <div className="relative border-b border-b-slate-700 h-screen">
-      {/* Blurred content */}
-
+    <main>
       <AffiliateHero />
       <AffiliateInfo />
-    </div>
+    </main>
   );
 };
 

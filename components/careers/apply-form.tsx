@@ -104,7 +104,7 @@ const ApplyForm = () => {
   };
 
   return (
-    <Card className="border-slate-800 bg-slate-900">
+    <Card className="border-white/10 bg-panel">
       <CardHeader>
         <CardTitle className="text-xl font-medium text-slate-100">
           Application Form
@@ -126,7 +126,7 @@ const ApplyForm = () => {
                   <FormControl>
                     <Input
                       placeholder="Your full name"
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      className="bg-panel border-white/10 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2
                       text-slate-200"
                       {...field}
                     />
@@ -148,7 +148,7 @@ const ApplyForm = () => {
                   <FormControl>
                     <Input
                       placeholder="example@mail.com"
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      className="bg-panel border-white/10 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2
                       text-slate-200"
                       {...field}
                     />
@@ -170,7 +170,7 @@ const ApplyForm = () => {
                   <FormControl>
                     <Input
                       placeholder="+8801XXXXXXXXX"
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      className="bg-panel border-white/10 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2
                       text-slate-200"
                       {...field}
                     />
@@ -191,7 +191,7 @@ const ApplyForm = () => {
                   <FormControl>
                     <Input
                       placeholder="Application for Software Engineer"
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      className="bg-panel border-white/10 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2
                       text-slate-200"
                       {...field}
                     />
@@ -211,7 +211,7 @@ const ApplyForm = () => {
                   <FormControl>
                     <Textarea
                       placeholder="Write a short introduction..."
-                      className="h-40 bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      className="h-40 bg-panel border-white/10 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2
                       text-slate-200"
                       {...field}
                       onChange={(e) => field.onChange(e)}
@@ -235,7 +235,7 @@ const ApplyForm = () => {
                     <Input
                       type="file"
                       accept="application/pdf"
-                      className=" bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2
+                      className=" bg-panel border-white/10 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2
                       text-slate-200 file:text-muted"
                       onChange={(e) =>
                         field.onChange(e.target.files?.[0] || undefined)
@@ -250,7 +250,7 @@ const ApplyForm = () => {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full  bg-sky-400 text-primary hover:bg-sky-600"
+              className="w-full  bg-brand text-black font-semibold hover:bg-brand/90"
             >
               {loading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

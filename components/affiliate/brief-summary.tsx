@@ -2,7 +2,7 @@ import React from 'react';
 
 const BriefSummary = () => {
   return (
-    <div className="border rounded-lg border-slate-700">
+    <div className="rounded-2xl border border-white/10 bg-panel/60">
       <h2 className="text-xl font-semibold mb-4 px-4 pt-4">Brief Summary</h2>
       <div className="max-h-[400px] overflow-y-auto py-2">
         <p className="text-slate-300 text-base px-4">

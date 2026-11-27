@@ -104,9 +104,9 @@ const AffiliateLeadForm = () => {
   };
 
   return (
-    <div className="border p-4 rounded-lg border-slate-700">
+    <div className="rounded-2xl border border-white/10 bg-panel/60 p-6">
       <div>
-        <h2 className="text-xl font-semibold mb-2">Join as an affiliate</h2>
+        <h2 className="text-xl font-semibold mb-2">Join the Network</h2>
         <p className="text-sm text-slate-400 leading-relaxed max-w-2xl">
           Share your details and we’ll get back to you with how to track your
           referrals and receive your 4–6% commission.
@@ -126,7 +126,7 @@ const AffiliateLeadForm = () => {
                       disabled={loading}
                       placeholder="Enter your name"
                       {...field}
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                      className="bg-panel border-white/10 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2 text-slate-200"
                     />
                   </FormControl>
                   <FormMessage />
@@ -144,7 +144,7 @@ const AffiliateLeadForm = () => {
                       disabled={loading}
                       placeholder="Enter your email"
                       {...field}
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                      className="bg-panel border-white/10 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2 text-slate-200"
                     />
                   </FormControl>
                   <FormMessage />
@@ -163,7 +163,7 @@ const AffiliateLeadForm = () => {
                       disabled={loading}
                       placeholder="Enter your phone number"
                       {...field}
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                      className="bg-panel border-white/10 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2 text-slate-200"
                     />
                   </FormControl>
                   <FormMessage />
@@ -182,7 +182,7 @@ const AffiliateLeadForm = () => {
                       disabled={loading}
                       placeholder="Enter your message"
                       {...field}
-                      className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                      className="bg-panel border-white/10 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2 text-slate-200"
                     />
                   </FormControl>
                   <FormMessage />
@@ -202,13 +202,13 @@ const AffiliateLeadForm = () => {
                         htmlFor="file-upload"
                         className="
               flex items-center gap-3
-              bg-slate-800 border border-sky-700
-              hover:bg-slate-700/60 hover:border-sky-600
+              bg-panel border border-white/10
+              hover:border-brand
               text-slate-200 cursor-pointer
               rounded-lg p-3 transition
             "
                       >
-                        <Upload className="w-5 h-5 text-sky-500" />
+                        <Upload className="w-5 h-5 text-brand" />
                         <span className="text-sm">
                           {field.value
                             ? field.value.name
@@ -236,7 +236,7 @@ const AffiliateLeadForm = () => {
             <Button
               type="submit"
               disabled={loading}
-              className="bg-sky-600 hover:bg-sky-700 hover:cursor-pointer"
+              className="bg-brand text-black font-semibold hover:bg-brand/90 hover:cursor-pointer"
             >
               {loading ? 'Submitting...' : 'Submit'}
             </Button>

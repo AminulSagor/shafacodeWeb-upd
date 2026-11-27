@@ -1,56 +1,75 @@
-import { Sparkles, Users, Rocket, Lightbulb } from "lucide-react";
+import {
+  Briefcase,
+  Code2,
+  GraduationCap,
+  Globe,
+  Lightbulb,
+  Users,
+} from 'lucide-react';
+
+const items = [
+  {
+    title: 'Growth & Learning',
+    desc: 'Continuous opportunities to expand your skill set and tackle complex engineering challenges through structured learning paths.',
+    icon: GraduationCap,
+    span: '',
+  },
+  {
+    title: 'Collaborative Culture',
+    desc: 'Work alongside passionate professionals in an environment that values open communication and shared success.',
+    icon: Users,
+    span: 'lg:col-span-2',
+  },
+  {
+    title: 'Real Client Projects',
+    desc: "Engage directly with impactful projects that deliver tangible value. Your code won't just sit in a repo; it will power businesses.",
+    icon: Briefcase,
+    span: 'lg:col-span-2',
+  },
+  {
+    title: 'Modern Tech Stack',
+    desc: 'Utilize cutting-edge tools, frameworks, and methodologies to build robust and scalable solutions.',
+    icon: Code2,
+    span: '',
+  },
+  {
+    title: 'Remote-Friendly Workflow',
+    desc: 'Flexible working arrangements designed to support a healthy work-life balance. Work from where you are most inspired.',
+    icon: Globe,
+    span: '',
+  },
+  {
+    title: 'Mentorship & Feedback',
+    desc: 'Structured guidance from industry veterans to accelerate your professional development journey.',
+    icon: Lightbulb,
+    span: 'lg:col-span-2',
+  },
+];
 
 const WhyWorkWithUs = () => {
-  const items = [
-    {
-      title: "Growth & Learning",
-      desc: "We invest in your skills with mentorship, courses, and hands-on projects.",
-      icon: <Lightbulb className="w-6 h-6 text-sky-400" />,
-    },
-    {
-      title: "Collaborative Culture",
-      desc: "Join a supportive team where creativity, ownership, and teamwork thrive.",
-      icon: <Users className="w-6 h-6 text-sky-400" />,
-    },
-    {
-      title: "Real Impact",
-      desc: "Work on meaningful products that help real businesses and users grow.",
-      icon: <Rocket className="w-6 h-6 text-sky-400" />,
-    },
-    {
-      title: "Innovation First",
-      desc: "We value bold ideas, modern tech, and exploring better ways to build.",
-      icon: <Sparkles className="w-6 h-6 text-sky-400" />,
-    },
-  ];
-
   return (
-    <section className="bg-slate-900 py-20 px-4">
-      <div className="max-w-6xl mx-auto text-center space-y-12">
-        {/* Heading */}
-        <div className="space-y-4">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-slate-100">
-            Why Work With Us?
+    <section id="culture" className="scroll-mt-20 px-4 py-20">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <h2 className="max-w-md text-4xl font-medium leading-tight">
+            Elevate your craft in an environment built for{' '}
+            <em className="text-brand">excellence.</em>
           </h2>
-          <p className="text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            At ShafaCode, you’re not just joining a team — you’re joining a
-            culture built on creativity, trust, and continuous improvement.
+          <p className="border-l-2 border-brand pl-4 text-sm text-slate-300">
+            Why Work With Us?
           </p>
         </div>
 
-        {/* Items Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {items.map((item, index) => (
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          {items.map(({ title, desc, icon: Icon, span }) => (
             <div
-              key={index}
-              className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 space-y-4 backdrop-blur-sm hover:border-sky-400/40 transition"
+              key={title}
+              className={`rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-transparent p-7 transition-colors hover:border-brand/30 ${span}`}
             >
-              <div className="flex justify-center">{item.icon}</div>
-              <h3 className="text-lg font-semibold text-slate-100">
-                {item.title}
-              </h3>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                {item.desc}
+              <Icon className="h-6 w-6 text-brand" />
+              <h3 className="mt-6 text-xl">{title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                {desc}
               </p>
             </div>
           ))}

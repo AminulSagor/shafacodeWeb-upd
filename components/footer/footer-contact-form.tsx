@@ -95,7 +95,7 @@ const FooterContactForm: React.FC = () => {
                     placeholder="Your name"
                     aria-invalid={!!form.formState.errors.name}
                     disabled={submitting}
-                    className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                    className="bg-panel border-brand/30 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2 text-slate-200"
                   />
                 </FormControl>
                 <FormMessage />
@@ -117,7 +117,7 @@ const FooterContactForm: React.FC = () => {
                     placeholder="Your email"
                     aria-invalid={!!form.formState.errors.name}
                     disabled={submitting}
-                    className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                    className="bg-panel border-brand/30 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2 text-slate-200"
                   />
                 </FormControl>
                 <FormMessage />
@@ -140,7 +140,7 @@ const FooterContactForm: React.FC = () => {
                     rows={4}
                     aria-invalid={!!form.formState.errors.message}
                     disabled={submitting}
-                    className="bg-slate-800 border-sky-700 focus-visible:border-sky-700 focus-visible:ring-sky-600 focus-visible:ring-2 text-slate-200"
+                    className="bg-panel border-brand/30 focus-visible:border-brand focus-visible:ring-brand/50 focus-visible:ring-2 text-slate-200"
                   />
                 </FormControl>
                 <FormMessage />
@@ -152,7 +152,7 @@ const FooterContactForm: React.FC = () => {
             <Button
               type="submit"
               disabled={submitting}
-              className="min-w-[120px] bg-sky-600 text-slate-200 hover:bg-sky-700 hover:cursor-pointer"
+              className="min-w-[120px] bg-brand text-black font-semibold hover:bg-brand/90 hover:cursor-pointer"
             >
               {submitting ? 'Sending...' : 'Send Message'}
             </Button>
@@ -161,7 +161,7 @@ const FooterContactForm: React.FC = () => {
               <div
                 role="status"
                 aria-live="polite"
-                className="text-sm text-slate-700"
+                className="text-sm text-slate-300"
               >
                 {statusMessage}
               </div>

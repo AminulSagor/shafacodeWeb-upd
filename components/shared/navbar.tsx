@@ -19,158 +19,143 @@ import { cn } from '@/lib/utils';
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'Become a Partner', href: '/affiliate' },
-  { label: 'Blog', href: '/blogs' },
+  { label: 'Services', href: '/#services' },
   { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Packages', href: '/#pricing' },
+  { label: 'Career', href: '/careers' },
+  { label: 'Blog', href: '/blogs' },
 ];
+
+const isActiveLink = (pathname: string, href: string) =>
+  href === '/'
+    ? pathname === '/'
+    : !href.includes('#') &&
+      (pathname === href || pathname.startsWith(href));
 
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 p-4">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <Image
-            src="/logo/logo.jpg"
-            alt="ShafaCode Logo"
-            width={48}
-            height={48}
-            className="h-12 w-auto object-contain"
-          />
-          <span className="text-lg font-semibold text-white leading-none">
-            ShafaCode
-          </span>
-        </Link>
+    // h-0 + sticky: the bar floats over the page instead of pushing content down
+    <header className="sticky top-0 z-50 h-0">
+      <div className="mx-auto max-w-6xl px-4 pt-4">
+        <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-black/40 px-4 py-3 backdrop-blur-xl sm:px-6">
+          <Link href="/" className="flex items-center" aria-label="ShafaCode home">
+            <Image
+              src="/logo/shafacode-logo-white.png"
+              alt="ShafaCode"
+              width={1783}
+              height={310}
+              priority
+              className="h-8 w-auto object-contain"
+            />
+          </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden flex-1 items-center justify-center md:flex">
-          <ul className="flex items-center gap-6 text-sm font-medium">
-            {navLinks.map((item) => {
-              const isActive =
-                item.href === '/'
-                  ? pathname === '/'
-                  : pathname === item.href || pathname.startsWith(item.href);
-
-              return (
-                <li key={item.href}>
+          <nav className="hidden md:block" aria-label="Main">
+            <ul className="flex items-center gap-8 text-sm">
+              {navLinks.map((item) => (
+                <li key={item.label}>
                   <Link
                     href={item.href}
                     className={cn(
-                      'rounded-md px-1.5 py-1 text-slate-300 transition-colors hover:text-sky-400',
-                      isActive && 'text-sky-400 '
+                      'text-slate-200 transition-colors hover:text-brand',
+                      isActiveLink(pathname, item.href) && 'text-brand'
                     )}
                   >
                     {item.label}
                   </Link>
                 </li>
-              );
-            })}
-          </ul>
-        </nav>
+              ))}
+            </ul>
+          </nav>
 
-        {/* Desktop contact */}
-        <div className="hidden items-center gap-2 whitespace-nowrap text-sm md:flex">
-          <span className="font-medium text-slate-300">Call Us:</span>
-          <Link
-            href="tel:+8801540233587"
-            className="font-semibold text-sky-400 hover:text-sky-500"
+          <Button
+            asChild
+            className="hidden rounded-lg bg-brand px-5 font-semibold text-black shadow-[0_0_20px_-4px_var(--color-brand)] hover:bg-brand/90 md:inline-flex"
           >
-            +8801540233587
-          </Link>
-        </div>
+            <Link href="/#contact">Start a Project</Link>
+          </Button>
 
-        {/* Mobile menu */}
-        <div className="flex items-center gap-2 md:hidden">
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-10 w-10 hover:cursor-pointer border-slate-700 bg-transparent text-slate-100 hover:bg-slate-800 hover:text-slate-50"
-                aria-label="Open menu"
+          <div className="md:hidden">
+            <Sheet open={open} onOpenChange={setOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-10 w-10 border-white/15 bg-transparent text-white hover:bg-white/10 hover:text-white"
+                  aria-label="Open menu"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent
+                side="right"
+                className="w-80 border-white/10 bg-surface text-white [&>button]:hidden"
               >
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-80 border-slate-800 bg-slate-950 text-slate-100 [&>button]:hidden"
-            >
-              <SheetHeader>
-                <SheetTitle>
-                  <div className="flex justify-between">
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src="/logo/logo.jpg"
-                        alt="ShafaCode Logo"
-                        width={32}
-                        height={32}
-                        className="h-8 w-auto object-contain"
-                      />
-                      <span className="text-base font-semibold text-muted">
-                        ShafaCode
+                <SheetHeader>
+                  <SheetTitle>
+                    <div className="flex items-center justify-between">
+                      <span className="text-base font-semibold text-white">
+                        shafacode
                       </span>
+                      <SheetClose asChild>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-10 w-10 border-white/15 bg-transparent text-white hover:bg-white/10 hover:text-white"
+                          aria-label="Close menu"
+                        >
+                          <X className="h-5 w-5" />
+                        </Button>
+                      </SheetClose>
                     </div>
-                    <SheetClose asChild>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-10 w-10 hover:cursor-pointer border-slate-700 bg-transparent text-slate-100 hover:bg-slate-800 hover:text-slate-50"
-                        aria-label="Open menu"
-                      >
-                        <X className="h-5 w-5" />
-                      </Button>
-                    </SheetClose>
-                  </div>
-                </SheetTitle>
+                  </SheetTitle>
 
-                <div className=" flex flex-col gap-4">
-                  <nav className="mt-4">
+                  <nav className="mt-4" aria-label="Mobile">
                     <ul className="flex flex-col gap-1 text-sm font-medium">
-                      {navLinks.map((item) => {
-                        const isActive =
-                          item.href === '/'
-                            ? pathname === '/'
-                            : pathname === item.href ||
-                              pathname.startsWith(item.href);
-
-                        return (
-                          <li key={item.href}>
-                            <Link
-                              href={item.href}
-                              onClick={() => setOpen(false)}
-                              className={cn(
-                                'block rounded-md px-3 py-2 text-slate-200 hover:bg-slate-900 hover:text-sky-400',
-                                isActive && 'bg-slate-900 text-sky-400'
-                              )}
-                            >
-                              {item.label}
-                            </Link>
-                          </li>
-                        );
-                      })}
+                      {navLinks.map((item) => (
+                        <li key={item.label}>
+                          <Link
+                            href={item.href}
+                            onClick={() => setOpen(false)}
+                            className={cn(
+                              'block rounded-md px-3 py-2 text-slate-200 hover:bg-white/5 hover:text-brand',
+                              isActiveLink(pathname, item.href) &&
+                                'bg-white/5 text-brand'
+                            )}
+                          >
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
                     </ul>
                   </nav>
 
-                  <div className="border-t border-slate-800 pt-4 text-sm px-2">
-                    <p className="text-slate-300 font-medium mb-2">Call Us:</p>
+                  <div className="mt-4 border-t border-white/10 px-2 pt-4 text-sm">
+                    <Button
+                      asChild
+                      className="w-full bg-brand font-semibold text-black hover:bg-brand/90"
+                    >
+                      <Link href="/#contact" onClick={() => setOpen(false)}>
+                        Start a Project
+                      </Link>
+                    </Button>
+                    <p className="mb-1 mt-4 font-medium text-slate-300">
+                      Call Us:
+                    </p>
                     <Link
                       href="tel:+8801540233587"
-                      className="font-semibold text-sky-400 hover:text-sky-500"
+                      className="font-semibold text-brand"
                       onClick={() => setOpen(false)}
                     >
                       +8801540233587
                     </Link>
                   </div>
-                </div>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
+import { Poppins, Instrument_Serif } from 'next/font/google';
 import '../globals.css';
 import { Navbar } from '@/components/shared/navbar';
 import Footer from '@/components/shared/footer';
@@ -8,6 +8,13 @@ import { Toaster } from 'react-hot-toast';
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
   variable: '--font-poppins',
+  subsets: ['latin'],
+});
+
+const instrument = Instrument_Serif({
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-instrument',
   subsets: ['latin'],
 });
 
@@ -80,7 +87,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className}  antialiased`}>
+      <body className={`${poppins.className} ${instrument.variable} bg-surface text-white antialiased`}>
         <Navbar />
         {children}
         <Toaster />
