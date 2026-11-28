@@ -12,10 +12,10 @@ export function KpiCard({
   tone = 'success',
 }: {
   label: string;
-  value: number;
+  value: React.ReactNode;
   icon: LucideIcon;
-  delta: string;
-  note: string;
+  delta?: string;
+  note?: string;
   tone?: 'success' | 'warning' | 'neutral';
 }) {
   return (
@@ -25,10 +25,12 @@ export function KpiCard({
         <Icon className="size-4.5 text-icon-brand" strokeWidth={1.75} aria-hidden />
       </div>
       <p className="type-h2 text-fg tabular">{value}</p>
-      <p className="flex flex-wrap items-center gap-1.5">
-        <Badge tone={tone}>{delta}</Badge>
-        <span className="type-caption text-fg-subtle">{note}</span>
-      </p>
+      {(delta || note) && (
+        <p className="flex flex-wrap items-center gap-1.5">
+          {delta && <Badge tone={tone}>{delta}</Badge>}
+          {note && <span className="type-caption text-fg-subtle">{note}</span>}
+        </p>
+      )}
     </div>
   );
 }

@@ -98,3 +98,11 @@ export async function acceptUpload(kind: UploadKind, file: { path: string } | { 
   if ('path' in file) return verifyUpload(kind, file.path);
   return !privateUploads() && legacyUploadsAllowed() && isLegacyPublicUrl(file.url);
 }
+
+/** A download link for a private file that expires after 10 minutes (admins only). */
+export async function signedDownloadUrl(kind: UploadKind, path: string) {
+  const client = storageAdmin();
+  if (!client) return null;
+  const { data, error } = await client.storage.from(uploadRules[kind].bucket).createSignedUrl(path, 600);
+  return error || !data ? null : data.signedUrl;
+}

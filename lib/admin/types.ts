@@ -17,9 +17,11 @@ export type Inquiry = {
   estimate: string;
   status: InquiryStatus;
   createdAt: string;
+  /** When it first left "new" (for the average first reply). */
+  contactedAt: string;
 };
 
-export const leadStatuses = ['new', 'contacted', 'active', 'closed'] as const;
+export const leadStatuses = ['new', 'discussion', 'won', 'lost'] as const;
 export type LeadStatus = (typeof leadStatuses)[number];
 export type AffiliateLead = {
   id: string;
@@ -28,6 +30,10 @@ export type AffiliateLead = {
   phone: string;
   message: string;
   file?: { path?: string; url?: string };
+  /** Set by the team once the partner refers a project. */
+  referredProject: string;
+  estValue: number | null;
+  partnerType: string;
   status: LeadStatus;
   createdAt: string;
 };
@@ -77,7 +83,7 @@ export const inquiryStatusLabel: Record<InquiryStatus, string> = {
   won: 'Won',
   closed: 'Closed',
 };
-export const leadStatusLabel: Record<LeadStatus, string> = { new: 'New', contacted: 'Contacted', active: 'Active', closed: 'Closed' };
+export const leadStatusLabel: Record<LeadStatus, string> = { new: 'New', discussion: 'In discussion', won: 'Won', lost: 'Lost' };
 export const stageLabel: Record<ApplicationStage, string> = {
   new: 'New',
   screening: 'Reviewing',

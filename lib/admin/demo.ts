@@ -16,6 +16,7 @@ const inquiry = (p: Partial<Inquiry> & Pick<Inquiry, 'id' | 'fullName' | 'compan
   source: 'contact-page',
   estimate: '',
   createdAt: ago(hours),
+  contactedAt: p.status === 'new' ? '' : ago(hours - 3),
   ...p,
 });
 
@@ -31,9 +32,11 @@ export const demoInquiries: Inquiry[] = [
 ];
 
 export const demoLeads: AffiliateLead[] = [
-  { id: 'd-lead-1', fullName: 'Rafiq Islam', email: 'rafiq@example.com', phone: '+880 1711-000000', message: 'I run a small agency network in Chattogram.', status: 'new', createdAt: ago(5) },
-  { id: 'd-lead-2', fullName: 'Maria Lopez', email: 'maria@example.com', phone: '+34 600 000 000', message: 'Freelance consultant, two clients need apps.', status: 'contacted', createdAt: ago(40) },
-  { id: 'd-lead-3', fullName: 'Arif Hasan', email: 'arif@example.com', phone: '+880 1811-000000', message: '', status: 'active', createdAt: ago(200) },
+  { id: 'd-lead-1', fullName: 'Tanvir Ahmed', email: 'tanvir@example.com', phone: '+880 1711-000000', message: 'I consult for clinics around Barishal.', partnerType: 'Freelance consultant', referredProject: 'Clinic booking app', estValue: 350_000, status: 'discussion', createdAt: ago(5) },
+  { id: 'd-lead-2', fullName: 'Nusrat Jahan', email: 'nusrat@example.com', phone: '+880 1811-000000', message: '', partnerType: 'Growth agency', referredProject: 'E-commerce redesign', estValue: 200_000, status: 'won', createdAt: ago(40) },
+  { id: 'd-lead-3', fullName: 'Imran Kabir', email: 'imran@example.com', phone: '+880 1911-000000', message: 'A farm co-op wants sensor monitoring.', partnerType: 'Past client', referredProject: 'IoT farm monitoring', estValue: 500_000, status: 'new', createdAt: ago(20) },
+  { id: 'd-lead-4', fullName: 'Mehedi Hasan', email: 'mehedi@example.com', phone: '+880 1611-000000', message: '', partnerType: 'Developer', referredProject: 'School management', estValue: 150_000, status: 'lost', createdAt: ago(300) },
+  { id: 'd-lead-5', fullName: 'Rafiq Islam', email: 'rafiq@example.com', phone: '+880 1511-000000', message: 'I run a small agency network in Chattogram.', partnerType: '', referredProject: '', estValue: null, status: 'new', createdAt: ago(2) },
 ];
 
 const application = (p: Partial<Application> & Pick<Application, 'id' | 'fullName' | 'jobSlug' | 'jobTitle' | 'stage'>, hours: number): Application => ({

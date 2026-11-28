@@ -13,7 +13,7 @@ import {
 type Tone = 'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info';
 
 const inquiryTone: Record<InquiryStatus, Tone> = { new: 'brand', contacted: 'info', proposal: 'warning', won: 'success', closed: 'neutral' };
-const leadTone: Record<LeadStatus, Tone> = { new: 'brand', contacted: 'info', active: 'success', closed: 'neutral' };
+const leadTone: Record<LeadStatus, Tone> = { new: 'brand', discussion: 'warning', won: 'success', lost: 'danger' };
 const stageTone: Record<ApplicationStage, Tone> = {
   new: 'brand',
   screening: 'info',

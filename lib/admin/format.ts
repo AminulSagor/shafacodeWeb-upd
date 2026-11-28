@@ -64,3 +64,6 @@ export const initials = (name: string) =>
     .slice(0, 2)
     .map((p) => p[0]!.toUpperCase())
     .join('') || 'A';
+
+/** True when the date is within the last 24 hours. */
+export const isRecent = (isoDate: string, hours = 24) => !!isoDate && Date.now() - Date.parse(isoDate) < hours * 3_600_000;

@@ -33,7 +33,7 @@ function Crumbs() {
         {items.map((c, i) => {
           const last = i === items.length - 1;
           return (
-            <li key={i} className="flex min-w-0 items-center gap-2">
+            <li key={i} className={cn('flex min-w-0 items-center gap-2', !last && 'max-xl:hidden')}>
               {c.href && !last ? (
                 <Link href={c.href} className="truncate rounded-sm hover:text-fg focus-visible:focus-ring">
                   {c.label}

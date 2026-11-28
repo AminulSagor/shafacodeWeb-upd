@@ -44,6 +44,7 @@ function toInquiry(id: string, d: DocumentData): Inquiry {
     estimate: typeof d.estimate === 'string' ? d.estimate : '',
     status: pick(inquiryStatuses, d.status, 'new'),
     createdAt: iso(d.createdAt) || iso(d.date),
+    contactedAt: iso(d.contactedAt),
   };
 }
 
@@ -57,7 +58,11 @@ function toLead(id: string, d: DocumentData): AffiliateLead {
     phone: str(d.phone),
     message: str(d.message),
     file: path || url ? { path: path || undefined, url: url || undefined } : undefined,
-    status: pick(leadStatuses, d.status, 'new'),
+    referredProject: str(d.referredProject),
+    estValue: typeof d.estValue === 'number' && d.estValue > 0 ? d.estValue : null,
+    partnerType: str(d.partnerType),
+    // Older statuses from the first admin map onto the referral stages.
+    status: pick(leadStatuses, ({ contacted: 'discussion', active: 'won', closed: 'lost' } as Record<string, string>)[str(d.status)] ?? d.status, 'new'),
     createdAt: iso(d.createdAt),
   };
 }
