@@ -9,7 +9,9 @@ function pages(current: number, total: number): (number | '…')[] {
   const sorted = [...set].sort((a, b) => a - b);
   const out: (number | '…')[] = [];
   sorted.forEach((n, i) => {
-    if (i > 0 && n - sorted[i - 1] > 1) out.push('…');
+    const gap = i > 0 ? n - sorted[i - 1] : 1;
+    if (gap === 2) out.push(n - 1); // a single hidden page is shown, not replaced by "…"
+    else if (gap > 2) out.push('…');
     out.push(n);
   });
   return out;

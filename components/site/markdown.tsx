@@ -5,8 +5,15 @@ import rehypeSlug from 'rehype-slug';
 
 import { cn } from '@/lib/utils';
 import { CodeBlock } from '@/components/site/article/code-block';
+import { site } from '@/content/site';
 
-type HastNode = { type: string; tagName?: string; properties?: Record<string, unknown>; data?: { meta?: string }; children?: HastNode[] };
+type HastNode = {
+  type: string;
+  tagName?: string;
+  properties?: Record<string, unknown>;
+  data?: { meta?: string };
+  children?: HastNode[];
+};
 
 /** Copies a fenced code block's `title="…"` meta onto the <pre> as data-title. */
 function rehypeCodeTitle() {
@@ -15,7 +22,12 @@ function rehypeCodeTitle() {
       if (node.tagName === 'pre') {
         const code = node.children?.find((c) => c.tagName === 'code');
         const title = code?.data?.meta?.match(/title="([^"]+)"/)?.[1];
-        if (title) node.properties = { ...node.properties, dataTitle: title };
+        const cls = code?.properties?.className;
+        const lang = (Array.isArray(cls) ? cls : [])
+          .map(String)
+          .find((c) => c.startsWith('language-'))
+          ?.slice(9);
+        node.properties = { ...node.properties, ...(title && { dataTitle: title }), ...(lang && { dataLanguage: lang }) };
       }
       node.children?.forEach(walk);
     };
@@ -24,13 +36,13 @@ function rehypeCodeTitle() {
 }
 
 const components: Components = {
-  h1: ({ node: _node, ...p }) => <h2 className="mt-12 mb-4 type-h3 text-fg first:mt-0" {...p} />,
+  h1: ({ node: _node, ...p }) => <h2 className="mt-12 mb-4 scroll-mt-sticky type-h3 text-fg first:mt-0" {...p} />,
   h2: ({ node: _node, ...p }) => <h2 className="mt-12 mb-4 scroll-mt-sticky type-h3 text-fg first:mt-0" {...p} />,
   h3: ({ node: _node, ...p }) => <h3 className="mt-10 mb-3 scroll-mt-sticky type-h4 text-fg" {...p} />,
   h4: ({ node: _node, ...p }) => <h4 className="mt-8 mb-2 type-h5 text-fg" {...p} />,
   p: ({ node: _node, ...p }) => <p className="my-5 type-article text-fg-muted" {...p} />,
   a: ({ node: _node, href = '', ...p }) => {
-    const external = /^https?:\/\//.test(href);
+    const external = /^https?:\/\//.test(href) && !href.startsWith(site.url);
     return (
       <a
         href={href}
@@ -48,7 +60,7 @@ const components: Components = {
   // Callout: an optional first **bold** paragraph becomes the mono label ("Key takeaway").
   blockquote: ({ node: _node, ...p }) => (
     <blockquote
-      className="my-8 rounded-r-md border-l-2 border-action-primary bg-brand-soft px-5 py-4 [&>p]:my-0 [&>p]:type-body [&>p]:text-fg [&>p+p]:mt-2 [&>p:first-child>strong:only-child]:type-mono-xs [&>p:first-child>strong:only-child]:text-fg-brand"
+      className="my-8 rounded-r-md border border-l-2 border-brand-soft-border border-l-action-primary bg-brand-soft px-5 py-4 [&>p]:my-0 [&>p]:type-body [&>p]:text-fg [&>p+p]:mt-2 [&>p:first-child>strong:only-child]:type-mono-xs [&>p:first-child>strong:only-child]:text-fg-brand"
       {...p}
     />
   ),
@@ -57,16 +69,17 @@ const components: Components = {
     <code className={cn('rounded-xs bg-surface-2 px-1.5 py-0.5 type-mono-sm text-fg', className)} {...p} />
   ),
   pre: ({ node, children }) => {
-    const title = (node?.properties as Record<string, unknown> | undefined)?.dataTitle;
-    const lang = /language-(\w+)/.exec(String((node?.children?.[0] as { properties?: { className?: string[] } })?.properties?.className ?? ''))?.[1];
+    const props = (node?.properties ?? {}) as Record<string, unknown>;
+    const title = typeof props.dataTitle === 'string' ? props.dataTitle : undefined;
+    const lang = typeof props.dataLanguage === 'string' ? props.dataLanguage : undefined;
     return (
-      <CodeBlock title={typeof title === 'string' ? title : undefined} language={lang}>
+      <CodeBlock title={title} language={lang}>
         {children}
       </CodeBlock>
     );
   },
   table: ({ node: _node, ...p }) => (
-    <div className="my-6 overflow-x-auto rounded-md border border-line-subtle">
+    <div role="region" tabIndex={0} aria-label="Scrollable table" className="my-6 overflow-x-auto rounded-md border border-line-subtle focus-visible:focus-ring">
       <table className="w-full border-collapse type-body-sm" {...p} />
     </div>
   ),

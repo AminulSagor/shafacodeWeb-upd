@@ -7,7 +7,10 @@ import { categoryLabel, type Post } from '@/content/blog';
 export const postHref = (slug: string) => `/blogs/${slug}`;
 
 const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-export const formatDate = (iso: string) => dateFmt.format(new Date(iso));
+export const formatDate = (iso: string) => {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? '' : dateFmt.format(d);
+};
 
 export function PostMeta({ post, className }: { post: Post; className?: string }) {
   return (

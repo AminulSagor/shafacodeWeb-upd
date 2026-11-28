@@ -17,16 +17,17 @@ import { categoryLabel } from '@/content/blog';
 import { site } from '@/content/site';
 import { getPosts } from '@/lib/data/posts';
 import { absoluteUrl, buildMetadata } from '@/lib/seo';
+import { first, positiveInt, type RawSearchParams } from '@/lib/search-params';
 
-type SearchParams = Promise<{ category?: string; q?: string; page?: string }>;
+type SearchParams = Promise<RawSearchParams>;
 
 const PER_PAGE = 6;
 
 function parse(p: Awaited<SearchParams>) {
   return {
-    category: p.category?.trim() || undefined,
-    q: p.q?.trim().slice(0, 80) || undefined,
-    page: Math.max(1, Math.floor(Number(p.page) || 1)),
+    category: first(p.category),
+    q: first(p.q)?.slice(0, 80),
+    page: positiveInt(p.page, 1, 1000),
   };
 }
 
@@ -43,14 +44,18 @@ function hrefWith(f: ReturnType<typeof parse>, patch: Partial<ReturnType<typeof 
 export async function generateMetadata({ searchParams }: { searchParams: SearchParams }): Promise<Metadata> {
   const f = parse(await searchParams);
   const filters = [f.category, f.q].filter(Boolean).length;
+  const posts = await getPosts();
+  const matching = posts.filter((p) => !f.category || p.category === f.category).length;
+  const outOfRange = f.page > Math.max(1, Math.ceil(matching / PER_PAGE));
+  const noIndex = Boolean(f.q) || filters >= 2 || matching === 0 || outOfRange;
   return buildMetadata({
     title: f.page > 1 ? `Blog, page ${f.page}` : 'Blog: guides on software, apps and UI/UX',
     description:
       'Practical guides on software development, UI/UX, app development, business automation, SaaS and digital growth.',
     path: '/blogs',
     // Paginated pages are self-canonical; filtered or searched views point to the list.
-    canonical: filters === 0 && f.page > 1 ? `/blogs?page=${f.page}` : '/blogs',
-    noIndex: filters >= 1 && (filters >= 2 || Boolean(f.q)),
+    canonical: noIndex ? undefined : filters === 0 && f.page > 1 ? `/blogs?page=${f.page}` : '/blogs',
+    noIndex,
   });
 }
 
@@ -114,7 +119,7 @@ export default async function BlogPage({ searchParams }: { searchParams: SearchP
         </section>
       )}
 
-      <section id="latest" aria-labelledby="latest-title" className="scroll-mt-nav-offset pt-6 pb-section xl:pt-24">
+      <section id="latest" aria-labelledby="latest-title" className="scroll-mt-nav-offset pt-14 pb-section md:pt-16 xl:pt-24">
         <div className="container-page flex flex-col gap-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <h2 id="latest-title" className="type-h2 text-fg">
@@ -126,7 +131,7 @@ export default async function BlogPage({ searchParams }: { searchParams: SearchP
                 Search articles
               </label>
               <Search className="pointer-events-none absolute top-1/2 left-3.5 size-[18px] -translate-y-1/2 text-icon" aria-hidden />
-              <Input id="blog-search" name="q" type="search" defaultValue={f.q} placeholder="Search articles…" className="pl-10" />
+              <Input key={f.q ?? ''} id="blog-search" name="q" type="search" defaultValue={f.q} placeholder="Search articles…" className="pl-10" />
             </form>
           </div>
 

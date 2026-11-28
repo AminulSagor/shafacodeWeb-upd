@@ -14,7 +14,7 @@ function Poster({ story }: { story: VideoStory }) {
         alt={story.poster.alt}
         fill
         sizes="(min-width: 1280px) 397px, (min-width: 768px) 31vw, 92vw"
-        className={story.youtubeId ? 'object-cover transition-transform duration-(--duration-slow) ease-out group-hover:scale-[1.03]' : 'object-cover'}
+        className={story.youtubeId ? 'object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-[1.03]' : 'object-cover'}
       />
       <span className="absolute bottom-3 left-3 inline-flex xl:bottom-5 xl:left-5 items-center gap-2.5 rounded-full bg-action-primary py-2 pr-4 pl-2 text-fg-on-brand">
         <span className="grid size-8 place-items-center rounded-full bg-fg-on-brand text-action-primary">

@@ -4,7 +4,7 @@ import { unstable_cache } from 'next/cache';
 import type { DocumentData } from 'firebase-admin/firestore';
 
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
-import { fallbackCaseStudies, type CaseStudy, type CaseStudySummary } from '@/content/case-studies';
+import { fallbackCaseStudies, portfolioCategories, type CaseStudy, type CaseStudySummary } from '@/content/case-studies';
 import { serviceSlugs, type ServiceSlug } from '@/content/services';
 import { publicMediaUrl } from '@/lib/media';
 
@@ -27,8 +27,9 @@ export const slugify = (s: string) =>
  * client, status) until the migration script runs.
  */
 function toCaseStudy(id: string, d: DocumentData): CaseStudy | null {
-  const status = str(d.status);
-  if (status === 'draft' || status === 'archived' || status === 'scheduled') return null;
+  // Allowlist: the 2026 'published' plus the legacy delivery statuses.
+  const status = str(d.status) || 'published';
+  if (!['published', 'delivered', 'in-progress', 'ongoing'].includes(status)) return null;
   const title = str(d.title);
   if (!title) return null;
   const legacy = !d.slug;
@@ -48,11 +49,16 @@ function toCaseStudy(id: string, d: DocumentData): CaseStudy | null {
     summary: str(d.summary) || (description.length > 180 ? `${description.slice(0, 177).trimEnd()}…` : description),
     tags: [str(d.industry), ...strArr(d.tags)].filter(Boolean),
     services: strArr(d.services).filter((s): s is ServiceSlug => (serviceSlugs as readonly string[]).includes(s)),
-    categories: strArr(d.categories) as CaseStudy['categories'],
-    delivery: str(d.deliveryStatus || d.status) === 'in-progress' ? 'ongoing' : 'delivered',
+    categories: strArr(d.categories).filter((c): c is CaseStudy['categories'][number] =>
+      portfolioCategories.some((p) => p.id === c)
+    ),
+    delivery: ['in-progress', 'ongoing'].includes(str(d.deliveryStatus || d.status)) ? 'ongoing' : 'delivered',
     cover,
     results: Array.isArray(d.results)
-      ? d.results.slice(0, 3).map((r: { value?: unknown; label?: unknown }) => ({ value: str(r.value), label: str(r.label) }))
+      ? d.results
+          .filter((r: unknown): r is { value?: unknown; label?: unknown } => !!r && typeof r === 'object')
+          .slice(0, 3)
+          .map((r: { value?: unknown; label?: unknown }) => ({ value: str(r.value), label: str(r.label) }))
       : [],
     lede: str(d.summary) || undefined,
     industry: str(d.industry) || undefined,
@@ -68,7 +74,11 @@ const readAll = unstable_cache(
   async (): Promise<CaseStudy[]> => {
     // Errors propagate so unstable_cache does not store a failed read.
     const snap = await getDb().collection('projects').get();
-    return snap.docs.map((doc) => toCaseStudy(doc.id, doc.data())).filter((x): x is CaseStudy => x !== null);
+    const time = (d: DocumentData) => (d.publishedAt?.toMillis?.() ?? d.createdAt?.toMillis?.() ?? 0) as number;
+    return snap.docs
+      .sort((a, b) => Number(b.data().isFeatured === true) - Number(a.data().isFeatured === true) || time(b.data()) - time(a.data()))
+      .map((doc) => toCaseStudy(doc.id, doc.data()))
+      .filter((x): x is CaseStudy => x !== null);
   },
   ['case-studies:all'],
   { tags: ['projects'], revalidate: 3600 }

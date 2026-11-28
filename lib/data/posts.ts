@@ -6,6 +6,7 @@ import type { DocumentData } from 'firebase-admin/firestore';
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
 import { defaultAuthor, fallbackPosts, type Post } from '@/content/blog';
 import { publicMediaUrl } from '@/lib/media';
+import { wordCount } from '@/lib/markdown';
 
 const str = (v: unknown) => (typeof v === 'string' ? v : '');
 
@@ -14,14 +15,12 @@ function toIso(v: unknown): string {
   if (v && typeof v === 'object' && 'toDate' in v && typeof (v as { toDate: () => Date }).toDate === 'function') {
     return (v as { toDate: () => Date }).toDate().toISOString();
   }
-  if (typeof v === 'string' && !Number.isNaN(Date.parse(v))) return new Date(v).toISOString();
+  if (v instanceof Date && !Number.isNaN(v.getTime())) return v.toISOString();
+  if ((typeof v === 'string' || typeof v === 'number') && !Number.isNaN(new Date(v).getTime())) return new Date(v).toISOString();
   return new Date(0).toISOString();
 }
 
-export function readingMinutes(markdown: string) {
-  const words = markdown.replace(/```[\s\S]*?```/g, ' ').split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.round(words / 220));
-}
+export const readingMinutes = (markdown: string) => Math.max(1, Math.round(wordCount(markdown) / 220));
 
 /**
  * Firestore document to a public DTO. Supports the 2026 schema (status,
@@ -44,11 +43,16 @@ function toPost(d: DocumentData): Post | null {
     category: str(d.category) || 'tech',
     cover: coverSrc ? { src: coverSrc, alt: str(d.cover?.alt) || title } : null,
     author: d.author?.name
-      ? { name: str(d.author.name), role: str(d.author.role), bio: str(d.author.bio), photo: str(d.author.photo) || null }
+      ? {
+          name: str(d.author.name),
+          role: str(d.author.role),
+          bio: str(d.author.bio),
+          photo: d.author.photo ? (str(d.author.photo).startsWith('/') ? str(d.author.photo) : publicMediaUrl(str(d.author.photo))) : null,
+        }
       : defaultAuthor,
     publishedAt,
     updatedAt: toIso(d.updatedAt ?? d.publishedAt ?? d.createdAt),
-    readingMinutes: Number(d.readingMinutes) || readingMinutes(content),
+    readingMinutes: Math.max(1, Math.round(Number(d.readingMinutes)) || readingMinutes(content)),
     featured: d.isFeatured === true,
   };
 }

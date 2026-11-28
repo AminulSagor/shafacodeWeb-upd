@@ -37,7 +37,7 @@ export function CaseStudyCard({
             alt={item.cover.alt}
             fill
             sizes={sizes}
-            className="object-cover transition-transform duration-(--duration-slow) ease-out group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-[1.03]"
           />
         </div>
       )}

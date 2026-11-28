@@ -12,7 +12,7 @@ const trustPhotos = ['/images/people/trust-1.jpg', '/images/people/trust-2.jpg',
 
 function PlayPill({ label, sub }: { label: string; sub: string }) {
   return (
-    <span className="relative inline-flex items-center gap-3 rounded-full bg-action-primary py-2.5 pr-5.5 pl-2.5 text-fg-on-brand shadow-btn-primary transition-transform duration-(--duration-base) ease-out group-hover/reel:scale-[1.03]">
+    <span className="relative inline-flex items-center gap-3 rounded-full bg-action-primary py-2.5 pr-5.5 pl-2.5 text-fg-on-brand shadow-btn-primary transition-transform duration-(--duration-base) ease-out motion-safe:group-hover/reel:scale-[1.03]">
       <span
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(50%_100%_at_50%_0%,rgb(255_255_255/0.42),transparent)]"
@@ -37,7 +37,7 @@ function Showreel() {
         fill
         preload
         sizes="(min-width: 1340px) 1240px, 92vw"
-        className="object-cover transition-transform duration-(--duration-slower) ease-out group-hover/reel:scale-[1.02]"
+        className="object-cover transition-transform duration-(--duration-slower) ease-out motion-safe:group-hover/reel:scale-[1.02]"
       />
       <span aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgb(13_15_15/0.78))]" />
       <span className="absolute inset-0 grid place-items-center">

@@ -16,16 +16,17 @@ import { ReadingProgress } from '@/components/site/article/reading-progress';
 import { ShareLinks } from '@/components/site/article/share-links';
 import { TableOfContents } from '@/components/site/article/table-of-contents';
 import { CtaBand } from '@/components/site/sections/cta-band';
-import { categoryLabel, fallbackPosts } from '@/content/blog';
+import { categoryLabel } from '@/content/blog';
 import { site } from '@/content/site';
-import { getPost, getRelatedPosts } from '@/lib/data/posts';
-import { extractToc } from '@/lib/markdown';
+import { getPost, getPosts, getRelatedPosts } from '@/lib/data/posts';
+import { extractToc, wordCount } from '@/lib/markdown';
 import { absoluteUrl, buildMetadata } from '@/lib/seo';
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return fallbackPosts.map((p) => ({ slug: p.slug }));
+/** Prerender the live posts; any other slug renders on demand. */
+export async function generateStaticParams() {
+  return (await getPosts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -55,15 +56,15 @@ export default async function ArticlePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
-    description: post.excerpt,
+    description: post.excerpt || undefined,
     image: post.cover ? absoluteUrl(post.cover.src) : undefined,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
     author: { '@type': 'Person', name: post.author.name, jobTitle: post.author.role },
-    publisher: { '@type': 'Organization', name: site.name, url: site.url, logo: absoluteUrl('/icon.png') },
+    publisher: { '@type': 'Organization', name: site.name, url: site.url, logo: { '@type': 'ImageObject', url: absoluteUrl('/icon.png') } },
     mainEntityOfPage: url,
     articleSection: categoryLabel(post.category),
-    wordCount: post.content.split(/\s+/).length,
+    wordCount: wordCount(post.content),
   };
 
   return (
@@ -81,7 +82,10 @@ export default async function ArticlePage({ params }: Props) {
             className="[&_li:last-child>span]:line-clamp-1"
           />
           <Eyebrow as="div" className="mt-5">
-            <Link href={`/blogs?category=${encodeURIComponent(post.category)}#latest`} className="rounded-sm hover:underline focus-visible:focus-ring">
+            <Link
+              href={`/blogs?category=${encodeURIComponent(post.category)}#latest`}
+              className="inline-flex min-h-6 items-center rounded-sm hover:underline focus-visible:focus-ring"
+            >
               {categoryLabel(post.category)}
             </Link>
           </Eyebrow>
@@ -139,7 +143,7 @@ export default async function ArticlePage({ params }: Props) {
 
           <aside aria-label="Article tools" className="flex flex-col gap-4 xl:sticky xl:top-sticky xl:self-start">
             <div className="max-xl:hidden">
-              <TableOfContents items={toc} />
+              <TableOfContents key={post.slug} items={toc} />
             </div>
             <div className="rounded-md border border-brand-soft-border bg-brand-soft p-4">
               <p className="type-h5 text-fg">Need a precise estimate?</p>

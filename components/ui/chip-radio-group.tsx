@@ -35,7 +35,7 @@ export function ChipRadioGroup({
         {options.map((o) => {
           const checked = o.value === value;
           return (
-            <label key={o.value} className="relative">
+            <label key={o.value} className="relative inline-flex">
               <input
                 type="radio"
                 name={name}

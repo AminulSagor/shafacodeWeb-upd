@@ -18,8 +18,9 @@ import { getService } from '@/content/services';
 import { site } from '@/content/site';
 import { getCaseStudies } from '@/lib/data/case-studies';
 import { absoluteUrl, buildMetadata } from '@/lib/seo';
+import { first, positiveInt, type RawSearchParams } from '@/lib/search-params';
 
-type SearchParams = Promise<{ type?: string; service?: string; status?: string; show?: string }>;
+type SearchParams = Promise<RawSearchParams>;
 
 const PAGE_SIZE = 7;
 const STEP = 6;
@@ -38,14 +39,17 @@ const statuses = [
 ] as const;
 
 function parse(params: Awaited<SearchParams>) {
-  const type = portfolioCategories.some((c) => c.id === params.type) ? (params.type as PortfolioCategory) : undefined;
-  const service = params.service && getService(params.service) ? params.service : undefined;
-  const status = params.status === 'delivered' || params.status === 'ongoing' ? params.status : undefined;
-  const show = Math.min(Math.max(Number(params.show) || PAGE_SIZE, PAGE_SIZE), 200);
+  const t = first(params.type);
+  const sv = first(params.service);
+  const st = first(params.status);
+  const type = portfolioCategories.some((c) => c.id === t) ? (t as PortfolioCategory) : undefined;
+  const service = sv && getService(sv) ? sv : undefined;
+  const status = st === 'delivered' || st === 'ongoing' ? st : undefined;
+  const show = Math.max(positiveInt(params.show, PAGE_SIZE, 200), PAGE_SIZE);
   return { type, service, status, show };
 }
 
-function hrefWith(current: ReturnType<typeof parse>, patch: Partial<ReturnType<typeof parse>>) {
+function hrefWith(current: ReturnType<typeof parse>, patch: Partial<ReturnType<typeof parse>>, hash = true) {
   const next = { ...current, ...patch };
   const q = new URLSearchParams();
   if (next.type) q.set('type', next.type);
@@ -53,7 +57,8 @@ function hrefWith(current: ReturnType<typeof parse>, patch: Partial<ReturnType<t
   if (next.status) q.set('status', next.status);
   if (next.show && next.show !== PAGE_SIZE) q.set('show', String(next.show));
   const s = q.toString();
-  return s ? `/portfolio?${s}#work` : '/portfolio#work';
+  const h = hash ? '#work' : '';
+  return s ? `/portfolio?${s}${h}` : `/portfolio${h}`;
 }
 
 export async function generateMetadata({ searchParams }: { searchParams: SearchParams }): Promise<Metadata> {
@@ -66,7 +71,7 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
       'Selected web apps, mobile apps, SaaS platforms, dashboards, UI/UX and IoT projects by ShafaCode, with the results they delivered.',
     path: '/portfolio',
     // Filtered views point to the full list; two or more filters, or no results, stay out of the index.
-    canonical: '/portfolio',
+    canonical: filters >= 2 || items.length === 0 ? undefined : '/portfolio',
     noIndex: filters >= 2 || items.length === 0,
   });
 }
@@ -82,7 +87,7 @@ function filterItems(all: CaseStudy[], f: ReturnType<typeof parse>) {
 
 function FeatureCase({ item }: { item: CaseStudy }) {
   return (
-    <article className="group relative grid overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color] duration-(--duration-base) hover:border-line-brand xl:grid-cols-[579px_1fr]">
+    <article className={`group card-focus relative grid overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color] duration-(--duration-base) hover:border-line-brand ${item.cover ? 'xl:grid-cols-[579px_1fr]' : ''}`}>
       {item.cover && (
         <div className="relative aspect-[4/3] overflow-hidden xl:aspect-auto xl:min-h-[460px]">
           <Image
@@ -91,7 +96,7 @@ function FeatureCase({ item }: { item: CaseStudy }) {
             fill
             preload
             sizes="(min-width: 1280px) 579px, 92vw"
-            className="object-cover transition-transform duration-(--duration-slow) ease-out group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-[1.03]"
           />
         </div>
       )}
@@ -101,11 +106,11 @@ function FeatureCase({ item }: { item: CaseStudy }) {
             <span key={t}>{t}</span>
           ))}
         </p>
-        <h2 className="type-h3 text-fg">
-          <Link href={caseStudyHref(item.slug)} className="rounded-sm after:absolute after:inset-0 focus-visible:focus-ring">
+        <h3 className="type-h3 text-fg">
+          <Link href={caseStudyHref(item.slug)} className="after:absolute after:inset-0">
             {item.title}
           </Link>
-        </h2>
+        </h3>
         <p className="type-body-sm text-fg-muted">{item.summary}</p>
         {item.results.length > 0 && (
           <dl className="mt-2 flex flex-wrap gap-x-8 gap-y-3">
@@ -119,7 +124,7 @@ function FeatureCase({ item }: { item: CaseStudy }) {
         )}
         <span className="mt-2 inline-flex items-center gap-1.5 type-label text-fg-brand" aria-hidden>
           Read the case study
-          <ArrowRight className="size-4 transition-transform duration-(--duration-fast) group-hover:translate-x-0.5" />
+          <ArrowRight className="size-4 shrink-0 transition-transform duration-(--duration-fast) motion-safe:group-hover:translate-x-0.5" />
         </span>
       </div>
     </article>
@@ -185,8 +190,8 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Se
             {serviceName ? `${serviceName} case studies` : 'All case studies'}
           </h2>
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-            <nav aria-label="Filter by type" className="-mx-page overflow-x-auto px-page pb-1 xl:mx-0 xl:overflow-visible xl:px-0">
-              <ul className="flex w-max gap-2 py-1">
+            <nav aria-label="Filter by type" className="-mx-page min-w-0 overflow-x-auto px-page pb-1 xl:mx-0 xl:overflow-visible xl:px-0">
+              <ul className="flex w-max gap-2 py-1 pr-page xl:w-auto xl:flex-wrap xl:pr-0">
                 <li>
                   <Link
                     href={hrefWith(f, { type: undefined, service: undefined, show: PAGE_SIZE })}
@@ -213,7 +218,7 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Se
               </ul>
             </nav>
             <nav aria-label="Filter by status">
-              <ul className="inline-flex gap-1 rounded-button border border-line-subtle p-1">
+              <ul className="inline-flex gap-1 rounded-full border border-line-subtle p-1">
                 {statuses.map((s) => {
                   const active = f.status === s.id;
                   return (
@@ -222,7 +227,7 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Se
                         href={hrefWith(f, { status: s.id, show: PAGE_SIZE })}
                         aria-current={active ? 'page' : undefined}
                         className={cn(
-                          'inline-flex h-8 items-center rounded-button-sm px-3 type-label-sm transition-colors focus-visible:focus-ring',
+                          'inline-flex h-8 items-center rounded-full px-3.5 type-label-sm transition-colors focus-visible:focus-ring',
                           active ? 'bg-action-primary text-fg-on-brand shadow-btn-primary' : 'text-fg-muted hover:text-fg'
                         )}
                       >
@@ -276,7 +281,7 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Se
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               {visible.length < items.length && (
                 <Button asChild variant="secondary" size="lg">
-                  <Link href={hrefWith(f, { show: f.show + STEP })} scroll={false}>
+                  <Link href={hrefWith(f, { show: f.show + STEP }, false)} scroll={false}>
                     Load more projects
                   </Link>
                 </Button>

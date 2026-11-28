@@ -15,16 +15,16 @@ import { TechTile } from '@/components/site/tech-tile';
 import { CtaBand } from '@/components/site/sections/cta-band';
 import { PageHero } from '@/components/site/sections/page-hero';
 import { SectionHeader } from '@/components/site/sections/section-header';
-import { fallbackCaseStudies } from '@/content/case-studies';
 import { site } from '@/content/site';
-import { getCaseStudy, getRelatedCaseStudies } from '@/lib/data/case-studies';
+import { getCaseStudies, getCaseStudy, getRelatedCaseStudies } from '@/lib/data/case-studies';
 import { absoluteUrl, buildMetadata } from '@/lib/seo';
 
 type Props = { params: Promise<{ slug: string }> };
 
 /** Seed slugs are prerendered; CMS slugs render on demand. */
-export function generateStaticParams() {
-  return fallbackCaseStudies.map((c) => ({ slug: c.slug }));
+/** Prerender the live case studies; any other slug renders on demand. */
+export async function generateStaticParams() {
+  return (await getCaseStudies()).map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -64,7 +64,7 @@ export default async function CaseStudyPage({ params }: Props) {
     url: absoluteUrl(caseStudyHref(item.slug)),
     image: item.cover ? absoluteUrl(item.cover.src) : undefined,
     creator: { '@type': 'Organization', name: site.name, url: site.url },
-    about: item.client,
+    about: item.client ? { '@type': 'Organization', name: item.client } : undefined,
   };
 
   return (
@@ -150,7 +150,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
       {(item.challenge || item.solution) && (
         <section aria-label="Story" className={item.stats?.length ? 'pb-section' : 'section-y'}>
-          <div className="container-page grid gap-grid md:grid-cols-2">
+          <div className={`container-page grid gap-grid ${item.challenge && item.solution ? 'md:grid-cols-2' : ''}`}>
             {item.challenge && (
               <div className="rounded-md border border-line-subtle bg-surface-1 p-card md:p-card-lg">
                 <h2 className="type-h3 text-fg">
@@ -207,7 +207,7 @@ export default async function CaseStudyPage({ params }: Props) {
         <section aria-label="Client voice and stack" className="pt-6">
           <div className="container-page">
             {item.quote && (
-              <figure className="grid gap-6 py-8 xl:grid-cols-[300px_1fr] xl:gap-6">
+              <figure className="grid gap-6 py-8 xl:grid-cols-[300px_1fr] xl:items-start xl:gap-6">
                 <Eyebrow as="div">Client voice</Eyebrow>
                 <div>
                   <blockquote className="max-w-[900px] type-h4 text-fg xl:type-h3">

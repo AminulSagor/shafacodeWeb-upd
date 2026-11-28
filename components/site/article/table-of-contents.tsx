@@ -35,6 +35,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
           <li key={i.id}>
             <a
               href={`#${i.id}`}
+              onClick={() => setActive(i.id)}
               aria-current={active === i.id ? 'location' : undefined}
               className={cn(
                 'block border-l-2 py-1 pl-3 type-body-sm transition-colors focus-visible:focus-ring',

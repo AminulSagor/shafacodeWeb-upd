@@ -13,7 +13,7 @@ export function ReadingProgress({ targetId }: { targetId: string }) {
     const update = () => {
       const r = target.getBoundingClientRect();
       const total = r.height - window.innerHeight;
-      const p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+      const p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
       if (bar.current) bar.current.style.transform = `scaleX(${p})`;
     };
     const onScroll = () => {

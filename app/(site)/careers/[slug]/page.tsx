@@ -1,87 +1,188 @@
-import { getJobBySlug } from '@/actions/jobs/get-job-by-slug';
-import capitalizeWords from '@/helper/capitalized-words';
-import { ArrowLeft, ArrowRight, Briefcase, MapPin, Clock } from 'lucide-react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { notFound } from 'next/navigation';
+import { ArrowRight } from 'lucide-react';
+import type { JobPosting, WithContext } from 'schema-dts';
 
-const JobDetailsPage = async ({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) => {
+import { Accent } from '@/components/ui/accent';
+import { Button } from '@/components/ui/button';
+import { JobRow, jobHref } from '@/components/site/cards/job-row';
+import { ShareRoleButton } from '@/components/site/careers/share-role-button';
+import { JsonLd } from '@/components/site/json-ld';
+import { Markdown } from '@/components/site/markdown';
+import { PageHero } from '@/components/site/sections/page-hero';
+import { departmentLabel } from '@/content/careers';
+import { site } from '@/content/site';
+import { getJob, getJobs } from '@/lib/data/jobs';
+import { absoluteUrl, buildMetadata } from '@/lib/seo';
+
+type Props = { params: Promise<{ slug: string }> };
+
+/** Prerender the open roles; any other slug renders on demand (and 404s when closed). */
+export async function generateStaticParams() {
+  return (await getJobs()).map((j) => ({ slug: j.slug }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const job = await getJobBySlug(slug);
-  const applyHref = `/careers/${slug}/apply`;
+  const job = await getJob(slug);
+  if (!job) return { title: 'Role not found', robots: { index: false, follow: true } };
+  return buildMetadata({
+    title: `${job.title}: ${departmentLabel(job.department)} role`,
+    description: job.summary || `${job.title} at ${site.name}, ${job.workMode.toLowerCase()}.`,
+    path: jobHref(job.slug),
+  });
+}
 
-  const chips = [
-    { icon: Clock, text: job?.type },
-    { icon: MapPin, text: job?.location },
-    { icon: Briefcase, text: capitalizeWords(job?.department) },
-  ];
+const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+/** Job detail. Figma: Job Detail 49:6823 (mobile 53:15501). Closed or missing roles are a 404. */
+export default async function JobPage({ params }: Props) {
+  const { slug } = await params;
+  const job = await getJob(slug);
+  if (!job) notFound();
+  const others = (await getJobs()).filter((j) => j.slug !== job.slug).slice(0, 3);
+  const url = absoluteUrl(jobHref(job.slug));
+  const applyHref = `${jobHref(job.slug)}/apply`;
+  const remote = /remote/i.test(job.workMode);
+
+  const facts = [
+    job.employmentType,
+    job.location ?? job.workMode,
+    job.salary,
+    `Posted ${dateFmt.format(new Date(job.postedAt))}`,
+    job.validThrough && `Apply by ${dateFmt.format(new Date(job.validThrough))}`,
+  ].filter(Boolean) as string[];
+
+  const employmentType: Record<string, string> = {
+    'Full-time': 'FULL_TIME',
+    'Part-time': 'PART_TIME',
+    Contract: 'CONTRACTOR',
+    Internship: 'INTERN',
+  };
+
+  const ld: WithContext<JobPosting> = {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: job.title,
+    description: job.description || job.summary,
+    datePosted: job.postedAt,
+    validThrough: job.validThrough,
+    employmentType: employmentType[job.employmentType] ?? 'FULL_TIME',
+    hiringOrganization: { '@type': 'Organization', name: site.name, sameAs: site.url, logo: absoluteUrl('/icon.png') },
+    directApply: true,
+    url,
+    // Remote roles add TELECOMMUTE; the office address stays as the job location.
+    ...(remote ? { jobLocationType: 'TELECOMMUTE' } : {}),
+    jobLocation: {
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: site.address.locality,
+        addressCountry: site.address.countryCode,
+      },
+    },
+  };
 
   return (
-    <section className="bg-[radial-gradient(ellipse_80%_40%_at_50%_0%,rgba(110,170,10,0.35),transparent_70%)] px-4 pb-24 pt-40">
-      <div className="mx-auto max-w-6xl">
-        <Link
-          href="/careers"
-          className="inline-flex items-center text-sm uppercase tracking-wider text-slate-300 hover:text-brand"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Careers
-        </Link>
-
-        <h1 className="mt-8 max-w-3xl text-4xl font-medium leading-tight sm:text-6xl">
-          {job?.title}
-        </h1>
-
-        <div className="mt-6 flex flex-wrap gap-3">
-          {chips.map(({ icon: Icon, text }, i) =>
-            text ? (
-              <span
-                key={i}
-                className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-panel/60 px-4 py-2 text-sm"
-              >
-                <Icon className="h-4 w-4 text-brand" />
-                {text}
-              </span>
-            ) : null
-          )}
-        </div>
-
-        <Link
-          href={applyHref}
-          className="mt-8 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider hover:text-brand"
-        >
-          Apply for this role <ArrowRight className="h-4 w-4" />
-        </Link>
-
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_320px]">
-          <div className="prose prose-invert max-w-none rounded-2xl border border-white/5 bg-panel/60 p-8 prose-headings:font-medium prose-a:text-brand prose-strong:text-white md:p-10">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {job?.jobDescription}
-            </ReactMarkdown>
-          </div>
-
-          <aside className="h-fit space-y-4 lg:sticky lg:top-28">
-            <div className="rounded-2xl bg-panel/60 p-6">
-              <h2 className="text-2xl font-medium">Ready to build?</h2>
-              <p className="mt-3 text-sm text-slate-300">
-                Join our team of rigorous engineers pushing the boundaries of
-                the web.
-              </p>
-              <Link
-                href={applyHref}
-                className="mt-6 block rounded-lg bg-brand py-3 text-center text-sm font-bold uppercase tracking-wide text-black shadow-[0_0_24px_-4px_var(--color-brand)] hover:bg-brand/90"
-              >
-                Apply Now
+    <>
+      <JsonLd data={ld} />
+      <PageHero
+        crumbs={[
+          { name: 'Careers', path: '/careers' },
+          { name: job.title.replace(/\s*\(.*\)\s*$/, ''), path: jobHref(job.slug) },
+        ]}
+        eyebrow={`${departmentLabel(job.department)} · ${job.workMode}`}
+        title={
+          job.headline ? (
+            <>
+              {job.headline.before} <Accent>{job.headline.accent}</Accent> {job.headline.after}
+            </>
+          ) : (
+            job.title
+          )
+        }
+        lede={job.summary}
+        actions={
+          <>
+            <Button asChild size="lg">
+              <Link href={applyHref}>
+                Apply for this role <ArrowRight aria-hidden />
               </Link>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </section>
-  );
-};
+            </Button>
+            <ShareRoleButton url={url} title={job.title} variant="secondary" size="lg" />
+          </>
+        }
+      />
 
-export default JobDetailsPage;
+      <div className="container-page">
+        <ul className="flex flex-wrap gap-x-4 gap-y-2 type-mono-xs text-fg-subtle" aria-label="Role facts">
+          {facts.map((f) => (
+            <li key={f}>{f}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="container-page grid gap-10 pt-10 pb-section xl:grid-cols-[minmax(0,1fr)_420px] xl:gap-grid xl:pt-14">
+        <div className="min-w-0 xl:max-w-[720px] [&_h2]:type-h3">
+          <Markdown lists="checks">{job.description}</Markdown>
+        </div>
+        <aside aria-labelledby="ready-title" className="xl:sticky xl:top-sticky xl:self-start">
+          <div className="rounded-md border border-line-subtle bg-surface-1 p-6">
+            <h2 id="ready-title" className="type-h4 text-fg">
+              Ready to build?
+            </h2>
+            <p className="mt-2 type-body-sm text-fg-muted">
+              Takes about 5 minutes. We reply to every application within 48 hours.
+            </p>
+            <dl className="mt-5 flex flex-col">
+              {[
+                ['Team', job.team],
+                ['Reports to', job.reportsTo],
+                ['Process', '6 steps · 2 to 3 weeks'],
+              ]
+                .filter(([, v]) => v)
+                .map(([k, v]) => (
+                  <div key={k} className="flex justify-between gap-4 border-t border-line-subtle py-2.5 type-body-sm">
+                    <dt className="text-fg-subtle">{k}</dt>
+                    <dd className="text-right font-medium text-fg">{v}</dd>
+                  </div>
+                ))}
+            </dl>
+            <Button asChild size="lg" className="mt-4 w-full">
+              <Link href={applyHref}>
+                Apply now <ArrowRight aria-hidden />
+              </Link>
+            </Button>
+            <ShareRoleButton
+              url={url}
+              title={job.title}
+              label="Share this role"
+              variant="ghost"
+              className="mt-2 w-full"
+            />
+          </div>
+        </aside>
+      </div>
+
+      {others.length > 0 && (
+        <section aria-labelledby="more-roles-title" className="bg-surface-1 section-y">
+          <div className="container-page">
+            <div className="max-w-[820px]">
+              <h2 id="more-roles-title" className="type-h3 text-fg">
+                More open roles
+              </h2>
+              <ul className="mt-4">
+                {others.map((j) => (
+                  <li key={j.slug}>
+                    <JobRow job={j} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
+    </>
+  );
+}

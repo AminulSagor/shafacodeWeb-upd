@@ -23,7 +23,7 @@ function FeatureCase({ item }: { item: CaseStudySummary }) {
             alt={item.cover.alt}
             fill
             sizes="(min-width: 1280px) 592px, 92vw"
-            className="object-cover transition-transform duration-(--duration-slow) ease-out group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-[1.03]"
           />
         )}
       </div>
@@ -70,7 +70,7 @@ function CaseCard({ item }: { item: CaseStudySummary }) {
             alt={item.cover.alt}
             fill
             sizes="(min-width: 1280px) 600px, (min-width: 768px) 46vw, 92vw"
-            className="object-cover transition-transform duration-(--duration-slow) ease-out group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-[1.03]"
           />
         )}
       </div>
