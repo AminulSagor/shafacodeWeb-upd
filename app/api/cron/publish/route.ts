@@ -4,7 +4,7 @@ import { revalidatePath, revalidateTag } from 'next/cache';
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
 
 /**
- * Scheduled publishing (Vercel Cron, every 15 minutes): flips case studies
+ * Scheduled publishing (Vercel Cron, daily at 00:00 Dhaka on the Hobby plan): flips case studies
  * and posts whose time has come from "scheduled" to "published" and refreshes
  * the caches. The public loaders already show due items; this keeps the
  * stored status and the admin lists accurate. Protected by CRON_SECRET.
