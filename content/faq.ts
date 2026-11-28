@@ -60,3 +60,18 @@ export const pricingFaqs: Faq[] = [
   sharedFaqs.ownCode,
   sharedFaqs.supportAfterLaunch,
 ];
+
+export const partnerFaqs: Faq[] = [
+  {
+    q: 'Who can become a partner?',
+    a: 'Anyone with a relevant network: freelancers, agencies, consultants and past clients.',
+  },
+  {
+    q: 'When do I get paid?',
+    a: 'Commission is paid by bank transfer or bKash once the referred project kicks off and the client pays the first milestone.',
+  },
+  {
+    q: 'How do you track my referral?',
+    a: "Tell us the client's name or ask them to mention you. We record the referral when they sign and confirm it with you by email.",
+  },
+];

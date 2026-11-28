@@ -3,9 +3,9 @@ import { Clock } from 'lucide-react';
 import type { LifecycleStep } from '@/content/process';
 
 /** Numbered steps with a hairline to the next. Figma: Process Step 18:2838 */
-export function LifecycleSteps({ steps }: { steps: LifecycleStep[] }) {
+export function LifecycleSteps({ steps, columns = 3 }: { steps: LifecycleStep[]; columns?: 3 | 4 }) {
   return (
-    <ol role="list" className="grid gap-x-6 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
+    <ol role="list" className={`grid gap-x-6 gap-y-12 md:grid-cols-2 ${columns === 4 ? 'xl:grid-cols-4' : 'xl:grid-cols-3'}`}>
       {steps.map((s, i) => (
         <li key={s.title} className="flex h-full flex-col">
           <div className="flex items-center gap-3" aria-hidden>
