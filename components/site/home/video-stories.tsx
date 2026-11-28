@@ -54,7 +54,7 @@ export function VideoStories({ items }: { items: VideoStory[] }) {
         />
         <ul className="mt-section-head grid gap-x-6 gap-y-10 md:grid-cols-3">
           {items.map((s) => (
-            <li key={s.name}>
+            <li data-reveal key={s.name}>
               <figure className="flex h-full flex-col gap-5">
                 <Poster story={s} />
                 <blockquote className="type-body-lg text-fg">

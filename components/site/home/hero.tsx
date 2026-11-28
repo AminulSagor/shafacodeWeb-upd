@@ -84,7 +84,7 @@ export function HomeHero() {
       </div>
 
       <div className="container-page flex flex-col gap-10 pt-10 pb-6 md:gap-12 md:pt-14 xl:pt-18">
-        <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex animate-rise flex-wrap items-center justify-between gap-3">
           <Eyebrow>Software studio · Barishal, Bangladesh</Eyebrow>
           <p className="flex items-center gap-2 type-mono-xs text-fg-muted">
             <span className="size-2 rounded-full bg-fg-success" aria-hidden />
@@ -92,17 +92,17 @@ export function HomeHero() {
           </p>
         </div>
 
-        <h1 id="hero-title" className="type-display text-fg">
+        <h1 id="hero-title" style={{ '--rise-i': 1 } as React.CSSProperties} className="animate-rise type-display text-fg">
           Transparent software partner for <HeroRotator />
         </h1>
 
-        <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
+        <div style={{ '--rise-i': 2 } as React.CSSProperties} className="flex animate-rise flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
           <p className="max-w-140 type-body-lg text-fg-muted">
             ShafaCode helps growing businesses build websites, apps, SaaS platforms, custom software and IoT
             products with clear communication, transparent milestones and scalable engineering.
           </p>
           <div className="flex flex-col gap-5">
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div data-magnetic-group className="flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
                 <Link href="/contact?type=consultation">
                   Get a free consultation <ArrowRight aria-hidden />
@@ -140,7 +140,9 @@ export function HomeHero() {
           </div>
         </div>
 
-        <Showreel />
+        <div className="animate-rise" style={{ '--rise-i': 3 } as React.CSSProperties}>
+          <Showreel />
+        </div>
       </div>
     </section>
   );

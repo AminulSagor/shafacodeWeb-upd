@@ -35,13 +35,25 @@ export function PageHero({ crumbs, eyebrow, title, lede, actions, aside, classNa
         )}
       >
         <div className="flex max-w-220 flex-col items-start">
-          <Breadcrumbs items={crumbs} />
-          <Eyebrow className="mt-6">{eyebrow}</Eyebrow>
-          <h1 id="page-title" className={cn('mt-5 type-h1 text-fg', titleClassName)}>
+          <div className="animate-rise">
+            <Breadcrumbs items={crumbs} />
+          </div>
+          <div className="mt-6 animate-rise" style={{ '--rise-i': 1 } as React.CSSProperties}>
+            <Eyebrow>{eyebrow}</Eyebrow>
+          </div>
+          <h1 id="page-title" style={{ '--rise-i': 2 } as React.CSSProperties} className={cn('mt-5 animate-rise type-h1 text-fg', titleClassName)}>
             {title}
           </h1>
-          {lede && <p className="mt-5 type-body-lg text-fg-muted">{lede}</p>}
-          {actions && <div className="mt-5 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">{actions}</div>}
+          {lede && (
+            <p style={{ '--rise-i': 3 } as React.CSSProperties} className="mt-5 animate-rise type-body-lg text-fg-muted">
+              {lede}
+            </p>
+          )}
+          {actions && (
+            <div data-magnetic-group style={{ '--rise-i': 4 } as React.CSSProperties} className="mt-5 flex w-full animate-rise flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
+              {actions}
+            </div>
+          )}
         </div>
         {aside}
       </div>

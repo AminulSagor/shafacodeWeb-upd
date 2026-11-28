@@ -510,3 +510,71 @@ h1, h2, h3, h4 {
 @utility hairline-t { border-top: 1px solid var(--line-subtle); }
 @utility hairline-b { border-bottom: 1px solid var(--line-subtle); }
 @utility tabular { font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------------
+   Motion layer (components/site/motion-layer.tsx). Content is never hidden
+   without JavaScript: `js-motion` is set on <html> only once the layer runs,
+   and elements already on screen are marked revealed first.
+   ------------------------------------------------------------------ */
+[data-reveal] {
+  transition:
+    opacity 900ms var(--ease-out),
+    transform 900ms var(--ease-out),
+    clip-path 1000ms var(--ease-out);
+  transition-delay: calc(var(--reveal-i, 0) * 90ms);
+}
+.js-motion [data-reveal]:not([data-revealed]) { opacity: 0; transform: translateY(1.75rem); }
+.js-motion [data-reveal='clip']:not([data-revealed]) { opacity: 1; transform: translateY(0.6em); clip-path: inset(0 0 100% 0); }
+.js-motion [data-reveal='scale']:not([data-revealed]) { transform: scale(0.94); }
+[data-reveal='clip'] { clip-path: inset(-0.3em -0.3em -0.4em -0.3em); }
+
+/* Pointer spotlight on cards: a soft lime glow that follows the cursor. */
+[data-spotlight] { isolation: isolate; }
+[data-spotlight]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(26rem circle at var(--mx, 50%) var(--my, 50%), var(--brand-glow), transparent 60%);
+  transition: opacity 400ms var(--ease-out);
+}
+[data-spotlight]:hover::after { opacity: 0.6; }
+
+/* Seamless marquee: the track holds two identical halves and moves one half. */
+@keyframes marquee { to { transform: translateX(-50%); } }
+@utility animate-marquee { animation: marquee var(--marquee-duration, 45s) linear infinite; }
+@utility marquee-hover-pause { &:hover { animation-play-state: paused; } }
+@utility mask-fade-x { mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { transition: none; }
+  .js-motion [data-reveal]:not([data-revealed]) { opacity: 1; transform: none; clip-path: none; }
+  [data-spotlight]::after { display: none; }
+}
+
+@keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+@utility animate-shimmer { animation: shimmer 2.4s ease-in-out infinite; }
+@keyframes fade-up { from { opacity: 0; transform: translateY(0.4rem); } to { opacity: 1; transform: none; } }
+@utility animate-fade-up { animation: fade-up 500ms var(--ease-out) both; }
+@keyframes bar { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.72); } }
+@utility animate-bar { animation: bar 2.6s ease-in-out infinite; }
+
+/* Page-load entrance for heroes (CSS only; the reduced-motion rule above stops it). */
+@keyframes rise { from { opacity: 0; transform: translateY(1.5rem); } to { opacity: 1; transform: none; } }
+@utility animate-rise { animation: rise 1000ms var(--ease-out) both; animation-delay: calc(var(--rise-i, 0) * 120ms); }
+
+/* Scroll-linked parallax for card media, where the browser supports it. */
+@keyframes parallax { from { translate: 0 -6%; } to { translate: 0 6%; } }
+@utility parallax-media {
+  scale: 1.14;
+  @supports (animation-timeline: view()) {
+    animation: parallax linear both;
+    animation-timeline: view();
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .parallax-media { animation: none; scale: 1; }
+}

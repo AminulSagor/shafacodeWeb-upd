@@ -7,7 +7,7 @@ export function LifecycleSteps({ steps, columns = 3 }: { steps: LifecycleStep[];
   return (
     <ol role="list" className={`grid gap-x-6 gap-y-12 md:grid-cols-2 ${columns === 4 ? 'xl:grid-cols-4' : 'xl:grid-cols-3'}`}>
       {steps.map((s, i) => (
-        <li key={s.title} className="flex h-full flex-col">
+        <li data-reveal key={s.title} className="flex h-full flex-col">
           <div className="flex items-center gap-3" aria-hidden>
             <span className="grid size-8 shrink-0 place-items-center rounded-full border border-line type-mono-xs text-fg-brand">
               {String(i + 1).padStart(2, '0')}

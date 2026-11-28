@@ -96,7 +96,7 @@ export function SiteHeader() {
           >
             Contact
           </Link>
-          <Button asChild size="sm" className="hidden md:inline-flex">
+          <Button asChild size="sm" data-magnetic className="hidden md:inline-flex">
             <Link href="/contact?type=project">
               Start a project
               <ArrowRight aria-hidden />

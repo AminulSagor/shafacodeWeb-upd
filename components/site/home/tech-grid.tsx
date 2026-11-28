@@ -26,11 +26,12 @@ export function TechGrid() {
           {techStack.map((t) => {
             const Icon = t.icon;
             return (
-              <li
+              <li data-reveal
                 key={t.name}
-                className="-mt-px -ml-px flex flex-col gap-4.5 border-t border-l border-line-subtle px-5 py-6 md:px-6 md:py-7"
+                data-spotlight
+                className="group relative -mt-px -ml-px flex flex-col gap-4.5 border-t border-l border-line-subtle px-5 py-6 transition-colors duration-300 hover:bg-hover md:px-6 md:py-7"
               >
-                <span className="grid size-10 place-items-center text-icon-strong">
+                <span className="grid size-10 place-items-center text-icon-strong transition-transform duration-500 ease-out motion-safe:group-hover:-translate-y-1 motion-safe:group-hover:scale-110">
                   {t.brand ? (
                     <BrandLogo name={t.brand} className="size-8" />
                   ) : Icon ? (

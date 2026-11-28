@@ -5,6 +5,18 @@ import { Accent } from '@/components/ui/accent';
 import { TagList } from '@/components/ui/tag';
 import { SectionHeader } from '@/components/site/sections/section-header';
 import { serviceHref, services } from '@/content/services';
+import { HoverPreview } from './hover-preview';
+
+/** Hover images per service, in the same order as `services`. */
+const previews: Record<string, string> = {
+  'custom-software-development': '/images/work/business-directory-crm.jpg',
+  'web-application-development': '/images/work/texas-airway-institute.jpg',
+  'mobile-app-development': '/images/work/meghswar-courier.jpg',
+  'saas-development': '/images/work/chorki.jpg',
+  'ui-ux-design': '/images/work/meghswar-ux.jpg',
+  'wordpress-development': '/images/work/trigardening.jpg',
+  'iot-embedded-systems': '/images/blog/business-automation.jpg',
+};
 
 /**
  * Typographic services index: seven full-width rows with hairlines. The whole
@@ -30,19 +42,23 @@ export function ServicesIndex({
     <section aria-labelledby={id} className="section-y">
       <div className="container-page">
         <SectionHeader id={id} eyebrow={eyebrow} title={title} lede={lede} />
-        <ol className="mt-section-head border-t border-line-subtle">
+        <HoverPreview className="mt-section-head" images={services.map((s) => ({ src: previews[s.slug] ?? '/images/work/chorki.jpg', alt: '' }))}>
+        <ol className="border-t border-line-subtle">
           {services.map((s, i) => {
             const Icon = s.icon;
             return (
               <li
                 key={s.slug}
+                data-preview={i}
+                data-reveal
+                style={{ '--reveal-i': i } as React.CSSProperties}
                 className="group card-focus relative grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-3 border-b border-line-subtle py-6 transition-colors duration-(--duration-base) hover:bg-hover md:gap-x-8 md:py-8 xl:grid-cols-[--spacing(15)_minmax(0,1fr)_minmax(0,1fr)_--spacing(55)_--spacing(10)]"
               >
                 <span className="flex items-center gap-3 self-start pt-1 xl:self-center xl:pt-0">
                   <span aria-hidden className="w-5 type-mono-sm text-fg-subtle tabular">{String(i + 1).padStart(2, '0')}</span>
                   <Icon className="size-6 text-icon-brand" strokeWidth={1.75} aria-hidden />
                 </span>
-                <h3 className="type-h3 text-fg">
+                <h3 className="type-h3 text-fg transition-transform duration-500 ease-out motion-safe:group-hover:translate-x-3">
                   <Link
                     href={serviceHref(s.slug)}
                     className="after:absolute after:inset-0"
@@ -67,6 +83,7 @@ export function ServicesIndex({
             );
           })}
         </ol>
+        </HoverPreview>
       </div>
     </section>
   );

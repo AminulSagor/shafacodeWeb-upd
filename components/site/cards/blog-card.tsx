@@ -59,6 +59,8 @@ export function BlogCard({
 }) {
   return (
     <article
+      data-reveal
+      data-spotlight
       className={cn(
         'group card-focus relative flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color,translate] duration-(--duration-base) ease-out hover:border-line-brand motion-safe:hover:-translate-y-0.5',
         horizontal && 'xl:grid xl:grid-cols-[--spacing(144.75)_1fr]'
@@ -72,7 +74,7 @@ export function BlogCard({
             fill
             preload={preload}
             sizes={horizontal ? '(min-width: 1280px) 579px, 92vw' : '(min-width: 1280px) 395px, (min-width: 768px) 46vw, 92vw'}
-            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-103"
+            className="parallax-media object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-120"
           />
         </div>
       )}

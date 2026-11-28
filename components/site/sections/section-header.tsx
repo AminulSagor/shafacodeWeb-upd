@@ -30,14 +30,20 @@ export function SectionHeader({ eyebrow, title, lede, id, as: H = 'h2', classNam
       )}
     >
       <div className="flex max-w-215 min-w-0 flex-1 flex-col gap-5">
-        <Eyebrow>{eyebrow}</Eyebrow>
-        <H id={id} className={cn(H === 'h1' ? 'type-h1' : 'type-h2', 'text-fg')}>
+        <div data-reveal>
+          <Eyebrow>{eyebrow}</Eyebrow>
+        </div>
+        <H id={id} data-reveal="clip" style={{ '--reveal-i': 1 } as React.CSSProperties} className={cn(H === 'h1' ? 'type-h1' : 'type-h2', 'text-fg')}>
           {title}
         </H>
-        {ledeBelow && lede && <p className="max-w-160 type-body-lg text-fg-muted">{lede}</p>}
+        {ledeBelow && lede && (
+          <p data-reveal style={{ '--reveal-i': 2 } as React.CSSProperties} className="max-w-160 type-body-lg text-fg-muted">
+            {lede}
+          </p>
+        )}
       </div>
       {((lede && !ledeBelow) || aside) && (
-        <div className="flex max-w-140 flex-col gap-5 xl:w-100 xl:max-w-100 xl:shrink-0">
+        <div data-reveal style={{ '--reveal-i': 2 } as React.CSSProperties} className="flex max-w-140 flex-col gap-5 xl:w-100 xl:max-w-100 xl:shrink-0">
           {lede && !ledeBelow && <p className="type-body-lg text-fg-muted">{lede}</p>}
           {aside}
         </div>

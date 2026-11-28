@@ -3,8 +3,9 @@
 import * as React from 'react';
 
 const PHRASES = ['growing teams', 'ambitious founders', 'scaling SaaS', 'smart factories', 'growing teams'];
-// 4 steps of 950ms plus the 700ms slide: the sequence ends within 5 seconds (WCAG 2.2.2).
-const STEP_MS = 950;
+// Calm pace: each phrase rests about two seconds. It runs once, then rests on
+// "growing teams" (hovering the heading replays it); reduced motion keeps it still.
+const STEP_MS = 2200;
 
 /**
  * Rolling accent phrase for the hero H1 (Figma Hero Headline 41:3200).
@@ -75,7 +76,7 @@ export function HeroRotator() {
           className={
             instant
               ? 'block'
-              : 'block transition-transform duration-(--duration-slower) ease-emphasized motion-reduce:transition-none'
+              : 'block transition-transform duration-1000 ease-emphasized motion-reduce:transition-none'
           }
           style={{ transform: `translateY(calc(${-index} * (var(--type-display-lh) + 0.22em)))` }}
         >

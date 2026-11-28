@@ -1,17 +1,12 @@
-import Image from 'next/image';
 import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Accent } from '@/components/ui/accent';
 import { SectionHeader } from '@/components/site/sections/section-header';
 import { InView } from '@/components/site/in-view';
-
-const sprints = [
-  { label: 'UI design & prototype', status: 'Done' },
-  { label: 'Sprint 2 · Auth & dashboard', status: 'Done' },
-  { label: 'Sprint 3 · Payments & orders', status: 'In progress' },
-  { label: 'Sprint 4 · Reports', status: 'Next' },
-] as const;
+import { AdaptivePreview } from './bento/adaptive-preview';
+import { CountUp } from './bento/count-up';
+import { SprintTracker } from './bento/sprint-tracker';
 
 const brief = ['Goals & success metrics', 'Feature list & user roles', 'Timeline with milestones', 'Fixed estimate & tech stack'];
 
@@ -31,55 +26,24 @@ function CellText({ index, title, body }: { index: string; title: string; body: 
   );
 }
 
-const cell = 'flex flex-col p-card xl:p-10';
+const cell = 'relative flex flex-col p-card xl:p-10';
 const visual = 'flex flex-col xl:min-h-75';
-
-function ProgressVisual() {
-  return (
-    <InView className={cn(visual, 'group')}>
-      <div className="flex items-end justify-between gap-4">
-        <p className="type-stat text-fg">62%</p>
-        <div className="text-right">
-          <p className="type-mono-xs text-fg-brand">Sprint 3 of 4</p>
-          <p className="mt-1 type-body-sm text-fg">Payments &amp; orders</p>
-        </div>
-      </div>
-      <div
-        className="mt-4 h-1.5 overflow-hidden rounded-full bg-surface-2"
-        role="img"
-        aria-label="Project 62% complete"
-      >
-        <div className="h-full w-[62%] origin-left rounded-full bg-action-primary transition-transform delay-150 duration-[1200ms] ease-out group-data-[inview=false]:scale-x-0" />
-      </div>
-      <ul className="mt-4 flex flex-col gap-4">
-        {sprints.map((s) => (
-          <li key={s.label} className="flex items-center justify-between gap-4 border-b border-line-subtle pb-2">
-            <span className="type-body-sm text-fg">{s.label}</span>
-            <span
-              className={cn(
-                'shrink-0 type-mono-xs',
-                s.status === 'Done' && 'text-fg-success',
-                s.status === 'In progress' && 'text-fg-brand',
-                s.status === 'Next' && 'text-fg-subtle'
-              )}
-            >
-              {s.status}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </InView>
-  );
-}
 
 function BriefVisual() {
   return (
     <div className={visual}>
       <p className="type-mono-xs text-fg-subtle">Project brief · v2</p>
       <ul className="mt-4 flex flex-col gap-4">
-        {brief.map((b) => (
-          <li key={b} className="flex items-center gap-3 border-b border-line-subtle py-2">
-            <Check className="size-4.5 shrink-0 text-icon-brand" strokeWidth={2.25} aria-hidden />
+        {brief.map((b, i) => (
+          <li
+            key={b}
+            data-reveal
+            style={{ '--reveal-i': i + 1 } as React.CSSProperties}
+            className="group/item flex items-center gap-3 border-b border-line-subtle py-2 transition-[padding] duration-300 hover:pl-2"
+          >
+            <span className="grid size-6 shrink-0 place-items-center rounded-full bg-brand-soft text-icon-brand transition-transform duration-300 group-hover/item:scale-110 group-hover/item:rotate-6">
+              <Check className="size-3.5" strokeWidth={2.75} aria-hidden />
+            </span>
             <span className="type-body-lg text-fg">{b}</span>
           </li>
         ))}
@@ -110,7 +74,7 @@ function Gauge({ label, value }: { label: string; value: number }) {
             style={{ '--c': c } as React.CSSProperties}
           />
         </svg>
-        <span className="absolute inset-0 grid place-items-center type-h3 text-fg tabular">{value}</span>
+        <CountUp value={value} className="absolute inset-0 grid place-items-center type-h3 text-fg tabular" />
       </div>
       <figcaption className="type-mono-xs text-fg-brand">{label}</figcaption>
     </figure>
@@ -145,17 +109,17 @@ export function WhyBento() {
           }
           lede="Many businesses struggle with unclear timelines, poor communication, weak UI/UX and teams that disappear after delivery. We combine product planning, transparent development and long-term technical support."
         />
-        <div className="mt-section-head overflow-hidden rounded-card border border-line-subtle bg-surface-1">
+        <div data-reveal="scale" className="mt-section-head overflow-hidden rounded-card border border-line-subtle bg-surface-1">
           <div className="grid divide-line-subtle max-xl:divide-y xl:grid-cols-[7fr_5fr] xl:divide-x">
-            <div className={cell}>
-              <ProgressVisual />
+            <div className={cell} data-spotlight>
+              <SprintTracker />
               <CellText
                 index="01"
                 title="Transparent execution"
                 body="You stay updated through every milestone, decision and delivery phase, with weekly progress notes and demos."
               />
             </div>
-            <div className={cell}>
+            <div className={cell} data-spotlight>
               <BriefVisual />
               <CellText
                 index="02"
@@ -165,7 +129,7 @@ export function WhyBento() {
             </div>
           </div>
           <div className="grid divide-line-subtle border-t border-line-subtle max-xl:divide-y xl:grid-cols-[5fr_7fr] xl:divide-x">
-            <div className={cell}>
+            <div className={cell} data-spotlight>
               <LighthouseVisual />
               <CellText
                 index="03"
@@ -173,16 +137,8 @@ export function WhyBento() {
                 body="We build products that grow with your users, operations and business goals, and we measure performance before launch."
               />
             </div>
-            <div className={cell}>
-              <div className={cn('relative flex aspect-video flex-col overflow-hidden rounded-md xl:aspect-auto xl:h-75')}>
-                <Image
-                  src="/images/home/adaptive-ux.jpg"
-                  alt="Hands using a responsive analytics dashboard on a laptop, tablet and phone with lime charts"
-                  fill
-                  sizes="(min-width: 1280px) 700px, 92vw"
-                  className="object-cover"
-                />
-              </div>
+            <div className={cell} data-spotlight>
+              <AdaptivePreview />
               <CellText
                 index="04"
                 title="Adaptive user experience"

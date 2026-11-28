@@ -21,7 +21,7 @@ export function Testimonials({ items }: { items: TextTestimonial[] }) {
         />
         <ul className="mt-section-head grid border-y border-line-subtle md:grid-cols-3">
           {items.map((t) => (
-            <li
+            <li data-reveal
               key={t.name}
               className="flex h-full flex-col border-line-subtle py-8 max-md:border-b max-md:last:border-b-0 md:border-l md:px-6 md:py-10 md:first:border-l-0 xl:px-8 md:first:pl-0 md:last:pr-0"
             >

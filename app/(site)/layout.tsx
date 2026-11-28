@@ -5,6 +5,7 @@ import { fontVariables } from '../fonts';
 import { SiteHeader } from '@/components/site/site-header';
 import { SiteFooter } from '@/components/site/site-footer';
 import { Toaster } from '@/components/ui/sonner';
+import { MotionLayer } from '@/components/site/motion-layer';
 import { site } from '@/content/site';
 import { isProduction } from '@/lib/seo';
 import { mediaSrc } from '@/lib/media';
@@ -58,6 +59,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <SiteFooter />
+        <MotionLayer />
         <Toaster theme="dark" />
       </body>
     </html>

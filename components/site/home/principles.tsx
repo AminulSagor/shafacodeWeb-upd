@@ -33,7 +33,7 @@ export function Principles() {
         />
         <ol className="mt-section-head grid border-y border-line-subtle md:grid-cols-3">
           {principles.map((p, i) => (
-            <li
+            <li data-reveal
               key={p.title}
               className="border-line-subtle py-8 max-md:border-b max-md:last:border-b-0 md:border-l md:px-6 md:py-10 md:first:border-l-0 md:first:pl-0 md:last:pr-0 xl:px-8"
             >

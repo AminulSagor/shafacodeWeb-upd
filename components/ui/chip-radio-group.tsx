@@ -19,6 +19,7 @@ export function ChipRadioGroup({
   onChange,
   legendClassName,
   className,
+  onPreview,
 }: {
   name: string;
   legend: React.ReactNode;
@@ -27,6 +28,8 @@ export function ChipRadioGroup({
   onChange: (value: string) => void;
   legendClassName?: string;
   className?: string;
+  /** Called with an option on hover (null on leave), for live previews. */
+  onPreview?: (value: string | null) => void;
 }) {
   return (
     <fieldset className={className}>
@@ -35,7 +38,12 @@ export function ChipRadioGroup({
         {options.map((o) => {
           const checked = o.value === value;
           return (
-            <label key={o.value} className="relative inline-flex">
+            <label
+              key={o.value}
+              className="relative inline-flex"
+              onPointerEnter={onPreview ? () => onPreview(o.value) : undefined}
+              onPointerLeave={onPreview ? () => onPreview(null) : undefined}
+            >
               <input
                 type="radio"
                 name={name}

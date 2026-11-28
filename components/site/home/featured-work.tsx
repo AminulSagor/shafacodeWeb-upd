@@ -15,7 +15,7 @@ function Meta({ tags, suffix }: { tags: string[]; suffix?: string }) {
 
 function FeatureCase({ item }: { item: CaseStudySummary }) {
   return (
-    <article className="group relative grid items-center gap-8 xl:grid-cols-2 xl:gap-14">
+    <article data-reveal className="group relative grid items-center gap-8 xl:grid-cols-2 xl:gap-14">
       <div className="relative aspect-592/440 overflow-hidden rounded-card bg-surface-1">
         {item.cover && (
           <Image
@@ -23,7 +23,7 @@ function FeatureCase({ item }: { item: CaseStudySummary }) {
             alt={item.cover.alt}
             fill
             sizes="(min-width: 1280px) 592px, 92vw"
-            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-103"
+            className="parallax-media object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-120"
           />
         )}
       </div>
@@ -62,7 +62,7 @@ function FeatureCase({ item }: { item: CaseStudySummary }) {
 
 function CaseCard({ item }: { item: CaseStudySummary }) {
   return (
-    <article className="group card-focus relative flex h-full flex-col rounded-card">
+    <article data-reveal className="group card-focus relative flex h-full flex-col rounded-card">
       <div className="relative aspect-600/340 overflow-hidden rounded-card bg-surface-1">
         {item.cover && (
           <Image
@@ -70,7 +70,7 @@ function CaseCard({ item }: { item: CaseStudySummary }) {
             alt={item.cover.alt}
             fill
             sizes="(min-width: 1280px) 600px, (min-width: 768px) 46vw, 92vw"
-            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-103"
+            className="parallax-media object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-120"
           />
         )}
       </div>

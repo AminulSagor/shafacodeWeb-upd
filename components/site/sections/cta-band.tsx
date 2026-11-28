@@ -51,7 +51,7 @@ export function CtaBand({
           {title}
         </h2>
         <p className="mt-6 max-w-140 type-body-lg text-fg-muted">{body}</p>
-        <div className="mt-9 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center">
+        <div data-magnetic-group className="mt-9 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center">
           <Button asChild size="lg">
             <Link href="/contact?type=consultation">
               Book a free consultation <ArrowRight aria-hidden />
@@ -63,7 +63,7 @@ export function CtaBand({
         </div>
         <ul className="mt-8 flex flex-col items-center gap-x-8 gap-y-3 md:flex-row">
           {trust.map((t) => (
-            <li key={t} className="flex items-center gap-2 type-body-sm text-fg-muted">
+            <li data-reveal key={t} className="flex items-center gap-2 type-body-sm text-fg-muted">
               <span className="grid size-5 place-items-center rounded-full bg-brand-soft text-icon-brand" aria-hidden>
                 <Check className="size-3" strokeWidth={3} />
               </span>
@@ -74,7 +74,7 @@ export function CtaBand({
         {showSteps && (
           <ol className="mt-10 grid w-full max-w-290 border-t border-line-subtle text-left md:grid-cols-3">
             {steps.map((s, i) => (
-              <li
+              <li data-reveal
                 key={s.title}
                 className="border-line-subtle py-7 max-md:border-b md:border-l md:px-8 md:first:border-l-0 md:first:pl-0 xl:px-10 xl:first:pl-10"
               >
