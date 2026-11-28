@@ -3,9 +3,10 @@ import type { MetadataRoute } from 'next';
 import { site } from '@/content/site';
 import { services } from '@/content/services';
 import { getCaseStudies } from '@/lib/data/case-studies';
+import { getJobs } from '@/lib/data/jobs';
 import { getPosts } from '@/lib/data/posts';
 
-/** Static routes, services and case studies; jobs are added with their pages. */
+/** Static routes, services, case studies, posts and open roles. Apply pages are noindex and left out. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const staticRoutes = [
@@ -22,11 +23,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/terms',
     '/cookie-policy',
   ];
-  const [caseStudies, posts] = await Promise.all([getCaseStudies(), getPosts()]);
+  const [caseStudies, posts, jobs] = await Promise.all([getCaseStudies(), getPosts(), getJobs()]);
   return [
     ...staticRoutes.map((path) => ({ url: `${site.url}${path}`, lastModified: now })),
     ...services.map((s) => ({ url: `${site.url}/services/${s.slug}`, lastModified: now })),
     ...caseStudies.map((c) => ({ url: `${site.url}/portfolio/${c.slug}`, lastModified: now })),
     ...posts.map((p) => ({ url: `${site.url}/blogs/${p.slug}`, lastModified: new Date(p.updatedAt) })),
+    ...jobs.map((j) => ({ url: `${site.url}/careers/${j.slug}`, lastModified: new Date(j.postedAt) })),
   ];
 }
