@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
+import { toast } from 'sonner';
 import { useState } from "react";
 import { supabase } from "@/lib/supabase-client";
 import createApply from "@/actions/apply/create-apply";

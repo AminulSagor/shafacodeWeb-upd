@@ -1,40 +1,31 @@
-"use client"
+'use client';
 
-import {
-  CircleCheckIcon,
-  InfoIcon,
-  Loader2Icon,
-  OctagonXIcon,
-  TriangleAlertIcon,
-} from "lucide-react"
-import { useTheme } from "next-themes"
-import { Toaster as Sonner, type ToasterProps } from "sonner"
+import { CircleCheck, Info, Loader2, OctagonX, TriangleAlert } from 'lucide-react';
+import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
-const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
-
+/** sonner, themed with tokens. Success toasts are success-styled. Figma: Toast 14:2536 */
+function Toaster({ theme = 'dark', ...props }: ToasterProps) {
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
-      className="toaster group"
+      theme={theme}
+      position="bottom-right"
       icons={{
-        success: <CircleCheckIcon className="size-4" />,
-        info: <InfoIcon className="size-4" />,
-        warning: <TriangleAlertIcon className="size-4" />,
-        error: <OctagonXIcon className="size-4" />,
-        loading: <Loader2Icon className="size-4 animate-spin" />,
+        success: <CircleCheck className="size-4 text-fg-success" />,
+        info: <Info className="size-4 text-fg-info" />,
+        warning: <TriangleAlert className="size-4 text-fg-warning" />,
+        error: <OctagonX className="size-4 text-fg-danger" />,
+        loading: <Loader2 className="size-4 animate-spin" />,
       }}
-      style={
-        {
-          "--normal-bg": "var(--popover)",
-          "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
-          "--border-radius": "var(--radius)",
-        } as React.CSSProperties
-      }
+      toastOptions={{
+        classNames: {
+          toast:
+            'squircle !rounded-[var(--field-radius)] !border !border-line !bg-surface-1 !text-fg !font-sans',
+          description: '!text-fg-muted',
+        },
+      }}
       {...props}
     />
-  )
+  );
 }
 
-export { Toaster }
+export { Toaster };

@@ -29,7 +29,7 @@ import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import ImageUploader from '@/components/shared/image-uploader';
 import { supabase } from '@/lib/supabase-client';

@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { firebaseClient } from '@/db/firebase-client';
 import { doc, deleteDoc } from 'firebase/firestore';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export interface Blog {
   id: string;

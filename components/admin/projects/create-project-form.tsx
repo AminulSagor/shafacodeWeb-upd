@@ -22,7 +22,7 @@ import * as z from 'zod';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import createProject from '@/actions/projects/create-project';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 const projectSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters'),

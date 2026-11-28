@@ -2,15 +2,29 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+/**
+ * Recessed field (Figma Field 13:2606): inset hairline + soft inner shadow,
+ * focus swaps it for a 2px lime inset, aria-invalid for a red one.
+ * 16px text on mobile so iOS does not zoom.
+ */
+export const fieldBase = [
+  'squircle w-full min-w-0 rounded-[var(--field-radius)] bg-field text-fg shadow-field',
+  'type-body',
+  'placeholder:text-fg-subtle',
+  'transition-[box-shadow,background-color] duration-100 outline-none',
+  'focus-visible:shadow-field-focus aria-invalid:shadow-field-error aria-invalid:focus-visible:shadow-field-error',
+  'disabled:cursor-not-allowed disabled:opacity-45',
+].join(' ');
+
 function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
   return (
     <input
       type={type}
       data-slot="input"
       className={cn(
-        'file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-        'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
-        'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+        fieldBase,
+        'h-[var(--control-height)] truncate px-3.5',
+        'file:mr-3 file:h-7 file:rounded-md file:border-0 file:bg-surface-2 file:px-2 file:type-label-xs file:text-fg',
         className
       )}
       {...props}

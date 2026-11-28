@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Copy, ImageIcon } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 type MediaItem = {
   id: string;

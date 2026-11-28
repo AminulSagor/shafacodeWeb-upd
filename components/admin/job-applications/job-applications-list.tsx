@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { firebaseClient } from "@/db/firebase-client";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
-import toast from "react-hot-toast";
+import { toast } from 'sonner';
 import { Badge } from "@/components/ui/badge";
 
 const JobApplicationsList = ({ applications }: any) => {

@@ -1,46 +1,43 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
+/** Status badge. Tones neutral, brand, success, warning, danger, info. Figma: Badge 12:2786 */
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-full border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
+  'squircle inline-flex w-fit shrink-0 items-center gap-1.5 rounded-[8px] px-2 py-0.5 type-label-xs whitespace-nowrap [&>svg]:size-3 [&>svg]:shrink-0',
   {
     variants: {
-      variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-        destructive:
-          "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
-        outline:
-          "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+      tone: {
+        neutral: 'bg-status-neutral text-fg-muted',
+        brand: 'bg-brand-soft text-fg-brand',
+        success: 'bg-status-success text-fg-success',
+        warning: 'bg-status-warning text-fg-warning',
+        danger: 'bg-status-danger text-fg-danger',
+        info: 'bg-status-info text-fg-info',
       },
     },
-    defaultVariants: {
-      variant: "default",
-    },
+    defaultVariants: { tone: 'neutral' },
   }
-)
+);
 
-function Badge({
-  className,
-  variant,
-  asChild = false,
-  ...props
-}: React.ComponentProps<"span"> &
-  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot : "span"
+type BadgeProps = React.ComponentProps<'span'> &
+  VariantProps<typeof badgeVariants> & {
+    /** shadcn names still used by the old admin screens */
+    variant?: 'default' | 'secondary' | 'destructive' | 'outline';
+    dot?: boolean;
+  };
 
+const legacyTone = { default: 'brand', secondary: 'neutral', destructive: 'danger', outline: 'neutral' } as const;
+
+function Badge({ className, tone, variant, dot, children, ...props }: BadgeProps) {
+  const t = tone ?? (variant ? legacyTone[variant] : undefined);
   return (
-    <Comp
-      data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
-      {...props}
-    />
-  )
+    <span data-slot="badge" className={cn(badgeVariants({ tone: t }), className)} {...props}>
+      {dot && <span className="size-1.5 rounded-full bg-current" aria-hidden />}
+      {children}
+    </span>
+  );
 }
 
-export { Badge, badgeVariants }
+export { Badge, badgeVariants };

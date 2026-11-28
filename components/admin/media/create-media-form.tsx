@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase-client';
 import { Copy } from 'lucide-react';
 import createMedia from '@/actions/media/create-media';

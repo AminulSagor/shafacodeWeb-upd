@@ -25,7 +25,7 @@ import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { updateJob } from '@/actions/jobs/update-job-by-id';
 
