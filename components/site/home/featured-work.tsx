@@ -11,24 +11,22 @@ import type { CaseStudySummary } from '@/content/case-studies';
 const caseHref = (slug: string) => `/portfolio/${slug}`;
 
 function Meta({ tags, suffix }: { tags: string[]; suffix?: string }) {
-  return (
-    <p className="type-mono-xs text-fg-brand">
-      {[...tags, suffix].filter(Boolean).join(' · ')}
-    </p>
-  );
+  return <p className="type-mono-xs text-fg-brand">{[...tags, suffix].filter(Boolean).join(' · ')}</p>;
 }
 
 function FeatureCase({ item }: { item: CaseStudySummary }) {
   return (
     <article className="group relative grid items-center gap-8 xl:grid-cols-2 xl:gap-14">
       <div className="relative aspect-[592/440] overflow-hidden rounded-[var(--card-radius)] bg-surface-1">
-        <Image
-          src={item.cover.src}
-          alt={item.cover.alt}
-          fill
-          sizes="(min-width: 1280px) 592px, 92vw"
-          className="object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]"
-        />
+        {item.cover && (
+          <Image
+            src={item.cover.src}
+            alt={item.cover.alt}
+            fill
+            sizes="(min-width: 1280px) 592px, 92vw"
+            className="object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]"
+          />
+        )}
       </div>
       <div className="flex flex-col">
         <Meta tags={item.tags} suffix="Case study 01" />
@@ -67,13 +65,15 @@ function CaseCard({ item }: { item: CaseStudySummary }) {
   return (
     <article className="group relative flex h-full flex-col">
       <div className="relative aspect-[600/340] overflow-hidden rounded-[var(--card-radius)] bg-surface-1">
-        <Image
-          src={item.cover.src}
-          alt={item.cover.alt}
-          fill
-          sizes="(min-width: 1280px) 600px, (min-width: 768px) 46vw, 92vw"
-          className="object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]"
-        />
+        {item.cover && (
+          <Image
+            src={item.cover.src}
+            alt={item.cover.alt}
+            fill
+            sizes="(min-width: 1280px) 600px, (min-width: 768px) 46vw, 92vw"
+            className="object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]"
+          />
+        )}
       </div>
       <div className="mt-5">
         <Meta tags={item.tags} />

@@ -30,15 +30,17 @@ export function CaseStudyCard({
         className
       )}
     >
-      <div className="relative h-[var(--media-card)] w-full overflow-hidden bg-surface-2">
-        <Image
-          src={item.cover.src}
-          alt={item.cover.alt}
-          fill
-          sizes={sizes}
-          className="object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]"
-        />
-      </div>
+      {item.cover && (
+        <div className="relative h-[var(--media-card)] w-full overflow-hidden bg-surface-2">
+          <Image
+            src={item.cover.src}
+            alt={item.cover.alt}
+            fill
+            sizes={sizes}
+            className="object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]"
+          />
+        </div>
+      )}
       <div className="flex flex-1 flex-col gap-4 p-[var(--card-pad)]">
         <p className="flex flex-wrap gap-x-2 type-mono-xs text-fg-subtle">
           {item.tags.map((t) => (

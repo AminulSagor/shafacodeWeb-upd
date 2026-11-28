@@ -1,71 +1,112 @@
 import 'server-only';
 
 import { unstable_cache } from 'next/cache';
+import type { DocumentData } from 'firebase-admin/firestore';
 
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
-import { fallbackCaseStudies, type CaseStudySummary } from '@/content/case-studies';
+import { fallbackCaseStudies, type CaseStudy, type CaseStudySummary } from '@/content/case-studies';
+import { serviceSlugs, type ServiceSlug } from '@/content/services';
 import { publicMediaUrl } from '@/lib/media';
 
+const str = (v: unknown) => (typeof v === 'string' ? v : '');
+const strArr = (v: unknown) => (Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []);
+
+export const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/[\s_-]+/g, '-')
+    .slice(0, 80);
+
 /**
- * Published case studies as DTOs (explicit fields only: `contactEmail` and
- * other private fields never reach a Server Component payload). Until the
- * migration fills the new fields, the seed content from the design is used.
+ * Firestore document to a public DTO. Explicit fields only: `contactEmail`
+ * and other private fields never reach a Server Component payload.
+ * Supports both the 2026 schema and the legacy one (title, description,
+ * client, status) until the migration script runs.
  */
-const readFeatured = unstable_cache(
-  async (): Promise<CaseStudySummary[]> => {
+function toCaseStudy(id: string, d: DocumentData): CaseStudy | null {
+  const status = str(d.status);
+  if (status === 'draft' || status === 'archived' || status === 'scheduled') return null;
+  const title = str(d.title);
+  if (!title) return null;
+  const legacy = !d.slug;
+  const cover = d.cover?.path
+    ? {
+        src: publicMediaUrl(str(d.cover.path)),
+        alt: str(d.cover.alt),
+        width: Number(d.cover.width) || 1264,
+        height: Number(d.cover.height) || 848,
+      }
+    : null;
+  const description = str(d.description) || str(d.summary);
+  return {
+    slug: legacy ? `${slugify(title)}-${id.slice(0, 6).toLowerCase()}` : str(d.slug),
+    client: str(d.client),
+    title,
+    summary: str(d.summary) || (description.length > 180 ? `${description.slice(0, 177).trimEnd()}…` : description),
+    tags: [str(d.industry), ...strArr(d.tags)].filter(Boolean),
+    services: strArr(d.services).filter((s): s is ServiceSlug => (serviceSlugs as readonly string[]).includes(s)),
+    categories: strArr(d.categories) as CaseStudy['categories'],
+    delivery: str(d.deliveryStatus || d.status) === 'in-progress' ? 'ongoing' : 'delivered',
+    cover,
+    results: Array.isArray(d.results)
+      ? d.results.slice(0, 3).map((r: { value?: unknown; label?: unknown }) => ({ value: str(r.value), label: str(r.label) }))
+      : [],
+    lede: str(d.summary) || undefined,
+    industry: str(d.industry) || undefined,
+    timeline: str(d.timeline) || undefined,
+    stack: strArr(d.techStack),
+    challenge: str(d.challenge) || undefined,
+    solution: str(d.solution) || undefined,
+    body: legacy ? description : undefined,
+  };
+}
+
+const readAll = unstable_cache(
+  async (): Promise<CaseStudy[]> => {
     if (!hasFirebaseCredentials()) return [];
     try {
-      const snap = await getDb()
-        .collection('projects')
-        .where('status', '==', 'published')
-        .where('isFeatured', '==', true)
-        .orderBy('publishedAt', 'desc')
-        .limit(3)
-        .get();
-      return snap.docs
-        .map((doc) => {
-          const d = doc.data();
-          if (!d.slug || !d.cover?.path) return null;
-          return {
-            slug: String(d.slug),
-            client: String(d.client ?? ''),
-            title: String(d.title ?? ''),
-            summary: String(d.summary ?? ''),
-            tags: [String(d.industry ?? ''), ...(Array.isArray(d.tags) ? d.tags.map(String) : [])].filter(Boolean),
-            services: Array.isArray(d.services) ? d.services : [],
-            cover: {
-              src: publicMediaUrl(d.cover.path),
-              alt: String(d.cover.alt ?? ''),
-              width: Number(d.cover.width ?? 1264),
-              height: Number(d.cover.height ?? 848),
-            },
-            results: Array.isArray(d.results)
-              ? d.results.slice(0, 3).map((r: { value?: unknown; label?: unknown }) => ({
-                  value: String(r.value ?? ''),
-                  label: String(r.label ?? ''),
-                }))
-              : [],
-          } satisfies CaseStudySummary;
-        })
-        .filter((x): x is CaseStudySummary => x !== null);
+      const snap = await getDb().collection('projects').get();
+      return snap.docs.map((doc) => toCaseStudy(doc.id, doc.data())).filter((x): x is CaseStudy => x !== null);
     } catch (error) {
-      console.error('Failed to read featured case studies', error);
+      console.error('Failed to read case studies', error);
       return [];
     }
   },
-  ['case-studies:featured'],
+  ['case-studies:all'],
   { tags: ['projects'], revalidate: 3600 }
 );
 
-export async function getFeaturedCaseStudies(): Promise<CaseStudySummary[]> {
-  const items = await readFeatured();
+/** Every public case study: CMS entries when there are any, else the design seed. */
+export async function getCaseStudies(): Promise<CaseStudy[]> {
+  const items = await readAll();
   return items.length > 0 ? items : fallbackCaseStudies;
 }
 
-/** Up to `limit` case studies for a service page, newest first. */
+export async function getCaseStudy(slug: string): Promise<CaseStudy | null> {
+  const all = await getCaseStudies();
+  return all.find((c) => c.slug === slug) ?? null;
+}
+
+/** Featured on Home: CMS items with a cover first, the design seed otherwise. */
+export async function getFeaturedCaseStudies(): Promise<CaseStudySummary[]> {
+  const all = await getCaseStudies();
+  const withCover = all.filter((c) => c.cover);
+  return (withCover.length >= 3 ? withCover : fallbackCaseStudies).slice(0, 3);
+}
+
+/** Up to `limit` case studies for a service page, the closest matches first. */
 export async function getCaseStudiesForService(slug: string, limit = 2): Promise<CaseStudySummary[]> {
-  const pool = await getFeaturedCaseStudies();
+  const pool = (await getCaseStudies()).filter((c) => c.cover);
   const matching = pool.filter((c) => c.services.some((s) => s === slug));
   const rest = pool.filter((c) => !matching.includes(c));
   return [...matching, ...rest].slice(0, limit);
+}
+
+export async function getRelatedCaseStudies(current: CaseStudy, limit = 2): Promise<CaseStudySummary[]> {
+  const pool = (await getCaseStudies()).filter((c) => c.slug !== current.slug && c.cover);
+  const score = (c: CaseStudySummary) => c.services.filter((s) => current.services.includes(s)).length;
+  return [...pool].sort((a, b) => score(b) - score(a)).slice(0, limit);
 }
