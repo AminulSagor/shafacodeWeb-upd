@@ -138,7 +138,7 @@ export function ContactForm({ prefill }: { prefill: ContactPrefill }) {
         </p>
       )}
 
-      <div aria-hidden className="absolute -left-[10000px] h-px w-px overflow-hidden">
+      <div aria-hidden className="absolute -left-2500 h-px w-px overflow-hidden">
         <label htmlFor="contact-website">Website</label>
         <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>

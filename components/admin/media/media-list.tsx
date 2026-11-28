@@ -67,7 +67,7 @@ const MediaList = ({ media = [], loading = false }: MediaListProps) => {
           </div>
 
           <div className="flex items-center justify-between p-3 ">
-            <p className="text-xs text-slate-600 truncate max-w-[200px]">
+            <p className="text-xs text-slate-600 truncate max-w-50">
               {item.url}
             </p>
             <Button

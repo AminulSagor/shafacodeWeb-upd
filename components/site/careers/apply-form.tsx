@@ -143,7 +143,7 @@ export function ApplyForm({ jobSlug, jobTitle }: { jobSlug: string; jobTitle: st
       )}
 
       {/* Honeypot: hidden from people and assistive tech */}
-      <div aria-hidden className="absolute -left-[10000px] h-px w-px overflow-hidden">
+      <div aria-hidden className="absolute -left-2500 h-px w-px overflow-hidden">
         <label htmlFor="website">Website</label>
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>

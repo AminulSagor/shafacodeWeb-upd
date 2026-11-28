@@ -91,7 +91,7 @@ export default async function CareersPage({ searchParams }: { searchParams: Sear
       />
 
       <div className="container-page">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-card bg-surface-1 md:aspect-[1240/460]">
+        <div className="relative aspect-4/3 overflow-hidden rounded-card bg-surface-1 md:aspect-1240/460">
           <Image
             src="/images/careers/team-culture.jpg"
             alt="Two ShafaCode developers laughing at a code review while teammates talk in the bright studio behind them"
@@ -135,7 +135,7 @@ export default async function CareersPage({ searchParams }: { searchParams: Sear
               <label htmlFor="role-search" className="sr-only">
                 Search roles
               </label>
-              <Search className="pointer-events-none absolute top-1/2 left-3.5 size-[18px] -translate-y-1/2 text-icon" aria-hidden />
+              <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4.5 -translate-y-1/2 text-icon" aria-hidden />
               <Input key={q ?? ''} id="role-search" name="q" type="search" defaultValue={q} placeholder="Search roles…" className="pl-10" />
             </form>
           </div>

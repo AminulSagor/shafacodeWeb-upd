@@ -63,7 +63,7 @@ export function PartnerVideo() {
               sizes="(min-width: 1280px) 776px, 92vw"
               className="object-cover"
             />
-            <span className="relative grid size-16 place-items-center rounded-full bg-action-primary text-fg-on-brand shadow-btn-primary transition-transform motion-safe:group-hover:scale-105 md:size-[84px]">
+            <span className="relative grid size-16 place-items-center rounded-full bg-action-primary text-fg-on-brand shadow-btn-primary transition-transform motion-safe:group-hover:scale-105 md:size-21">
               <Play className="size-7 translate-x-0.5 fill-current" aria-hidden />
             </span>
           </button>

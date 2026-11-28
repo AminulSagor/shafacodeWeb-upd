@@ -130,7 +130,7 @@ export default async function BlogPage({ searchParams }: { searchParams: SearchP
               <label htmlFor="blog-search" className="sr-only">
                 Search articles
               </label>
-              <Search className="pointer-events-none absolute top-1/2 left-3.5 size-[18px] -translate-y-1/2 text-icon" aria-hidden />
+              <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4.5 -translate-y-1/2 text-icon" aria-hidden />
               <Input key={f.q ?? ''} id="blog-search" name="q" type="search" defaultValue={f.q} placeholder="Search articles…" className="pl-10" />
             </form>
           </div>

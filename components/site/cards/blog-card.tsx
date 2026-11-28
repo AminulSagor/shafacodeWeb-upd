@@ -61,18 +61,18 @@ export function BlogCard({
     <article
       className={cn(
         'group card-focus relative flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color,translate] duration-(--duration-base) ease-out hover:border-line-brand motion-safe:hover:-translate-y-0.5',
-        horizontal && 'xl:grid xl:grid-cols-[579px_1fr]'
+        horizontal && 'xl:grid xl:grid-cols-[--spacing(144.75)_1fr]'
       )}
     >
       {post.cover && (
-        <div className={cn('relative w-full overflow-hidden bg-surface-2', horizontal ? 'aspect-[4/3] xl:aspect-auto xl:min-h-[460px]' : 'h-media-card')}>
+        <div className={cn('relative w-full overflow-hidden bg-surface-2', horizontal ? 'aspect-4/3 xl:aspect-auto xl:min-h-115' : 'h-media-card')}>
           <Image
             src={post.cover.src}
             alt={post.cover.alt}
             fill
             preload={preload}
             sizes={horizontal ? '(min-width: 1280px) 579px, 92vw' : '(min-width: 1280px) 395px, (min-width: 768px) 46vw, 92vw'}
-            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-103"
           />
         </div>
       )}

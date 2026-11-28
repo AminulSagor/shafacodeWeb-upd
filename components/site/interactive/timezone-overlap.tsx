@@ -120,7 +120,7 @@ export function TimezoneOverlap({ className }: { className?: string }) {
           {Array.from({ length: 24 }, (_, h) => (
             <span
               key={h}
-              className={cn('h-5 rounded-[5px] transition-colors duration-(--duration-base)', inTeam(h) ? 'bg-action-primary' : 'bg-surface-2')}
+              className={cn('h-5 rounded-xs transition-colors duration-(--duration-base)', inTeam(h) ? 'bg-action-primary' : 'bg-surface-2')}
             />
           ))}
         </div>
@@ -133,7 +133,7 @@ export function TimezoneOverlap({ className }: { className?: string }) {
             <span
               key={h}
               className={cn(
-                'h-5 rounded-[5px] transition-colors duration-(--duration-base)',
+                'h-5 rounded-xs transition-colors duration-(--duration-base)',
                 overlap[h] ? 'bg-action-primary' : inVisitor(h) ? 'bg-surface-3' : 'bg-surface-2'
               )}
             />

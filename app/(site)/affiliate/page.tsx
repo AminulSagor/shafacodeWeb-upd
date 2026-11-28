@@ -80,7 +80,7 @@ export default function AffiliatePage() {
       </section>
 
       <section aria-labelledby="earnings-title" className="bg-surface-1 section-y">
-        <div className="container-page grid items-center gap-10 xl:grid-cols-[minmax(0,1fr)_minmax(0,560px)] xl:gap-14">
+        <div className="container-page grid items-center gap-10 xl:grid-cols-[minmax(0,1fr)_minmax(0,--spacing(140))] xl:gap-14">
           <div>
             <Eyebrow>Transparent earnings</Eyebrow>
             <h2 id="earnings-title" className="mt-5 type-h2 text-fg">
@@ -108,7 +108,7 @@ export default function AffiliatePage() {
             lede="Available in English and Bangla. The video loads only when you press play."
             ledeBelow
           />
-          <div className="mt-section-head grid items-start gap-grid xl:grid-cols-[minmax(0,776px)_minmax(0,1fr)]">
+          <div className="mt-section-head grid items-start gap-grid xl:grid-cols-[minmax(0,--spacing(194))_minmax(0,1fr)]">
             <PartnerVideo />
             <div className="rounded-md border border-line-subtle bg-surface-1 p-card md:p-6 xl:mt-12">
               <h3 className="type-h5 text-fg">In short</h3>
@@ -126,7 +126,7 @@ export default function AffiliatePage() {
       </section>
 
       <section id="join" aria-labelledby="join-title" className="scroll-mt-nav-offset bg-surface-1 section-y">
-        <div className="container-page grid items-start gap-10 xl:grid-cols-[minmax(0,1fr)_minmax(0,560px)] xl:gap-14">
+        <div className="container-page grid items-start gap-10 xl:grid-cols-[minmax(0,1fr)_minmax(0,--spacing(140))] xl:gap-14">
           <div className="xl:pt-6">
             <h2 id="join-title" className="type-h2 text-fg">
               Join the <Accent>partner network</Accent>

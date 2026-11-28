@@ -35,8 +35,8 @@ export function LegalPage({ doc }: { doc: LegalDoc }) {
         }
         lede={doc.description}
       />
-      <div className="container-page grid gap-10 pb-section xl:grid-cols-[minmax(0,1fr)_300px] xl:gap-grid">
-        <div className="min-w-0 xl:max-w-[880px] [&_h2]:mt-10 [&_h2]:mb-3 [&_h2]:type-h4 [&_p]:my-3 [&_p]:type-body">
+      <div className="container-page grid gap-10 pb-section xl:grid-cols-[minmax(0,1fr)_--spacing(75)] xl:gap-grid">
+        <div className="min-w-0 xl:max-w-220 [&_h2]:mt-10 [&_h2]:mb-3 [&_h2]:type-h4 [&_p]:my-3 [&_p]:type-body">
           <Markdown>{doc.body}</Markdown>
         </div>
         <aside aria-label="On this page" className="max-xl:-order-1 xl:sticky xl:top-sticky xl:self-start">

@@ -78,7 +78,7 @@ export default async function AboutPage() {
       />
 
       <section aria-labelledby="story-title" className="container-page grid items-center gap-10 pb-section xl:grid-cols-2 xl:gap-14">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-card bg-surface-1 xl:aspect-[608/460]">
+        <div className="relative aspect-4/3 overflow-hidden rounded-card bg-surface-1 xl:aspect-608/460">
           <Image
             src="/images/about/team-planning.jpg"
             alt="The ShafaCode team celebrating a launch around a table with laptops and a wall of sticky notes"
@@ -147,7 +147,7 @@ export default async function AboutPage() {
             {team.map((m) => (
               <li key={m.name}>
                 <article className="flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-canvas">
-                  <div className="relative aspect-[290/300] bg-surface-2">
+                  <div className="relative aspect-290/300 bg-surface-2">
                     {m.photo ? (
                       <Image src={m.photo} alt={`Portrait of ${m.name}`} fill sizes="(min-width: 1280px) 290px, (min-width: 640px) 46vw, 92vw" className="object-cover" />
                     ) : (

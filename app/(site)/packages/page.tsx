@@ -76,7 +76,7 @@ export default function PackagesPage() {
       />
 
       <section aria-labelledby="estimate-title" className="pb-section">
-        <div className="container-page grid items-center gap-10 xl:grid-cols-[minmax(0,560px)_minmax(0,600px)] xl:justify-between">
+        <div className="container-page grid items-center gap-10 xl:grid-cols-[minmax(0,--spacing(140))_minmax(0,--spacing(150))] xl:justify-between">
           <div>
             <h2 id="estimate-title" className="type-h2 text-fg">
               Start with a <Accent>ten-second</Accent> estimate
@@ -165,7 +165,7 @@ export default function PackagesPage() {
             aria-labelledby="compare-title"
             className="relative mt-section-head overflow-x-auto rounded-md border border-line-subtle focus-visible:focus-ring"
           >
-            <table className="w-full min-w-[640px] border-collapse type-body-sm">
+            <table className="w-full min-w-160 border-collapse type-body-sm">
               <caption className="sr-only">Features included in the Basic, App + Website and Premium packages</caption>
               <thead>
                 <tr className="bg-surface-1">

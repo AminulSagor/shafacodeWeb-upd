@@ -34,7 +34,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-dvh">
         <a
           href="#main"
-          className="fixed top-3 left-3 z-[100] -translate-y-24 rounded-button-sm bg-action-primary px-4 py-2 type-label-sm text-fg-on-brand focus-visible:translate-y-0 focus-visible:focus-ring"
+          className="fixed top-3 left-3 z-100 -translate-y-24 rounded-button-sm bg-action-primary px-4 py-2 type-label-sm text-fg-on-brand focus-visible:translate-y-0 focus-visible:focus-ring"
         >
           Skip to content
         </a>

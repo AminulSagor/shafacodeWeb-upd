@@ -36,7 +36,7 @@ export function ServicesIndex({
             return (
               <li
                 key={s.slug}
-                className="group card-focus relative grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-3 border-b border-line-subtle py-6 transition-colors duration-(--duration-base) hover:bg-hover md:gap-x-8 md:py-8 xl:grid-cols-[60px_minmax(0,1fr)_minmax(0,1fr)_220px_40px]"
+                className="group card-focus relative grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-3 border-b border-line-subtle py-6 transition-colors duration-(--duration-base) hover:bg-hover md:gap-x-8 md:py-8 xl:grid-cols-[--spacing(15)_minmax(0,1fr)_minmax(0,1fr)_--spacing(55)_--spacing(10)]"
               >
                 <span className="flex items-center gap-3 self-start pt-1 xl:self-center xl:pt-0">
                   <span aria-hidden className="w-5 type-mono-sm text-fg-subtle tabular">{String(i + 1).padStart(2, '0')}</span>
@@ -54,7 +54,7 @@ export function ServicesIndex({
                   aria-hidden
                   className="grid size-10 place-items-center self-start rounded-button-sm bg-action-secondary text-icon-strong shadow-btn-secondary transition-[background-color,color,box-shadow] duration-(--duration-fast) group-hover:bg-action-primary group-focus-within:bg-action-primary group-focus-within:text-fg-on-brand group-focus-within:shadow-btn-primary group-hover:text-fg-on-brand group-hover:shadow-btn-primary xl:order-last xl:self-center"
                 >
-                  <ArrowUpRight className="size-[18px] transition-transform duration-(--duration-fast) group-hover:translate-x-px group-hover:-translate-y-px" />
+                  <ArrowUpRight className="size-4.5 transition-transform duration-(--duration-fast) group-hover:translate-x-px group-hover:-translate-y-px" />
                 </span>
                 <p className="col-span-3 type-body text-fg-muted md:col-span-1 md:col-start-2 xl:col-start-auto">
                   {s.description}

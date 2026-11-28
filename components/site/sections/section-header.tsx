@@ -29,15 +29,15 @@ export function SectionHeader({ eyebrow, title, lede, id, as: H = 'h2', classNam
         className
       )}
     >
-      <div className="flex max-w-[860px] min-w-0 flex-1 flex-col gap-5">
+      <div className="flex max-w-215 min-w-0 flex-1 flex-col gap-5">
         <Eyebrow>{eyebrow}</Eyebrow>
         <H id={id} className={cn(H === 'h1' ? 'type-h1' : 'type-h2', 'text-fg')}>
           {title}
         </H>
-        {ledeBelow && lede && <p className="max-w-[640px] type-body-lg text-fg-muted">{lede}</p>}
+        {ledeBelow && lede && <p className="max-w-160 type-body-lg text-fg-muted">{lede}</p>}
       </div>
       {((lede && !ledeBelow) || aside) && (
-        <div className="flex max-w-[560px] flex-col gap-5 xl:w-[400px] xl:max-w-[400px] xl:shrink-0">
+        <div className="flex max-w-140 flex-col gap-5 xl:w-100 xl:max-w-100 xl:shrink-0">
           {lede && !ledeBelow && <p className="type-body-lg text-fg-muted">{lede}</p>}
           {aside}
         </div>

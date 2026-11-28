@@ -20,7 +20,7 @@ export function StepCard({
   return (
     <div
       className={cn(
-        'flex h-full flex-col rounded-md border bg-surface-1 p-[18px] transition-colors duration-(--duration-base)',
+        'flex h-full flex-col rounded-md border bg-surface-1 p-4.5 transition-colors duration-(--duration-base)',
         active ? 'border-line-brand' : 'border-line',
         className
       )}
@@ -83,7 +83,7 @@ export function DragHint({ label = 'Drag any stage' }: { label?: string }) {
   return (
     <p
       aria-hidden
-      className="absolute bottom-[18px] left-1/2 flex h-[34px] -translate-x-1/2 items-center gap-2 rounded-full border border-line bg-canvas px-4 type-mono-xs text-fg-muted"
+      className="absolute bottom-4.5 left-1/2 flex h-8.5 -translate-x-1/2 items-center gap-2 rounded-full border border-line bg-canvas px-4 type-mono-xs text-fg-muted"
     >
       <ArrowLeft className="size-3.5 text-icon-brand" />
       {label}

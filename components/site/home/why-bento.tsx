@@ -26,13 +26,13 @@ function CellText({ index, title, body }: { index: string; title: string; body: 
     <div className="mt-7 flex flex-col">
       <p className="type-mono-xs text-fg-brand">[ {index} ]</p>
       <h3 className="mt-3 type-h3 text-fg">{title}</h3>
-      <p className="mt-3 max-w-[700px] type-body text-fg-muted">{body}</p>
+      <p className="mt-3 max-w-175 type-body text-fg-muted">{body}</p>
     </div>
   );
 }
 
 const cell = 'flex flex-col p-card xl:p-10';
-const visual = 'flex flex-col xl:min-h-[300px]';
+const visual = 'flex flex-col xl:min-h-75';
 
 function ProgressVisual() {
   return (
@@ -79,7 +79,7 @@ function BriefVisual() {
       <ul className="mt-4 flex flex-col gap-4">
         {brief.map((b) => (
           <li key={b} className="flex items-center gap-3 border-b border-line-subtle py-2">
-            <Check className="size-[18px] shrink-0 text-icon-brand" strokeWidth={2.25} aria-hidden />
+            <Check className="size-4.5 shrink-0 text-icon-brand" strokeWidth={2.25} aria-hidden />
             <span className="type-body-lg text-fg">{b}</span>
           </li>
         ))}
@@ -93,7 +93,7 @@ function Gauge({ label, value }: { label: string; value: number }) {
   const c = 2 * Math.PI * r;
   return (
     <figure className="flex flex-col items-center gap-3.5">
-      <div className="relative size-[76px] sm:size-[88px] md:size-[108px]">
+      <div className="relative size-19 sm:size-22 md:size-27">
         <svg viewBox="0 0 108 108" className="size-full -rotate-90" aria-hidden>
           <circle cx="54" cy="54" r={r} fill="none" stroke="var(--line-subtle)" strokeWidth="4" />
           <circle
@@ -174,7 +174,7 @@ export function WhyBento() {
               />
             </div>
             <div className={cell}>
-              <div className={cn('relative flex aspect-[16/9] flex-col overflow-hidden rounded-md xl:aspect-auto xl:h-[300px]')}>
+              <div className={cn('relative flex aspect-video flex-col overflow-hidden rounded-md xl:aspect-auto xl:h-75')}>
                 <Image
                   src="/images/home/adaptive-ux.jpg"
                   alt="Hands using a responsive analytics dashboard on a laptop, tablet and phone with lime charts"

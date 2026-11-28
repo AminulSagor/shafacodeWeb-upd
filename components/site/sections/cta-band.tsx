@@ -47,10 +47,10 @@ export function CtaBand({
       />
       <div className="container-page flex flex-col items-center text-center">
         <Eyebrow>Start your journey</Eyebrow>
-        <h2 id="cta-title" className="mt-5 max-w-[720px] type-h2 text-fg">
+        <h2 id="cta-title" className="mt-5 max-w-180 type-h2 text-fg">
           {title}
         </h2>
-        <p className="mt-6 max-w-[560px] type-body-lg text-fg-muted">{body}</p>
+        <p className="mt-6 max-w-140 type-body-lg text-fg-muted">{body}</p>
         <div className="mt-9 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center">
           <Button asChild size="lg">
             <Link href="/contact?type=consultation">
@@ -72,7 +72,7 @@ export function CtaBand({
           ))}
         </ul>
         {showSteps && (
-          <ol className="mt-10 grid w-full max-w-[1160px] border-t border-line-subtle text-left md:grid-cols-3">
+          <ol className="mt-10 grid w-full max-w-290 border-t border-line-subtle text-left md:grid-cols-3">
             {steps.map((s, i) => (
               <li
                 key={s.title}

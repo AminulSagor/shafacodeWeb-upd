@@ -28,7 +28,7 @@ export function TechGrid() {
             return (
               <li
                 key={t.name}
-                className="-mt-px -ml-px flex flex-col gap-[18px] border-t border-l border-line-subtle px-5 py-6 md:px-6 md:py-7"
+                className="-mt-px -ml-px flex flex-col gap-4.5 border-t border-l border-line-subtle px-5 py-6 md:px-6 md:py-7"
               >
                 <span className="grid size-10 place-items-center text-icon-strong">
                   {t.brand ? (

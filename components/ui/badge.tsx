@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 /** Status badge. Tones neutral, brand, success, warning, danger, info. Figma: Badge 12:2786 */
 const badgeVariants = cva(
-  'inline-flex w-fit shrink-0 items-center gap-1.5 rounded-[8px] px-2 py-0.5 type-label-xs whitespace-nowrap [&>svg]:size-3 [&>svg]:shrink-0',
+  'inline-flex w-fit shrink-0 items-center gap-1.5 rounded-badge px-2 py-0.5 type-label-xs whitespace-nowrap [&>svg]:size-3 [&>svg]:shrink-0',
   {
     variants: {
       tone: {

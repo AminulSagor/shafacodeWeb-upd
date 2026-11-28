@@ -51,7 +51,7 @@ const ProjectsList = ({ projects }: ProjectsListProps) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[250px]">Project Title</TableHead>
+            <TableHead className="w-62.5">Project Title</TableHead>
             <TableHead>Client</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="">Contact</TableHead>
@@ -78,7 +78,7 @@ const ProjectsList = ({ projects }: ProjectsListProps) => {
                 </Badge>
               </TableCell>
 
-              <TableCell className="truncate max-w-[200px]">
+              <TableCell className="truncate max-w-50">
                 <a
                   className="text-sky-600"
                   href={getHref(project.contactEmail)}

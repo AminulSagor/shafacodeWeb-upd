@@ -25,8 +25,8 @@ export function PageHero({ crumbs, eyebrow, title, lede, actions, aside, classNa
   return (
     <section aria-labelledby="page-title" className={cn('relative isolate', className)}>
       {/* Glow: clipped horizontally only, so it never causes sideways scroll */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 -top-nav -z-10 h-[900px] overflow-x-clip">
-        <div className="absolute top-0 left-[calc(50%-1100px)] h-full w-[1400px] bg-glow opacity-20 max-md:left-[-300px] max-md:opacity-15" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 -top-nav -z-10 h-225 overflow-x-clip">
+        <div className="absolute top-0 left-[calc(50%_-_--spacing(275))] h-full w-350 bg-glow opacity-20 max-md:-left-75 max-md:opacity-15" />
       </div>
       <div
         className={cn(
@@ -34,7 +34,7 @@ export function PageHero({ crumbs, eyebrow, title, lede, actions, aside, classNa
           aside && 'grid gap-10 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end'
         )}
       >
-        <div className="flex max-w-[880px] flex-col items-start">
+        <div className="flex max-w-220 flex-col items-start">
           <Breadcrumbs items={crumbs} />
           <Eyebrow className="mt-6">{eyebrow}</Eyebrow>
           <h1 id="page-title" className={cn('mt-5 type-h1 text-fg', titleClassName)}>

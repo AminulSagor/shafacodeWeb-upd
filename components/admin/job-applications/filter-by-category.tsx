@@ -27,7 +27,7 @@ const FilterByCategory = ({ categories }: { categories: string[] }) => {
 
   return (
     <Select onValueChange={handleChange}>
-      <SelectTrigger className="w-[200px]">
+      <SelectTrigger className="w-50">
         <SelectValue placeholder="Select category" />
       </SelectTrigger>
 

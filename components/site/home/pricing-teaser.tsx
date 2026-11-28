@@ -11,7 +11,7 @@ export function PricingTeaser() {
   return (
     <section aria-labelledby="pricing-title" className="section-y">
       <div className="container-page">
-        <div className="grid items-center gap-10 border-t border-line-subtle pt-10 xl:grid-cols-[minmax(0,560px)_minmax(0,600px)] xl:justify-between xl:pt-12">
+        <div className="grid items-center gap-10 border-t border-line-subtle pt-10 xl:grid-cols-[minmax(0,--spacing(140))_minmax(0,--spacing(150))] xl:justify-between xl:pt-12">
           <div className="flex flex-col items-start">
             <Eyebrow>Packages</Eyebrow>
             <h2 id="pricing-title" className="mt-6 type-h2 text-fg">

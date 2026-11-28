@@ -34,7 +34,7 @@ const JobApplicationsList = ({ applications }: any) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[200px]">Name</TableHead>
+            <TableHead className="w-50">Name</TableHead>
             <TableHead>Subject</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -44,7 +44,7 @@ const JobApplicationsList = ({ applications }: any) => {
         <TableBody>
           {applications.map((app: any) => (
             <TableRow key={app.id}>
-              <TableCell className="font-medium w-[300px]">
+              <TableCell className="font-medium w-75">
                 {app.name}
               </TableCell>
               <TableCell className="font-medium">{app.subject}</TableCell>

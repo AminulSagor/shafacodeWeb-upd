@@ -108,7 +108,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
         lede="Share your idea, goals, timeline and budget range. We review every request and reply with clear next steps, usually within 12 hours."
       />
 
-      <div className="container-page grid gap-10 pb-section xl:grid-cols-[minmax(0,1fr)_380px] xl:gap-grid">
+      <div className="container-page grid gap-10 pb-section xl:grid-cols-[minmax(0,1fr)_--spacing(95)] xl:gap-grid">
         <ContactForm prefill={prefill} />
 
         <aside aria-labelledby="direct-title" className="flex flex-col gap-3">

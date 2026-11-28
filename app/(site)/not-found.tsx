@@ -22,18 +22,18 @@ const quickLinks = [
 /** Branded 404. Figma: 404 52:8730 (mobile 53:17536) */
 export default function NotFound() {
   return (
-    <section aria-labelledby="nf-title" className="relative isolate pt-12 pb-section md:pt-20 xl:pt-[104px]">
+    <section aria-labelledby="nf-title" className="relative isolate pt-12 pb-section md:pt-20 xl:pt-26">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 -top-nav -z-10 h-[900px] bg-glow opacity-30 max-md:opacity-20"
+        className="pointer-events-none absolute inset-x-0 -top-nav -z-10 h-225 bg-glow opacity-30 max-md:opacity-20"
       />
       <div className="container-page flex flex-col items-center text-center">
-        <OctopusIllustration className="h-auto w-[260px] md:w-[360px]" />
+        <OctopusIllustration className="h-auto w-65 md:w-90" />
         <Eyebrow className="mt-6">Error 404</Eyebrow>
-        <h1 id="nf-title" className="mt-6 max-w-[900px] type-display text-fg">
+        <h1 id="nf-title" className="mt-6 max-w-225 type-display text-fg">
           This page got <Accent>tangled up</Accent>
         </h1>
-        <p className="mt-6 max-w-[620px] type-body-lg text-fg-muted">
+        <p className="mt-6 max-w-155 type-body-lg text-fg-muted">
           The link may be broken or the page may have moved. Let our octopus point you somewhere useful.
         </p>
         <div className="mt-8 flex flex-col gap-3 max-md:w-full sm:flex-row">
@@ -52,7 +52,7 @@ export default function NotFound() {
           {quickLinks.map(({ title, body, href, icon: Icon }) => (
             <li
               key={href}
-              className="group card-focus relative flex flex-col rounded-panel border border-line-subtle bg-surface-1 p-card transition-colors duration-(--duration-base) hover:border-line xl:min-h-[212px] xl:p-10"
+              className="group card-focus relative flex flex-col rounded-panel border border-line-subtle bg-surface-1 p-card transition-colors duration-(--duration-base) hover:border-line xl:min-h-53 xl:p-10"
             >
               <Icon className="size-5 text-icon-brand" strokeWidth={1.75} aria-hidden />
               <h2 className="mt-6 type-h4 text-fg xl:mt-auto">

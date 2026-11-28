@@ -18,7 +18,7 @@ const JobApplicationsPage = async ({
         <h2 className="font-semibold text-3xl">Job Applications</h2>
         <Suspense
           fallback={
-            <div className="inline-block h-8 w-[180px] bg-gray-200 animate-pulse rounded" />
+            <div className="inline-block h-8 w-45 bg-gray-200 animate-pulse rounded" />
           }
         >
           <CategoryLoader />

@@ -13,7 +13,7 @@ export default function GlobalError({ reset }: { error: Error & { digest?: strin
           <button
             type="button"
             onClick={reset}
-            className="h-11 rounded-[12px] bg-action-primary px-5 type-label text-fg-on-brand shadow-btn-primary focus-visible:focus-ring"
+            className="h-11 rounded-field bg-action-primary px-5 type-label text-fg-on-brand shadow-btn-primary focus-visible:focus-ring"
           >
             Try again
           </button>

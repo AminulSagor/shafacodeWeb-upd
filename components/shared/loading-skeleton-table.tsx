@@ -15,7 +15,7 @@ export default function JobApplicationsSkeleton() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[200px]">Name</TableHead>
+            <TableHead className="w-50">Name</TableHead>
             <TableHead>Subject</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -25,7 +25,7 @@ export default function JobApplicationsSkeleton() {
         <TableBody>
           {rows.map((_, i) => (
             <TableRow key={i}>
-              <TableCell className="w-[300px]">
+              <TableCell className="w-75">
                 <div className="h-4 w-40 bg-gray-200 animate-pulse rounded" />
               </TableCell>
 

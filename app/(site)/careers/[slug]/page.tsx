@@ -123,8 +123,8 @@ export default async function JobPage({ params }: Props) {
         </ul>
       </div>
 
-      <div className="container-page grid gap-10 pt-10 pb-section xl:grid-cols-[minmax(0,1fr)_420px] xl:gap-grid xl:pt-14">
-        <div className="min-w-0 xl:max-w-[720px] [&_h2]:type-h3">
+      <div className="container-page grid gap-10 pt-10 pb-section xl:grid-cols-[minmax(0,1fr)_--spacing(105)] xl:gap-grid xl:pt-14">
+        <div className="min-w-0 xl:max-w-180 [&_h2]:type-h3">
           <Markdown lists="checks">{job.description}</Markdown>
         </div>
         <aside aria-labelledby="ready-title" className="xl:sticky xl:top-sticky xl:self-start">
@@ -168,7 +168,7 @@ export default async function JobPage({ params }: Props) {
       {others.length > 0 && (
         <section aria-labelledby="more-roles-title" className="bg-surface-1 section-y">
           <div className="container-page">
-            <div className="max-w-[820px]">
+            <div className="max-w-205">
               <h2 id="more-roles-title" className="type-h3 text-fg">
                 More open roles
               </h2>

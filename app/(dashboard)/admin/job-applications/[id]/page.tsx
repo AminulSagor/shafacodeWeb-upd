@@ -62,7 +62,7 @@ export default async function ApplicationDetailsPage({ params }: PageProps) {
 
             <iframe
               src={app.resumeUrl}
-              className="w-full h-[800px] border rounded-md"
+              className="w-full h-200 border rounded-md"
             ></iframe>
           </CardContent>
         </Card>

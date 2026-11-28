@@ -41,7 +41,7 @@ export function Principles() {
                 {String(i + 1).padStart(2, '0')}
               </p>
               <h3 className="mt-5 type-h3 text-fg">{p.title}</h3>
-              <p className="mt-5 max-w-[360px] type-body text-fg-muted">{p.body}</p>
+              <p className="mt-5 max-w-90 type-body text-fg-muted">{p.body}</p>
             </li>
           ))}
         </ol>

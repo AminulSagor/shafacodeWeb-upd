@@ -45,7 +45,7 @@ const BlogList = ({ blogs }: BlogListProps) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[250px]">Title</TableHead>
+            <TableHead className="w-62.5">Title</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Excerpt</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -55,7 +55,7 @@ const BlogList = ({ blogs }: BlogListProps) => {
         <TableBody>
           {blogs.map((blog) => (
             <TableRow key={blog.id}>
-              <TableCell className="font-medium min-w-[400px]">
+              <TableCell className="font-medium min-w-100">
                 {blog.title}
               </TableCell>
               <TableCell>{blog.category}</TableCell>

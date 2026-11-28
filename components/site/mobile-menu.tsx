@@ -46,7 +46,7 @@ export function MobileMenu({ pathname }: { pathname: string }) {
         <Dialog.Overlay className="fixed inset-0 z-50 bg-scrim data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in xl:hidden" />
         <Dialog.Content
           className={cn(
-            'fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-canvas md:max-w-[420px] md:border-l md:border-line-subtle xl:hidden',
+            'fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-canvas md:max-w-105 md:border-l md:border-line-subtle xl:hidden',
             'data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:animate-in data-[state=open]:slide-in-from-right',
             'duration-(--duration-base) ease-out'
           )}
@@ -94,7 +94,7 @@ export function MobileMenu({ pathname }: { pathname: string }) {
                         aria-current={current(serviceHref(s.slug))}
                         className="flex min-h-11 items-center gap-3 type-label text-fg-muted focus-visible:focus-ring aria-[current=page]:text-fg-brand"
                       >
-                        <s.icon className="size-[18px] text-icon-brand" strokeWidth={1.75} aria-hidden />
+                        <s.icon className="size-4.5 text-icon-brand" strokeWidth={1.75} aria-hidden />
                         {s.title}
                       </Link>
                     </li>

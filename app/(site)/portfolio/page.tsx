@@ -87,16 +87,16 @@ function filterItems(all: CaseStudy[], f: ReturnType<typeof parse>) {
 
 function FeatureCase({ item }: { item: CaseStudy }) {
   return (
-    <article className={`group card-focus relative grid overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color] duration-(--duration-base) hover:border-line-brand ${item.cover ? 'xl:grid-cols-[579px_1fr]' : ''}`}>
+    <article className={`group card-focus relative grid overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color] duration-(--duration-base) hover:border-line-brand ${item.cover ? 'xl:grid-cols-[--spacing(144.75)_1fr]' : ''}`}>
       {item.cover && (
-        <div className="relative aspect-[4/3] overflow-hidden xl:aspect-auto xl:min-h-[460px]">
+        <div className="relative aspect-4/3 overflow-hidden xl:aspect-auto xl:min-h-115">
           <Image
             src={item.cover.src}
             alt={item.cover.alt}
             fill
             preload
             sizes="(min-width: 1280px) 579px, 92vw"
-            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-103"
           />
         </div>
       )}

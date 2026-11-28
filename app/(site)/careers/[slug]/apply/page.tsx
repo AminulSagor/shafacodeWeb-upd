@@ -58,7 +58,7 @@ export default async function ApplyPage({ params }: Props) {
         lede="Takes about 5 minutes. We read every application and reply within 48 hours."
       />
 
-      <div className="container-page grid gap-10 pb-section xl:grid-cols-[minmax(0,1fr)_300px] xl:gap-grid">
+      <div className="container-page grid gap-10 pb-section xl:grid-cols-[minmax(0,1fr)_--spacing(75)] xl:gap-grid">
         <ApplyForm jobSlug={job.slug} jobTitle={shortTitle} />
 
         <aside aria-label="About this role" className="flex flex-col gap-4 xl:sticky xl:top-sticky xl:self-start">

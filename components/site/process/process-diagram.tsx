@@ -3,19 +3,12 @@ import { ANCHORS, BOX, CORE, NODES, SUCKERS, pathD, pointAt, tentacle } from './
 import { CoreDisc, Rings, StepCard } from './parts';
 import { KineticCoreLoader } from './kinetic-core-loader';
 
-/**
- * Process stages. Below 1440px: a plain grid of the six cards. From 1440px
- * (where the 1240px diagram fits):
- * the Kinetic Core diagram, server-rendered with static curves, upgraded to
- * the draggable version when it nears the viewport (pointer devices without
- * reduced motion). The cards are the same ordered list in every mode.
- */
-export function ProcessDiagram() {
+/** The diagram with static curves (server-rendered; also the login panel art). */
+export function StaticKineticDiagram() {
   const hub = { x: CORE.x, y: CORE.y };
   const paths = ANCHORS.map((a) => tentacle(hub, a));
-
-  const staticDiagram = (
-    <div className="relative mx-auto h-[760px] w-[1240px]" data-kinetic-static>
+  return (
+    <div className="relative mx-auto h-190 w-310" data-kinetic-static>
       <Rings />
       <svg aria-hidden viewBox={`0 0 ${BOX.w} ${BOX.h}`} className="pointer-events-none absolute inset-0 size-full overflow-visible">
         {paths.map((t, i) => (
@@ -29,7 +22,7 @@ export function ProcessDiagram() {
           </g>
         ))}
       </svg>
-      <CoreDisc className="absolute top-[304px] left-[524px]" />
+      <CoreDisc className="absolute top-76 left-131" />
       <ol>
         {processSteps.map((step, i) => (
           <li key={step.title} className="absolute" style={{ left: NODES[i].x, top: NODES[i].y, width: NODES[i].w }}>
@@ -39,17 +32,28 @@ export function ProcessDiagram() {
       </ol>
     </div>
   );
+}
+
+/**
+ * Process stages. Below 1440px: a plain grid of the six cards. From 1440px
+ * (where the 1240px diagram fits):
+ * the Kinetic Core diagram, server-rendered with static curves, upgraded to
+ * the draggable version when it nears the viewport (pointer devices without
+ * reduced motion). The cards are the same ordered list in every mode.
+ */
+export function ProcessDiagram() {
+  const staticDiagram = <StaticKineticDiagram />;
 
   return (
     <>
-      <ol className="grid gap-grid md:grid-cols-2 xl:grid-cols-3 min-[1440px]:hidden">
+      <ol className="grid gap-grid md:grid-cols-2 xl:grid-cols-3 hd:hidden">
         {processSteps.map((step, i) => (
           <li key={step.title}>
             <StepCard step={step} index={i} />
           </li>
         ))}
       </ol>
-      <div className="max-[1439px]:hidden">
+      <div className="max-hd:hidden">
         <KineticCoreLoader fallback={staticDiagram} />
       </div>
     </>

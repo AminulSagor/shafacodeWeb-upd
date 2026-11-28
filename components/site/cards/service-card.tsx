@@ -41,7 +41,7 @@ export function ServiceCard({
     >
       <div className={cn('flex items-center justify-between', wide && 'md:col-span-2')}>
         <span className="grid size-12 place-items-center text-icon-brand">
-          <Icon className="size-[22px]" strokeWidth={1.75} aria-hidden />
+          <Icon className="size-5.5" strokeWidth={1.75} aria-hidden />
         </span>
         <span className="type-mono-sm text-fg-subtle tabular" aria-hidden>
           {String(index + 1).padStart(2, '0')}

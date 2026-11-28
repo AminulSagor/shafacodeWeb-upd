@@ -78,7 +78,7 @@ export function KineticCore() {
 
   return (
     <LazyMotion features={domMax} strict>
-      <div className="relative mx-auto h-[760px] w-[1240px] select-none">
+      <div className="relative mx-auto h-190 w-310 select-none">
         <Rings />
         <svg aria-hidden viewBox={`0 0 ${BOX.w} ${BOX.h}`} className="pointer-events-none absolute inset-0 size-full overflow-visible">
           {nodes.map((node, i) => (
@@ -88,13 +88,13 @@ export function KineticCore() {
 
         <m.div
           aria-hidden
-          className="absolute top-[272px] left-[492px] size-64 rounded-full border border-line-brand bg-brand-soft"
+          className="absolute top-68 left-123 size-64 rounded-full border border-line-brand bg-brand-soft"
           style={{ x: hub.x, y: hub.y }}
           animate={{ scale: [1, 1.06, 1], opacity: [0.5, 0.15, 0.5] }}
           transition={{ duration: 1.6, repeat: 2, ease: 'easeInOut' }} // finite: stops within 5s (WCAG 2.2.2)
         />
         <m.div
-          className="absolute top-[304px] left-[524px] cursor-grab rounded-full active:cursor-grabbing"
+          className="absolute top-76 left-131 cursor-grab rounded-full active:cursor-grabbing"
           style={{ x: hub.x, y: hub.y }}
           drag
           dragElastic={0.2}

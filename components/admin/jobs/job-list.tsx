@@ -50,7 +50,7 @@ const JobList = ({ jobs }: JobListProps) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[250px]">Job Title</TableHead>
+            <TableHead className="w-62.5">Job Title</TableHead>
             <TableHead>Department</TableHead>
             <TableHead>Type</TableHead>
             <TableHead className="">Location</TableHead>
@@ -71,7 +71,7 @@ const JobList = ({ jobs }: JobListProps) => {
                 </Badge>
               </TableCell>
 
-              <TableCell className="truncate max-w-[200px]">
+              <TableCell className="truncate max-w-50">
                 {job.location}
               </TableCell>
 

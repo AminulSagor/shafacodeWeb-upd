@@ -102,7 +102,7 @@ const checkComponents: Components = {
   ul: ({ node: _node, ...p }) => <ul className="my-5 flex flex-col gap-2.5 type-body text-fg-muted" {...p} />,
   li: ({ node: _node, children, ...p }) => (
     <li className="flex items-start gap-2.5" {...p}>
-      <Check className="mt-[5px] size-4 shrink-0 text-icon-brand" strokeWidth={2.5} aria-hidden />
+      <Check className="mt-1.25 size-4 shrink-0 text-icon-brand" strokeWidth={2.5} aria-hidden />
       <span>{children}</span>
     </li>
   ),

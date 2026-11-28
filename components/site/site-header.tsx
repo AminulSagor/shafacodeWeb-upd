@@ -83,7 +83,7 @@ export function SiteHeader() {
             ))}
           </NavigationMenu.List>
 
-          <div className="absolute top-[calc(100%+14px)] left-1/2 -translate-x-1/2">
+          <div className="absolute top-[calc(100%+--spacing(3.5))] left-1/2 -translate-x-1/2">
             <NavigationMenu.Viewport className="origin-top transition-[width,height] duration-(--duration-fast) data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:zoom-out-[0.98] data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-[0.98]" />
           </div>
         </NavigationMenu.Root>

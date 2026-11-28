@@ -11,7 +11,9 @@
   --color-current: currentColor;
 
   /* Scale collection: Tailwind's 4px spacing step matches space/1 to space/30. */
+  --radius-2xs: 2px;
   --radius-xs: 6px;
+  --radius-badge: 8px;
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-panel: 20px;
@@ -19,6 +21,7 @@
 
   --breakpoint-md: 48rem; /* 768px, Figma Tablet mode */
   --breakpoint-xl: 80rem; /* 1280px, Figma Desktop mode */
+  --breakpoint-hd: 90rem; /* 1440px, the Figma desktop frame (Kinetic Core diagram fits) */
 
   /* Motion collection */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

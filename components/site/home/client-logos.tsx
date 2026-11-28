@@ -13,7 +13,7 @@ export function ClientLogos() {
         <h2 id="clients-title" className="text-center type-mono-xs text-fg-subtle">
           Trusted by founders and teams at
         </h2>
-        <ul className="mx-auto mt-6 grid max-w-[640px] grid-cols-2 justify-items-center gap-x-6 gap-y-5 md:flex md:max-w-none md:flex-wrap md:justify-center md:gap-x-14 xl:flex-nowrap xl:justify-between xl:px-3">
+        <ul className="mx-auto mt-6 grid max-w-160 grid-cols-2 justify-items-center gap-x-6 gap-y-5 md:flex md:max-w-none md:flex-wrap md:justify-center md:gap-x-14 xl:flex-nowrap xl:justify-between xl:px-3">
           {clientNames.map((n, i) => (
             <li
               key={n}

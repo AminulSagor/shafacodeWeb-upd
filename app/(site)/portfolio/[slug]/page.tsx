@@ -113,7 +113,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
       {item.cover && (
         <div className="container-page mt-7">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-line md:aspect-[1240/460]">
+          <div className="relative aspect-4/3 overflow-hidden rounded-card border border-line md:aspect-1240/460">
             <Image src={item.cover.src} alt={item.cover.alt} fill preload sizes="(min-width: 1340px) 1240px, 92vw" className="object-cover" />
           </div>
         </div>
@@ -173,7 +173,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
       {item.body && (
         <section aria-label="About the project" className="section-y">
-          <div className="container-page max-w-[880px]">
+          <div className="container-page max-w-220">
             <Markdown>{item.body}</Markdown>
           </div>
         </section>
@@ -187,7 +187,7 @@ export default async function CaseStudyPage({ params }: Props) {
               return (
                 <li
                   key={g.src}
-                  className={`relative overflow-hidden rounded-md border border-line ${wide ? 'aspect-[16/9] md:col-span-3 md:aspect-[1240/400]' : 'aspect-[4/3] md:aspect-[397/400]'}`}
+                  className={`relative overflow-hidden rounded-md border border-line ${wide ? 'aspect-video md:col-span-3 md:aspect-1240/400' : 'aspect-4/3 md:aspect-397/400'}`}
                 >
                   <Image
                     src={g.src}
@@ -207,10 +207,10 @@ export default async function CaseStudyPage({ params }: Props) {
         <section aria-label="Client voice and stack" className="pt-6">
           <div className="container-page">
             {item.quote && (
-              <figure className="grid gap-6 py-8 xl:grid-cols-[300px_1fr] xl:items-start xl:gap-6">
+              <figure className="grid gap-6 py-8 xl:grid-cols-[--spacing(75)_1fr] xl:items-start xl:gap-6">
                 <Eyebrow as="div">Client voice</Eyebrow>
                 <div>
-                  <blockquote className="max-w-[900px] type-h4 text-fg xl:type-h3">
+                  <blockquote className="max-w-225 type-h4 text-fg xl:type-h3">
                     <p>
                       “{item.quote.text} {item.quote.accent && <Accent className="md:inline">{item.quote.accent}</Accent>}
                       {item.quote.after}”
@@ -229,7 +229,7 @@ export default async function CaseStudyPage({ params }: Props) {
               </figure>
             )}
             {item.stack && item.stack.length > 0 && (
-              <div className="grid gap-4 border-t border-line-subtle py-8 xl:grid-cols-[300px_1fr] xl:items-center xl:gap-6">
+              <div className="grid gap-4 border-t border-line-subtle py-8 xl:grid-cols-[--spacing(75)_1fr] xl:items-center xl:gap-6">
                 <Eyebrow as="div">Built with</Eyebrow>
                 <ul className="flex flex-wrap gap-x-4">
                   {item.stack.map((t) => (

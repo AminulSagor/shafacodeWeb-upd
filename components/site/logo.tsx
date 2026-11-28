@@ -29,7 +29,7 @@ function LogoMark({ className }: { className?: string }) {
       src={markSrc}
       alt=""
       aria-hidden
-      className={cn('h-[19px] w-[38px] shrink-0', className)}
+      className={cn('h-4.75 w-9.5 shrink-0', className)}
       sizes="38px"
       unoptimized
     />
@@ -39,9 +39,9 @@ function LogoMark({ className }: { className?: string }) {
 /** The logo. Height follows the font size: 29px tall at the default size. */
 function Logo({ className }: { className?: string }) {
   return (
-    <span className={cn('inline-flex items-center gap-[3px] text-fg', className)}>
+    <span className={cn('inline-flex items-center gap-0.75 text-fg', className)}>
       <LogoMark />
-      <Wordmark className="h-[18px] w-auto translate-y-[2px]" />
+      <Wordmark className="h-4.5 w-auto translate-y-0.5" />
       <span className="sr-only">ShafaCode</span>
     </span>
   );
