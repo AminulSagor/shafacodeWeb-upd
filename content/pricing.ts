@@ -44,3 +44,83 @@ export const formatBdtK = (n: number) => `${Math.round(n / 1000)}k`;
 const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 /** BDT amount as USD, rounded to the nearest $50. */
 export const formatUsd = (bdt: number) => usd.format(Math.round(bdt / BDT_PER_USD / 50) * 50);
+
+export type PackageTier = {
+  id: 'basic' | 'app-web' | 'premium';
+  name: string;
+  audience: string;
+  price: string;
+  usd: string;
+  features: string[];
+  cta: string;
+  href: string;
+  popular?: boolean;
+};
+
+/** Starting packages (Figma Packages 51:7901). Prices to confirm with the owner (spec 14). */
+export const packageTiers: PackageTier[] = [
+  {
+    id: 'basic',
+    name: 'Basic App or Website',
+    audience: 'For small businesses, personal brands, startups and simple launches.',
+    price: '৳80,000',
+    usd: '≈ $670',
+    features: [
+      'Basic UI/UX design',
+      'Website or app development',
+      'Responsive layout',
+      'Essential pages or screens',
+      'Contact or inquiry form',
+      'Basic deployment support',
+    ],
+    cta: 'Start a basic project',
+    href: '/contact?type=website',
+  },
+  {
+    id: 'app-web',
+    name: 'App + Website',
+    audience: 'For businesses that need a customer-facing website and a mobile app.',
+    price: '৳150,000',
+    usd: '≈ $1,250',
+    features: [
+      'Website design and development',
+      'Mobile app design and development',
+      'API integration',
+      'Basic admin panel',
+      'Testing and launch support',
+    ],
+    cta: 'Discuss App + Web',
+    href: '/contact?type=mobile-app',
+    popular: true,
+  },
+  {
+    id: 'premium',
+    name: 'Premium Digital Product',
+    audience: 'For SaaS platforms, marketplaces, dashboards and automation.',
+    price: '৳300k +',
+    usd: '≈ $2,500 +',
+    features: [
+      'Complete product planning',
+      'Advanced UI/UX design system',
+      'Frontend and backend development',
+      'Admin dashboard & role management',
+      'API integrations',
+      'Deployment and post-launch support',
+    ],
+    cta: 'Request premium quote',
+    href: '/contact?type=saas',
+  },
+];
+
+/** true = included, false = not included, string = detail. Columns: basic, app-web, premium. */
+export const packageComparison: { feature: string; values: [string | boolean, string | boolean, string | boolean] }[] = [
+  { feature: 'UI/UX design', values: ['Basic', 'Full', 'Design system'] },
+  { feature: 'Website', values: [true, true, true] },
+  { feature: 'Mobile app', values: ['Simple app', true, true] },
+  { feature: 'Admin panel', values: [false, 'Basic', 'Roles & permissions'] },
+  { feature: 'API integrations', values: [false, true, true] },
+  { feature: 'Payments', values: [false, 'Optional', true] },
+  { feature: 'Testing & QA', values: ['Basic', true, 'Automated + manual'] },
+  { feature: 'Post-launch support', values: ['14 days', '30 days', '60 days'] },
+  { feature: 'Timeline', values: ['3 to 6 weeks', '8 to 14 weeks', '12 to 24 weeks'] },
+];

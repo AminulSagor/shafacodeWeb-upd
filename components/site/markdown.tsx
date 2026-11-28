@@ -79,7 +79,7 @@ const components: Components = {
     );
   },
   table: ({ node: _node, ...p }) => (
-    <div role="region" tabIndex={0} aria-label="Scrollable table" className="my-6 overflow-x-auto rounded-md border border-line-subtle focus-visible:focus-ring">
+    <div role="region" tabIndex={0} aria-label="Scrollable table" className="relative my-6 overflow-x-auto rounded-md border border-line-subtle focus-visible:focus-ring">
       <table className="w-full border-collapse type-body-sm" {...p} />
     </div>
   ),

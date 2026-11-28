@@ -50,3 +50,13 @@ export const servicesFaqs: Faq[] = [
   sharedFaqs.supportAfterLaunch,
   sharedFaqs.updates,
 ];
+
+export const pricingFaqs: Faq[] = [
+  {
+    q: 'Are these fixed prices?',
+    a: 'They are starting prices. After a free consultation you get a fixed, itemised quote with milestones.',
+  },
+  sharedFaqs.designAndDevelop,
+  sharedFaqs.ownCode,
+  sharedFaqs.supportAfterLaunch,
+];
