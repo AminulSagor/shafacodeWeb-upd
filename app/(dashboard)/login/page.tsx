@@ -1,45 +1,32 @@
-'use client';
+import type { Metadata } from 'next';
 
-import { useState } from 'react';
+import { LoginForm } from '@/components/admin/auth/login-form';
+import { Logo } from '@/components/site/logo';
+import { StaticKineticDiagram } from '@/components/site/process/process-diagram';
+import { first, type RawSearchParams } from '@/lib/search-params';
 
-export default function AdminLogin() {
-  const [error, setError] = useState('');
+export const metadata: Metadata = { title: 'Sign in' };
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const form = new FormData(e.currentTarget);
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      body: form,
-    });
-
-    if (res.ok) {
-      window.location.href = '/admin';
-    } else {
-      setError('Invalid credentials');
-    }
-  }
-
+/** Admin sign-in. Figma: Login 55:2397 (mobile 62:9408) */
+export default async function LoginPage({ searchParams }: { searchParams: Promise<RawSearchParams> }) {
+  const next = first((await searchParams).next) ?? '/admin';
   return (
-    <div className="p-10 max-w-md mx-auto">
-      <h1 className="text-2xl font-semibold mb-6">Admin Login</h1>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <p className="text-red-500">{error}</p>}
-        <input
-          name="username"
-          placeholder="Username"
-          className="border p-2 w-full"
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          className="border p-2 w-full"
-        />
-        <button className="bg-black text-white px-4 py-2 rounded">Login</button>
-      </form>
+    <div className="grid min-h-dvh bg-canvas lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <aside data-theme="dark" className="relative hidden flex-col justify-between overflow-hidden bg-canvas p-12 text-fg lg:flex">
+        <Logo />
+        <div aria-hidden className="pointer-events-none relative h-63 xl:h-80 hd:h-84">
+          <div className="absolute top-0 left-1/2 w-310 origin-top -translate-x-1/2 scale-33 xl:scale-42 hd:scale-44">
+            <StaticKineticDiagram />
+          </div>
+        </div>
+        <figure>
+          <blockquote className="max-w-130 type-h3 text-fg">&ldquo;Every milestone, decision and update stays clear.&rdquo;</blockquote>
+          <figcaption className="mt-4 type-mono-xs text-fg-subtle">ShafaCode · Agency admin</figcaption>
+        </figure>
+      </aside>
+      <main id="main" className="flex items-center justify-center px-4 py-12 sm:px-6">
+        <LoginForm next={next} />
+      </main>
     </div>
   );
 }
