@@ -6,7 +6,7 @@ import { fileTypeFromBuffer } from 'file-type';
 
 import { isLegacyPublicUrl } from '@/lib/schemas/upload';
 
-export type UploadKind = 'resume' | 'attachment' | 'affiliate';
+export type UploadKind = 'resume' | 'attachment' | 'affiliate' | 'media';
 
 /** Allowlists per upload kind (spec section 9). */
 export const uploadRules: Record<UploadKind, { bucket: string; mimes: string[]; maxBytes: number }> = {
@@ -21,6 +21,8 @@ export const uploadRules: Record<UploadKind, { bucket: string; mimes: string[]; 
     mimes: ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'],
     maxBytes: 10 * 1024 * 1024,
   },
+  /** Public site images; admin uploads only (no SVG). */
+  media: { bucket: 'media', mimes: ['image/png', 'image/jpeg', 'image/webp'], maxBytes: 8 * 1024 * 1024 },
 };
 
 export const EXT: Record<string, string> = {

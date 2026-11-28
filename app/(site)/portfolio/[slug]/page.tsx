@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import type { CreativeWork, WithContext } from 'schema-dts';
 
@@ -16,7 +16,7 @@ import { CtaBand } from '@/components/site/sections/cta-band';
 import { PageHero } from '@/components/site/sections/page-hero';
 import { SectionHeader } from '@/components/site/sections/section-header';
 import { site } from '@/content/site';
-import { getCaseStudies, getCaseStudy, getRelatedCaseStudies } from '@/lib/data/case-studies';
+import { getCaseStudies, getCaseStudy, getRelatedCaseStudies, resolvePreviousCaseStudySlug } from '@/lib/data/case-studies';
 import { absoluteUrl, buildMetadata } from '@/lib/seo';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -32,9 +32,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = await getCaseStudy(slug);
   if (!item) return { title: 'Case study not found', robots: { index: false, follow: true } };
   return buildMetadata({
-    title: item.title,
-    description: item.lede ?? item.summary,
+    title: item.seo?.metaTitle || item.title,
+    description: item.seo?.metaDescription || item.lede || item.summary,
     path: caseStudyHref(item.slug),
+    canonical: item.seo?.canonicalUrl,
+    noIndex: item.seo?.noIndex,
     image: item.cover?.src,
     type: 'article',
   });
@@ -44,7 +46,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CaseStudyPage({ params }: Props) {
   const { slug } = await params;
   const item = await getCaseStudy(slug);
-  if (!item) notFound();
+  if (!item) {
+    const moved = await resolvePreviousCaseStudySlug(slug);
+    if (moved) permanentRedirect(caseStudyHref(moved));
+    notFound();
+  }
   const related = await getRelatedCaseStudies(item);
 
   const facts = [

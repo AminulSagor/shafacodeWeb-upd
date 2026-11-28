@@ -28,9 +28,11 @@ export const slugify = (s: string) =>
  * client, status) until the migration script runs.
  */
 function toCaseStudy(id: string, d: DocumentData): CaseStudy | null {
-  // Allowlist: the 2026 'published' plus the legacy delivery statuses.
+  // Allowlist: the 2026 'published' (and 'scheduled' once its time has come)
+  // plus the legacy delivery statuses.
   const status = str(d.status) || 'published';
-  if (!['published', 'delivered', 'in-progress', 'ongoing'].includes(status)) return null;
+  const due = status === 'scheduled' && toMillis(d.publishedAt) > 0 && toMillis(d.publishedAt) <= Date.now();
+  if (!due && !['published', 'delivered', 'in-progress', 'ongoing'].includes(status)) return null;
   const title = str(d.title);
   if (!title) return null;
   const legacy = !d.slug;
@@ -68,6 +70,22 @@ function toCaseStudy(id: string, d: DocumentData): CaseStudy | null {
     challenge: str(d.challenge) || undefined,
     solution: str(d.solution) || undefined,
     body: legacy ? description : undefined,
+    gallery: Array.isArray(d.gallery)
+      ? d.gallery
+          .filter((g: unknown): g is Record<string, unknown> => !!g && typeof g === 'object' && !!str((g as Record<string, unknown>).path))
+          .map((g: Record<string, unknown>) => ({
+            src: publicMediaUrl(str(g.path)),
+            alt: str(g.alt),
+            width: Number(g.width) || 1264,
+            height: Number(g.height) || 848,
+          }))
+      : undefined,
+    liveUrl: str(d.liveUrl) || undefined,
+    seo: d.seo && typeof d.seo === 'object'
+      ? { metaTitle: str(d.seo.metaTitle) || undefined, metaDescription: str(d.seo.metaDescription) || undefined, canonicalUrl: str(d.seo.canonicalUrl) || undefined, noIndex: d.seo.noIndex === true }
+      : undefined,
+    previousSlugs: strArr(d.previousSlugs),
+    featured: d.isFeatured === true,
   };
 }
 
@@ -102,11 +120,19 @@ export async function getCaseStudy(slug: string): Promise<CaseStudy | null> {
   return all.find((c) => c.slug === slug) ?? null;
 }
 
+/** The current slug for an old one (renamed published case studies), if any. */
+export async function resolvePreviousCaseStudySlug(slug: string): Promise<string | null> {
+  const all = await getCaseStudies();
+  return all.find((c) => c.previousSlugs?.includes(slug))?.slug ?? null;
+}
+
 /** Featured on Home: CMS items with a cover first, the design seed otherwise. */
 export async function getFeaturedCaseStudies(): Promise<CaseStudySummary[]> {
   const all = await getCaseStudies();
   const withCover = all.filter((c) => c.cover);
-  return (withCover.length >= 3 ? withCover : fallbackCaseStudies).slice(0, 3);
+  // Items marked featured in the admin come first.
+  const ordered = [...withCover.filter((c) => c.featured), ...withCover.filter((c) => !c.featured)];
+  return (ordered.length >= 3 ? ordered : fallbackCaseStudies).slice(0, 3);
 }
 
 /** Up to `limit` case studies for a service page, the closest matches first. */

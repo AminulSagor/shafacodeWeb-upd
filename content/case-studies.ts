@@ -26,6 +26,8 @@ export type CaseStudySummary = {
   /** Legacy CMS entries have no cover yet; cards then render without media */
   cover: MediaImage | null;
   results: { value: string; label: string }[];
+  /** Chosen for the home page in the admin */
+  featured?: boolean;
 };
 
 export type CaseStudy = CaseStudySummary & {
@@ -45,6 +47,10 @@ export type CaseStudy = CaseStudySummary & {
   quote?: { text: string; accent?: string; after?: string; name: string; role: string; company: string; initials: string };
   /** Free text from the legacy CMS (Markdown) */
   body?: string;
+  liveUrl?: string;
+  seo?: { metaTitle?: string; metaDescription?: string; canonicalUrl?: string; noIndex?: boolean };
+  /** Earlier slugs that redirect here */
+  previousSlugs?: string[];
 };
 
 const img = (file: string, alt: string): MediaImage => ({ src: `/images/work/${file}`, alt, width: 1264, height: 848 });
