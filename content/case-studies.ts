@@ -70,4 +70,19 @@ export const fallbackCaseStudies: CaseStudySummary[] = [
     },
     results: [],
   },
+  {
+    slug: 'business-directory-crm',
+    client: 'Business Directory CRM',
+    title: 'Business Directory CRM for local service companies',
+    summary: 'Listings, leads and follow-ups in one CRM-style web app built on Next.js and Firebase.',
+    tags: ['Local services', 'Web app'],
+    services: ['web-application-development', 'custom-software-development'],
+    cover: {
+      src: '/images/work/business-directory-crm.jpg',
+      alt: 'Market stall owner showing a customer a listing on a tablet with lime charts',
+      width: 1264,
+      height: 848,
+    },
+    results: [],
+  },
 ];

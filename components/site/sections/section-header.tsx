@@ -12,6 +12,8 @@ type SectionHeaderProps = {
   className?: string;
   /** Extra content on the right instead of (or under) the lede, e.g. a button */
   aside?: React.ReactNode;
+  /** Put the lede under the heading instead of in the right column */
+  ledeBelow?: boolean;
 };
 
 /**
@@ -19,7 +21,7 @@ type SectionHeaderProps = {
  * with one serif accent, lede in a right column on desktop (wraps below on
  * mobile). Figma: Section Header 19:2769
  */
-export function SectionHeader({ eyebrow, title, lede, id, as: H = 'h2', className, aside }: SectionHeaderProps) {
+export function SectionHeader({ eyebrow, title, lede, id, as: H = 'h2', className, aside, ledeBelow = false }: SectionHeaderProps) {
   return (
     <div
       className={cn(
@@ -32,10 +34,11 @@ export function SectionHeader({ eyebrow, title, lede, id, as: H = 'h2', classNam
         <H id={id} className={cn(H === 'h1' ? 'type-h1' : 'type-h2', 'text-fg')}>
           {title}
         </H>
+        {ledeBelow && lede && <p className="max-w-[640px] type-body-lg text-fg-muted">{lede}</p>}
       </div>
-      {(lede || aside) && (
+      {((lede && !ledeBelow) || aside) && (
         <div className="flex max-w-[560px] flex-col gap-5 xl:w-[400px] xl:max-w-[400px] xl:shrink-0">
-          {lede && <p className="type-body-lg text-fg-muted">{lede}</p>}
+          {lede && !ledeBelow && <p className="type-body-lg text-fg-muted">{lede}</p>}
           {aside}
         </div>
       )}

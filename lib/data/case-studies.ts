@@ -61,3 +61,11 @@ export async function getFeaturedCaseStudies(): Promise<CaseStudySummary[]> {
   const items = await readFeatured();
   return items.length > 0 ? items : fallbackCaseStudies;
 }
+
+/** Up to `limit` case studies for a service page, newest first. */
+export async function getCaseStudiesForService(slug: string, limit = 2): Promise<CaseStudySummary[]> {
+  const pool = await getFeaturedCaseStudies();
+  const matching = pool.filter((c) => c.services.some((s) => s === slug));
+  const rest = pool.filter((c) => !matching.includes(c));
+  return [...matching, ...rest].slice(0, limit);
+}
