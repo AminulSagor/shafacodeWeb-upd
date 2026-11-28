@@ -31,3 +31,15 @@ export const homeFaqs: Faq[] = [
     a: 'We do not build for free, but the first consultation and the written estimate are free, and you can start with a small paid discovery sprint before committing to the full project.',
   },
 ];
+
+/** Services FAQ (Figma 28:3850). */
+export const servicesFaqs: Faq[] = [
+  {
+    q: 'Which service do I need?',
+    a: 'Tell us the problem you want to solve. In a free 30-minute call we recommend the right type of product, scope and budget.',
+  },
+  homeFaqs[1],
+  homeFaqs[2],
+  homeFaqs[3],
+  homeFaqs[4],
+];

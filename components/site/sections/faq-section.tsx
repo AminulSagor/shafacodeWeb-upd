@@ -29,7 +29,7 @@ export function FaqSection({
   return (
     <section aria-labelledby={`${id}-title`} className="section-y">
       <JsonLd data={faqLd(items)} />
-      <div className="container-page grid gap-10 xl:grid-cols-[400px_1fr] xl:gap-14">
+      <div className="container-page grid gap-10 xl:grid-cols-[436px_1fr]">
         <div className="flex flex-col items-start gap-5 xl:sticky xl:top-[calc(var(--nav-height)+32px)] xl:self-start">
           <Eyebrow>{eyebrow}</Eyebrow>
           <h2 id={`${id}-title`} className="type-h2 text-fg">
@@ -51,7 +51,7 @@ export function FaqSection({
                   <Minus className="size-3.5" strokeWidth={2.5} />
                 </span>
               </dt>
-              <dd className="max-w-[640px] type-body-sm text-fg-muted md:type-body">{item.a}</dd>
+              <dd className="type-body-sm text-fg-muted md:type-body">{item.a}</dd>
             </div>
           ))}
         </dl>

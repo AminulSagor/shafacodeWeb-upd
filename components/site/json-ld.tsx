@@ -1,10 +1,13 @@
 import type { Thing, WithContext } from 'schema-dts';
 
+type Ld = WithContext<Thing>;
+
 /**
  * JSON-LD script. `<` is escaped so CMS text containing `</script>` cannot
- * break out of the tag.
+ * break out of the tag. Build the objects with the typed helpers in
+ * lib/structured-data.ts (schema-dts).
  */
-export function JsonLd<T extends Thing>({ data }: { data: WithContext<T> | WithContext<T>[] }) {
+export function JsonLd({ data }: { data: Ld | readonly Ld[] }) {
   return (
     <script
       type="application/ld+json"

@@ -12,3 +12,15 @@ export const processSteps: ProcessStep[] = [
   { title: 'Testing', body: 'QA, performance, security', time: 'Every sprint', icon: ShieldCheck },
   { title: 'Launch', body: 'Deploy, monitor, support', time: '+30 days', icon: Rocket },
 ];
+
+export type LifecycleStep = { title: string; body: string; time: string };
+
+/** Services "How we turn services into real products" (Figma 28:3770). */
+export const lifecycleSteps: LifecycleStep[] = [
+  { title: 'Discovery & requirements', body: 'Deep dive into your business logic and project goals.', time: 'Week 1' },
+  { title: 'UX planning & system flow', body: 'User journeys and technical infrastructure, mapped and reviewed.', time: 'Week 1 to 2' },
+  { title: 'UI design & prototype', body: 'High-fidelity, interactive designs you can click through.', time: 'Week 2 to 4' },
+  { title: 'Development & integration', body: 'Clean, scalable code and connected APIs, demoed every milestone.', time: 'Week 4 onward' },
+  { title: 'Testing & quality assurance', body: 'Rigorous testing for performance, security and accessibility.', time: 'Every sprint' },
+  { title: 'Launch & support', body: 'Deployment and an ongoing maintenance strategy.', time: 'Launch + 30 days' },
+];
