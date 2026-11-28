@@ -45,6 +45,7 @@ const nextConfig: NextConfig = {
       { source: '/admin/projects/:path*', destination: '/admin/case-studies', permanent: false },
       { source: '/admin/blogs/create', destination: '/admin/blogs/new', permanent: false },
       { source: '/admin/blogs/:id/edit', destination: '/admin/blogs/:id', permanent: false },
+      { source: '/admin/jobs/create', destination: '/admin/jobs/new', permanent: false },
     ];
   },
 };

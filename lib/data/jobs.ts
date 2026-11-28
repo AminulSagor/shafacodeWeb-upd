@@ -39,13 +39,19 @@ function salary(d: DocumentData) {
 /** Open roles only; supports the current (type, location, jobDescription) and the 2026 schema. */
 function toJob(d: DocumentData): Job | null {
   const status = str(d.status) || 'open';
-  if (status !== 'open') return null;
+  if (status !== 'open' || d.acceptingApplications === false) return null;
   const validThrough = toIso(d.validThrough);
   if (validThrough && Date.parse(validThrough) < Date.now()) return null;
   const title = str(d.title);
   const slug = str(d.slug);
   if (!title || !slug) return null;
-  const description = str(d.description) || str(d.jobDescription);
+  // The admin keeps responsibilities and requirements as lists; the page shows them as sections.
+  const list = (title: string, v: unknown) => {
+    const items = Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string' && !!x.trim()) : [];
+    return items.length ? `\n\n## ${title}\n\n${items.map((x) => `- ${x}`).join('\n')}` : '';
+  };
+  const description =
+    (str(d.description) || str(d.jobDescription)) + list('What you will do', d.responsibilities) + list('What you bring', d.requirements);
   const location = str(d.location) || [str(d.locationCity), str(d.locationCountry)].filter(Boolean).join(', ');
   const workMode = str(d.workMode);
   return {

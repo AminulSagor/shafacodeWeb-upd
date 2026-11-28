@@ -153,7 +153,7 @@ export function ListField({ id, label, value, onChange, placeholder, max = 20 }:
   const set = (i: number, v: string) => onChange(value.map((x, j) => (j === i ? v : x)));
   return (
     <fieldset className="flex flex-col gap-2">
-      <legend className="mb-2 type-label-sm text-fg">{label}</legend>
+      <legend className="sr-only">{label}</legend>
       {value.map((v, i) => (
         <div key={i} className="flex items-center gap-2">
           <Input id={`${id}-${i}`} aria-label={`${label} ${i + 1}`} value={v} placeholder={placeholder} onChange={(e) => set(i, e.target.value)} className="flex-1" />
