@@ -8,18 +8,15 @@ import { requireAdmin } from '@/lib/auth';
 import { publicMediaUrl } from '@/lib/media';
 import { postCategories, type PostInput } from '@/lib/schemas/admin/post';
 import { dhakaLocal } from './case-studies';
-import { db, demoMode, iso, live, str, strs } from './source';
-import { publishStatuses, type PublishStatus } from './types';
+import { db, demoMode, iso, live, str, strs, publishStatusOf } from './source';
+import type { PublishStatus } from './types';
 
 export type PostEdit = PostInput & { id: string; authorName: string; createdAt: string; updatedAt: string; publishedAtIso: string };
 export type PostRow = Pick<PostEdit, 'id' | 'title' | 'slug' | 'category' | 'status' | 'isFeatured' | 'authorName' | 'updatedAt' | 'publishedAtIso'> & {
   coverUrl: string | null;
 };
 
-const status = (d: DocumentData): PublishStatus => {
-  const s = str(d.status);
-  return (publishStatuses as readonly string[]).includes(s) ? (s as PublishStatus) : 'published';
-};
+const status = publishStatusOf;
 
 function toEdit(id: string, d: DocumentData): PostEdit {
   const coverPath = str(d.cover?.path) || str(d.coverImage);

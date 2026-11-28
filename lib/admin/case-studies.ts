@@ -8,8 +8,8 @@ import { serviceSlugs } from '@/content/services';
 import { requireAdmin } from '@/lib/auth';
 import { publicMediaUrl } from '@/lib/media';
 import type { CaseStudyInput } from '@/lib/schemas/admin/case-study';
-import { db, demoMode, iso, live, str, strs } from './source';
-import { publishStatuses, type PublishStatus } from './types';
+import { db, demoMode, iso, live, str, strs, publishStatusOf } from './source';
+import type { PublishStatus } from './types';
 
 export type CaseStudyRow = {
   id: string;
@@ -36,10 +36,7 @@ const slugify = (s: string) =>
     .replace(/[\s_-]+/g, '-')
     .slice(0, 80);
 
-const status = (d: DocumentData): PublishStatus => {
-  const s = str(d.status);
-  return (publishStatuses as readonly string[]).includes(s) ? (s as PublishStatus) : 'published';
-};
+const status = publishStatusOf;
 
 const ref = (v: unknown) => {
   if (!v || typeof v !== 'object') return null;

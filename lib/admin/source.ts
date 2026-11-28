@@ -4,6 +4,7 @@ import type { DocumentData } from 'firebase-admin/firestore';
 
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
 import { dhakaStart } from './format';
+import { publishStatuses, type PublishStatus } from './types';
 
 /**
  * Local development without Firestore shows demo records so every admin
@@ -41,3 +42,17 @@ export async function count(query: FirebaseFirestore.Query): Promise<number> {
 /** Day and month starts in Dhaka time (the team's time zone). */
 export const startOfToday = () => new Date(dhakaStart('day'));
 export const startOfMonth = () => new Date(dhakaStart('month'));
+
+/**
+ * Publish status of a post or case study. Legacy docs without one are live;
+ * a scheduled item whose time has passed is live too (the site shows it from
+ * then on, so the admin says so as well).
+ */
+export function publishStatusOf(d: DocumentData): PublishStatus {
+  const s = str(d.status);
+  if (s === 'scheduled') {
+    const at = iso(d.publishedAt);
+    return at && Date.parse(at) <= Date.now() ? 'published' : 'scheduled';
+  }
+  return (publishStatuses as readonly string[]).includes(s) ? (s as PublishStatus) : 'published';
+}

@@ -95,7 +95,6 @@ export function SettingsForm({ initial, savedAt }: { initial: SiteSettings; save
                 <SwitchField id="n-inq" label="New contact inquiry" checked={v.notifications.inquiry} onChange={(x) => n('inquiry', x)} />
                 <SwitchField id="n-app" label="New job application" checked={v.notifications.application} onChange={(x) => n('application', x)} />
                 <SwitchField id="n-aff" label="New affiliate lead" checked={v.notifications.affiliate} onChange={(x) => n('affiliate', x)} />
-                <SwitchField id="n-week" label="Weekly summary" helper="Stored now; sending it needs the scheduled job." checked={v.notifications.weeklySummary} onChange={(x) => n('weeklySummary', x)} />
                 <TextField id="n-to" label="Send to" required type="email" value={v.notifications.recipient} onChange={(x) => n('recipient', x)} error={e.errors['notifications.recipient']} />
               </EditorCard>
             </div>

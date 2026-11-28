@@ -5,15 +5,11 @@ import type { DocumentData } from 'firebase-admin/firestore';
 
 import { requireAdmin } from '@/lib/auth';
 import { demoContent } from './demo';
-import { db, demoMode, iso, live, str } from './source';
-import { publishStatuses, type ContentItem, type PublishStatus } from './types';
+import { db, demoMode, iso, live, str, publishStatusOf } from './source';
+import type { ContentItem } from './types';
 
 /** Legacy docs have no status (or a delivery status on projects): they are live. */
-function status(d: DocumentData): PublishStatus {
-  const s = str(d.status);
-  if ((publishStatuses as readonly string[]).includes(s)) return s as PublishStatus;
-  return 'published';
-}
+const status = publishStatusOf;
 
 const toItem = (kind: ContentItem['kind']) => (id: string, d: DocumentData): ContentItem => ({
   id,
