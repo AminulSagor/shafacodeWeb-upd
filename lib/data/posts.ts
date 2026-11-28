@@ -28,7 +28,8 @@ export const readingMinutes = (markdown: string) => Math.max(1, Math.round(wordC
  */
 function toPost(d: DocumentData): Post | null {
   const status = str(d.status) || 'published';
-  if (status !== 'published') return null;
+  const due = status === 'scheduled' && !!d.publishedAt && new Date(toIso(d.publishedAt)).getTime() <= Date.now();
+  if (status !== 'published' && !due) return null;
   const title = str(d.title);
   const slug = str(d.slug);
   if (!title || !slug) return null;
@@ -54,6 +55,11 @@ function toPost(d: DocumentData): Post | null {
     updatedAt: toIso(d.updatedAt ?? d.publishedAt ?? d.createdAt),
     readingMinutes: Math.max(1, Math.round(Number(d.readingMinutes)) || readingMinutes(content)),
     featured: d.isFeatured === true,
+    seo:
+      d.seo && typeof d.seo === 'object'
+        ? { metaTitle: str(d.seo.metaTitle) || undefined, metaDescription: str(d.seo.metaDescription) || undefined, canonicalUrl: str(d.seo.canonicalUrl) || undefined, noIndex: d.seo.noIndex === true }
+        : undefined,
+    previousSlugs: Array.isArray(d.previousSlugs) ? d.previousSlugs.filter((x: unknown): x is string => typeof x === 'string') : [],
   };
 }
 
@@ -83,6 +89,11 @@ export async function getPosts(): Promise<Post[]> {
 
 export async function getPost(slug: string) {
   return (await getPosts()).find((p) => p.slug === slug) ?? null;
+}
+
+/** The current slug for an old one (renamed published posts), if any. */
+export async function resolvePreviousPostSlug(slug: string): Promise<string | null> {
+  return (await getPosts()).find((p) => p.previousSlugs?.includes(slug))?.slug ?? null;
 }
 
 export async function getRelatedPosts(post: Post, limit = 3) {

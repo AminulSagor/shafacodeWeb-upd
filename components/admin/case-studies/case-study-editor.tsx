@@ -28,29 +28,6 @@ const slugify = (s: string) =>
     .replace(/[\s_-]+/g, '-')
     .slice(0, 80);
 
-export const emptyCaseStudy: CaseStudyInput = {
-  title: '',
-  client: '',
-  industry: '',
-  deliveryStatus: 'delivered',
-  summary: '',
-  services: [],
-  techStack: [],
-  timeline: '',
-  liveUrl: '',
-  contactEmail: '',
-  challenge: '',
-  solution: '',
-  results: [],
-  cover: null,
-  gallery: [],
-  slug: '',
-  seo: { metaTitle: '', metaDescription: '', canonicalUrl: '', noIndex: false },
-  status: 'draft',
-  isFeatured: false,
-  publishAt: '',
-};
-
 /** Two-column case study editor. Figma: Case Study Editor 57:5032 (mobile 62:10597) */
 export function CaseStudyEditor({ id, initial, savedAt: initialSavedAt }: { id: string | null; initial: CaseStudyInput; savedAt: string }) {
   const router = useRouter();

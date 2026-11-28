@@ -15,6 +15,9 @@ export type Post = {
   updatedAt: string; // ISO
   readingMinutes: number;
   featured: boolean;
+  seo?: { metaTitle?: string; metaDescription?: string; canonicalUrl?: string; noIndex?: boolean };
+  /** Earlier slugs that redirect here */
+  previousSlugs?: string[];
 };
 
 /** Category ids to labels: the current CMS values plus the 2026 topics. */

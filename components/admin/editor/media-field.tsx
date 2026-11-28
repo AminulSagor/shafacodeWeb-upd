@@ -150,13 +150,13 @@ export function MediaField({
 }) {
   const [open, setOpen] = React.useState(false);
   return (
-    <div className="flex flex-col gap-3">
+    <div className="@container flex flex-col gap-3">
       <p className="type-label-sm text-fg">
         {label}
         {required && <span className="text-fg-subtle"> *</span>}
       </p>
       {value ? (
-        <div className="grid gap-4 sm:grid-cols-[--spacing(62)_minmax(0,1fr)]">
+        <div className="grid gap-4 @lg:grid-cols-[--spacing(62)_minmax(0,1fr)]">
           {/* eslint-disable-next-line @next/next/no-img-element -- admin preview */}
           <img src={src(value.path)} alt="" className="aspect-4/3 w-full rounded-field object-cover" />
           <div className="flex flex-col gap-2">
@@ -223,10 +223,10 @@ export function MediaField({
 export function GalleryField({ value, onChange, max = 8, error }: { value: MediaRef[]; onChange: (v: MediaRef[]) => void; max?: number; error?: string }) {
   const [open, setOpen] = React.useState(false);
   return (
-    <div className="flex flex-col gap-3">
+    <div className="@container flex flex-col gap-3">
       <p className="type-label-sm text-fg">Gallery (up to {max} images)</p>
       {value.length > 0 && (
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid gap-3 @lg:grid-cols-2">
           {value.map((m, i) => (
             <li key={`${m.path}-${i}`} className="flex gap-3 rounded-field border border-line-subtle p-2.5">
               {/* eslint-disable-next-line @next/next/no-img-element -- admin preview */}

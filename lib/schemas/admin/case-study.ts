@@ -50,3 +50,27 @@ export const categoryForService: Record<(typeof serviceSlugs)[number], string> =
   'wordpress-development': 'web-app',
   'iot-embedded-systems': 'iot',
 };
+
+/** A new, empty item for the editor. */
+export const emptyCaseStudy: CaseStudyInput = {
+  title: '',
+  client: '',
+  industry: '',
+  deliveryStatus: 'delivered',
+  summary: '',
+  services: [],
+  techStack: [],
+  timeline: '',
+  liveUrl: '',
+  contactEmail: '',
+  challenge: '',
+  solution: '',
+  results: [],
+  cover: null,
+  gallery: [],
+  slug: '',
+  seo: { metaTitle: '', metaDescription: '', canonicalUrl: '', noIndex: false },
+  status: 'draft',
+  isFeatured: false,
+  publishAt: '',
+};

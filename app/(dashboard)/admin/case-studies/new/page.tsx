@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
-import { CaseStudyEditor, emptyCaseStudy } from '@/components/admin/case-studies/case-study-editor';
+import { CaseStudyEditor } from '@/components/admin/case-studies/case-study-editor';
+import { emptyCaseStudy } from '@/lib/schemas/admin/case-study';
 import { requireAdmin } from '@/lib/auth';
 
 export const metadata: Metadata = { title: 'New case study' };

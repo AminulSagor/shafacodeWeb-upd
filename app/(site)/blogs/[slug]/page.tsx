@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import type { BlogPosting, WithContext } from 'schema-dts';
 
@@ -18,7 +18,7 @@ import { TableOfContents } from '@/components/site/article/table-of-contents';
 import { CtaBand } from '@/components/site/sections/cta-band';
 import { categoryLabel } from '@/content/blog';
 import { site } from '@/content/site';
-import { getPost, getPosts, getRelatedPosts } from '@/lib/data/posts';
+import { getPost, getPosts, getRelatedPosts, resolvePreviousPostSlug } from '@/lib/data/posts';
 import { extractToc, wordCount } from '@/lib/markdown';
 import { absoluteUrl, buildMetadata } from '@/lib/seo';
 
@@ -34,9 +34,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPost(slug);
   if (!post) return { title: 'Article not found', robots: { index: false, follow: true } };
   return buildMetadata({
-    title: post.title,
-    description: post.excerpt || `${post.title}: a guide from the ${site.name} team.`,
+    title: post.seo?.metaTitle || post.title,
+    description: post.seo?.metaDescription || post.excerpt || `${post.title}: a guide from the ${site.name} team.`,
     path: postHref(post.slug),
+    canonical: post.seo?.canonicalUrl,
+    noIndex: post.seo?.noIndex,
     image: post.cover?.src,
     type: 'article',
   });
@@ -46,7 +48,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) notFound();
+  if (!post) {
+    const moved = await resolvePreviousPostSlug(slug);
+    if (moved) permanentRedirect(postHref(moved));
+    notFound();
+  }
   const related = await getRelatedPosts(post);
   const toc = extractToc(post.content);
   const url = absoluteUrl(postHref(post.slug));
