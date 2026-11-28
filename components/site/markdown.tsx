@@ -3,6 +3,24 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 
 import { cn } from '@/lib/utils';
+import { CodeBlock } from '@/components/site/article/code-block';
+
+type HastNode = { type: string; tagName?: string; properties?: Record<string, unknown>; data?: { meta?: string }; children?: HastNode[] };
+
+/** Copies a fenced code block's `title="…"` meta onto the <pre> as data-title. */
+function rehypeCodeTitle() {
+  return (tree: HastNode) => {
+    const walk = (node: HastNode) => {
+      if (node.tagName === 'pre') {
+        const code = node.children?.find((c) => c.tagName === 'code');
+        const title = code?.data?.meta?.match(/title="([^"]+)"/)?.[1];
+        if (title) node.properties = { ...node.properties, dataTitle: title };
+      }
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
 
 const components: Components = {
   h1: ({ node: _node, ...p }) => <h2 className="mt-12 mb-4 type-h3 text-fg first:mt-0" {...p} />,
@@ -26,16 +44,26 @@ const components: Components = {
   li: ({ node: _node, ...p }) => <li className="pl-1" {...p} />,
   strong: ({ node: _node, ...p }) => <strong className="font-semibold text-fg" {...p} />,
   em: ({ node: _node, ...p }) => <em className="italic" {...p} />,
+  // Callout: an optional first **bold** paragraph becomes the mono label ("Key takeaway").
   blockquote: ({ node: _node, ...p }) => (
-    <blockquote className="my-8 border-l-2 border-action-primary pl-5 type-body-lg text-fg [&>p]:my-0 [&>p]:text-fg" {...p} />
+    <blockquote
+      className="my-8 rounded-r-md border-l-2 border-action-primary bg-brand-soft px-5 py-4 [&>p]:my-0 [&>p]:type-body [&>p]:text-fg [&>p+p]:mt-2 [&>p:first-child>strong:only-child]:type-mono-xs [&>p:first-child>strong:only-child]:text-fg-brand"
+      {...p}
+    />
   ),
   hr: () => <hr className="my-10 border-line-subtle" />,
   code: ({ node: _node, className, ...p }) => (
     <code className={cn('rounded-xs bg-surface-2 px-1.5 py-0.5 type-mono-sm text-fg', className)} {...p} />
   ),
-  pre: ({ node: _node, ...p }) => (
-    <pre className="my-6 overflow-x-auto rounded-md border border-line-subtle bg-surface-1 p-5 type-mono-sm [&>code]:bg-transparent [&>code]:p-0" {...p} />
-  ),
+  pre: ({ node, children }) => {
+    const title = (node?.properties as Record<string, unknown> | undefined)?.dataTitle;
+    const lang = /language-(\w+)/.exec(String((node?.children?.[0] as { properties?: { className?: string[] } })?.properties?.className ?? ''))?.[1];
+    return (
+      <CodeBlock title={typeof title === 'string' ? title : undefined} language={lang}>
+        {children}
+      </CodeBlock>
+    );
+  },
   table: ({ node: _node, ...p }) => (
     <div className="my-6 overflow-x-auto rounded-md border border-line-subtle">
       <table className="w-full border-collapse type-body-sm" {...p} />
@@ -58,7 +86,7 @@ const components: Components = {
 export function Markdown({ children, className }: { children: string; className?: string }) {
   return (
     <div className={cn('min-w-0', className)}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug]} components={components}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug, rehypeCodeTitle]} components={components}>
         {children}
       </ReactMarkdown>
     </div>
