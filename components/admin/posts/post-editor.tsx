@@ -143,7 +143,7 @@ export function PostEditor({
                 required
                 value={v.authorId}
                 onChange={(x) => set('authorId', x)}
-                placeholder={authors.length ? 'Pick an author' : 'Mark team members as authors first'}
+                placeholder={authors.some((a) => a.id === '') ? undefined : authors.length ? 'Pick an author' : 'Mark team members as authors first'}
                 options={authors.map((a) => ({ value: a.id, label: a.name }))}
                 error={errors.authorId}
               />
@@ -165,6 +165,7 @@ export function PostEditor({
                 set('slug', x);
               }}
               slugError={errors.slug}
+              errors={errors}
               prefix="/blogs/"
               fallbackTitle={v.title || 'Blog post'}
               fallbackDescription={v.excerpt || 'Short summary of the post.'}

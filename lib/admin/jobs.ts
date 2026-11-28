@@ -6,12 +6,16 @@ import type { DocumentData } from 'firebase-admin/firestore';
 import { fallbackJobs } from '@/content/careers';
 import { requireAdmin } from '@/lib/auth';
 import { employmentTypes, jobDepartments, jobStatuses, workModes, type JobInput } from '@/lib/schemas/admin/job';
+import { dhakaDay } from './format';
 import { db, demoMode, iso, live, str, strs } from './source';
 
 export type JobEdit = JobInput & { id: string; updatedAt: string; applications: number };
 
 const pick = <T extends string>(list: readonly T[], v: string, fallback: T): T => ((list as readonly string[]).includes(v) ? (v as T) : fallback);
-const day = (v: unknown) => iso(v).slice(0, 10);
+const day = (v: unknown) => {
+  const i = iso(v);
+  return i ? dhakaDay(new Date(i)) : '';
+};
 const legacyType: Record<string, (typeof employmentTypes)[number]> = { 'full-time': 'FULL_TIME', 'part-time': 'PART_TIME', contract: 'CONTRACTOR', internship: 'INTERN' };
 
 function toEdit(id: string, d: DocumentData, applications: number): JobEdit {

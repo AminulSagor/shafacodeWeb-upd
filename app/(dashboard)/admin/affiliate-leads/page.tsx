@@ -15,12 +15,13 @@ import { PageHeader } from '@/components/admin/ui/page-header';
 import { LeadBadge } from '@/components/admin/ui/status-badge';
 import { Button } from '@/components/ui/button';
 import { commissionFor } from '@/content/affiliate';
-import { formatDateTime } from '@/lib/admin/format';
+import { dhakaStart, formatDateTime } from '@/lib/admin/format';
 import { listHref, matches, paginate, readListQuery, sortBy } from '@/lib/admin/list';
 import { listNotes } from '@/lib/admin/notes';
 import { listLeads } from '@/lib/admin/pipeline';
 import { leadStatuses, leadStatusLabel, type AffiliateLead } from '@/lib/admin/types';
 import { requireAdmin } from '@/lib/auth';
+import { mailtoHref, telHref } from '@/lib/safe-url';
 import type { RawSearchParams } from '@/lib/search-params';
 import { signedDownloadUrl } from '@/lib/storage';
 
@@ -50,9 +51,8 @@ export default async function AffiliateLeadsPage({ searchParams }: { searchParam
   const filtered = all.filter((l) => (!status || l.status === status) && matches(query.q, l.fullName, l.email, l.referredProject, l.partnerType));
   const page = paginate(query.sort && sorters[query.sort] ? sortBy(filtered, sorters[query.sort], query.dir) : filtered, query.page);
 
-  const now = new Date();
-  const month = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-  const quarter = new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1).toISOString();
+  const month = dhakaStart('month');
+  const quarter = dhakaStart('quarter');
   const partners = new Set(all.filter((l) => l.status !== 'lost').map((l) => l.email.toLowerCase())).size;
   const referred = all.filter((l) => l.referredProject);
   const won = all.filter((l) => l.status === 'won');
@@ -128,7 +128,7 @@ export default async function AffiliateLeadsPage({ searchParams }: { searchParam
           }
           actions={(l) => (
             <>
-              <RowLink href={listHref(BASE, params, { id: l.id, page: query.page })} label={`Open ${l.fullName}`}>
+              <RowLink record={l.id} href={listHref(BASE, params, { id: l.id, page: query.page })} label={`Open ${l.fullName}`}>
                 <Eye aria-hidden />
               </RowLink>
               <ConfirmDelete
@@ -145,12 +145,13 @@ export default async function AffiliateLeadsPage({ searchParams }: { searchParam
 
       {selected && (
         <RecordDrawer
+          recordId={selected.id}
           closeHref={listHref(BASE, params, { page: query.page })}
           name={selected.fullName}
           meta={[selected.partnerType, formatDateTime(selected.createdAt)].filter(Boolean).join(' · ')}
           footer={
             <Button asChild className="col-span-2">
-              <a href={`mailto:${selected.email}?subject=${encodeURIComponent('Your ShafaCode partner kit')}`}>
+              <a href={mailtoHref(selected.email, 'Your ShafaCode partner kit') ?? undefined}>
                 <Send aria-hidden /> Reply by email
               </a>
             </Button>
@@ -159,13 +160,13 @@ export default async function AffiliateLeadsPage({ searchParams }: { searchParam
           <div className="flex flex-col gap-6">
             <div className="flex flex-wrap gap-2">
               <Button asChild variant="secondary" size="sm">
-                <a href={`mailto:${selected.email}`}>
+                <a href={mailtoHref(selected.email) ?? undefined}>
                   <Mail aria-hidden /> {selected.email}
                 </a>
               </Button>
               {selected.phone && (
                 <Button asChild variant="secondary" size="sm">
-                  <a href={`tel:${selected.phone.replace(/[^\d+]/g, '')}`}>
+                  <a href={telHref(selected.phone) ?? undefined}>
                     <Phone aria-hidden /> {selected.phone}
                   </a>
                 </Button>

@@ -5,6 +5,7 @@ import type { DocumentData } from 'firebase-admin/firestore';
 
 import { requireAdmin } from '@/lib/auth';
 import { demoApplications, demoInquiries, demoLeads } from './demo';
+import { safeHttpUrl } from '@/lib/safe-url';
 import { db, demoMode, iso, live, str, strs } from './source';
 import {
   applicationStages,
@@ -21,14 +22,24 @@ import {
 const pick = <T extends string>(allowed: readonly T[], v: unknown, fallback: T): T =>
   allowed.includes(v as T) ? (v as T) : fallback;
 
+/** File name from a URL for display; never throws on bad escapes. */
+function fileLabel(url: string) {
+  const raw = url.split('/').pop()?.split('?')[0] || 'Attachment';
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}
+
 const byNewest = <T extends { createdAt: string }>(a: T, b: T) => b.createdAt.localeCompare(a.createdAt);
 
 function toInquiry(id: string, d: DocumentData): Inquiry {
   const paths = strs(d.attachmentPaths).map((path) => ({ label: path.split('/').pop() ?? 'Attachment', path }));
-  const urls = [...strs(d.attachmentUrls), ...(str(d.fileUrl) ? [str(d.fileUrl)] : [])].map((url) => ({
-    label: decodeURIComponent(url.split('/').pop()?.split('?')[0] ?? 'Attachment'),
-    url,
-  }));
+  const urls = [...strs(d.attachmentUrls), str(d.fileUrl)]
+    .map(safeHttpUrl)
+    .filter((u): u is string => !!u)
+    .map((url) => ({ label: fileLabel(url), url }));
   return {
     id,
     fullName: str(d.fullName) || str(d.name) || 'Unknown',
@@ -50,7 +61,7 @@ function toInquiry(id: string, d: DocumentData): Inquiry {
 
 function toLead(id: string, d: DocumentData): AffiliateLead {
   const path = str(d.filePath);
-  const url = str(d.fileUrl);
+  const url = safeHttpUrl(str(d.fileUrl)) ?? '';
   return {
     id,
     fullName: str(d.fullName) || str(d.name) || 'Unknown',
@@ -69,7 +80,7 @@ function toLead(id: string, d: DocumentData): AffiliateLead {
 
 function toApplication(id: string, d: DocumentData): Application {
   const path = str(d.resumePath);
-  const url = str(d.resumeUrl) || str(d.resume) || str(d.fileUrl);
+  const url = safeHttpUrl(str(d.resumeUrl) || str(d.resume) || str(d.fileUrl)) ?? '';
   return {
     id,
     jobSlug: str(d.jobSlug) || str(d.slug),
@@ -78,9 +89,9 @@ function toApplication(id: string, d: DocumentData): Application {
     email: str(d.email),
     phone: str(d.phone),
     location: str(d.location),
-    portfolioUrl: str(d.portfolioUrl) || str(d.portfolio),
-    linkedinUrl: str(d.linkedinUrl),
-    githubUrl: str(d.githubUrl),
+    portfolioUrl: safeHttpUrl(str(d.portfolioUrl) || str(d.portfolio)) ?? '',
+    linkedinUrl: safeHttpUrl(str(d.linkedinUrl)) ?? '',
+    githubUrl: safeHttpUrl(str(d.githubUrl)) ?? '',
     experienceRange: str(d.experienceRange) || str(d.experience),
     primaryFramework: str(d.primaryFramework),
     whyUs: str(d.whyUs) || str(d.coverLetter),
@@ -132,13 +143,31 @@ export async function getApplication(id: string) {
   return (await listApplications()).find((a) => a.id === id) ?? null;
 }
 
-/** Sidebar badges: items that still need a first look. */
+/**
+ * Sidebar badges: items that still need a first look. Runs on every admin
+ * page, so it reads only the status fields (legacy docs without a status
+ * count as new, like the lists show them).
+ */
 export async function pipelineCounts() {
-  const [inquiries, leads, applications] = await Promise.all([listInquiries(), listLeads(), listApplications()]);
+  await requireAdmin();
+  if (demoMode()) {
+    return {
+      inquiries: demoInquiries.filter((i) => i.status === 'new').length,
+      affiliateLeads: demoLeads.filter((l) => l.status === 'new').length,
+      applications: demoApplications.filter((a) => !a.isViewed).length,
+    };
+  }
+  if (!live()) return { inquiries: 0, affiliateLeads: 0, applications: 0 };
+  const [inq, leads, apps] = await Promise.all([
+    db().collection('contact').select('status').get(),
+    db().collection('affiliate-leads').select('status').get(),
+    db().collection('apply-jobs').select('isViewed').get(),
+  ]);
+  const isNew = (s: unknown) => !s || s === 'new';
   return {
-    inquiries: inquiries.filter((i) => i.status === 'new').length,
-    affiliateLeads: leads.filter((l) => l.status === 'new').length,
-    applications: applications.filter((a) => !a.isViewed).length,
+    inquiries: inq.docs.filter((d) => isNew(d.get('status'))).length,
+    affiliateLeads: leads.docs.filter((d) => isNew(d.get('status'))).length,
+    applications: apps.docs.filter((d) => d.get('isViewed') !== true).length,
   };
 }
 

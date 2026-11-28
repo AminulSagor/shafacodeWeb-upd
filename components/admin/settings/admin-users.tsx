@@ -71,10 +71,10 @@ export function AdminUsers({ admins, meId }: { admins: AdminRow[]; meId: string 
                 </NativeSelect>
               </label>
             )}
-            <Button type="button" variant="ghost" size="sm" onClick={() => setResetFor(a)}>
+            <Button type="button" variant="ghost" size="sm" aria-label={`Reset the password of ${a.name}`} onClick={() => { setPw(''); setErrors({}); setResetFor(a); }}>
               <KeyRound aria-hidden /> Reset password
             </Button>
-            <Button type="button" variant="ghost" size="sm" disabled={pending} onClick={() => run(() => signOutAdmin(a.id))}>
+            <Button type="button" variant="ghost" size="sm" aria-label={`Sign out ${a.name} on all devices`} disabled={pending} onClick={() => run(() => signOutAdmin(a.id))}>
               <LogOut aria-hidden /> Sign out
             </Button>
             {a.id !== meId && (
@@ -84,7 +84,16 @@ export function AdminUsers({ admins, meId }: { admins: AdminRow[]; meId: string 
         ))}
       </ul>
 
-      <Dialog open={adding} onOpenChange={setAdding}>
+      <Dialog
+        open={adding}
+        onOpenChange={(o) => {
+          setAdding(o);
+          if (!o) {
+            setForm({ email: '', name: '', role: 'editor', password: '' });
+            setErrors({});
+          }
+        }}
+      >
         <DialogContent>
           <DialogTitle>Add admin</DialogTitle>
           <DialogDescription>Share the password privately (not by email). It needs 12 or more characters.</DialogDescription>
@@ -109,7 +118,15 @@ export function AdminUsers({ admins, meId }: { admins: AdminRow[]; meId: string 
         </DialogContent>
       </Dialog>
 
-      <Dialog open={!!resetFor} onOpenChange={(o) => !o && setResetFor(null)}>
+      <Dialog
+        open={!!resetFor}
+        onOpenChange={(o) => {
+          if (!o) {
+            setResetFor(null);
+            setPw('');
+          }
+        }}
+      >
         <DialogContent>
           <DialogTitle>Reset password for {resetFor?.name}</DialogTitle>
           <DialogDescription>Their sessions end at once. Share the new password privately.</DialogDescription>
@@ -123,7 +140,7 @@ export function AdminUsers({ admins, meId }: { admins: AdminRow[]; meId: string 
               });
             }}
           >
-            <TextField id="r-pw" label="New password" required type="password" value={pw} onChange={setPw} helper="12 or more characters" />
+            <TextField id="r-pw" label="New password" required type="password" value={pw} onChange={setPw} helper="12 or more characters" error={errors.password} />
             <Button type="submit" loading={pending}>
               Reset password
             </Button>

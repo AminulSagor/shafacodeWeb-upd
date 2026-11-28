@@ -31,7 +31,7 @@ export function NotesPanel({
           {notes.map((n) => (
             <li key={n.id} className="rounded-field bg-surface-2 px-3.5 py-2.5">
               <p className="type-body-sm whitespace-pre-line text-fg">{n.text}</p>
-              <p className="mt-1 type-caption font-normal text-fg-subtle">
+              <p className="mt-1 type-caption font-normal text-fg-subtle" suppressHydrationWarning>
                 {n.author} · {relativeTime(n.createdAt)}
               </p>
             </li>

@@ -10,13 +10,13 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import type { MediaItem } from '@/lib/admin/media';
-import { publicMediaUrl } from '@/lib/media';
+import { mediaSrc } from '@/lib/media';
 import { uploadImage } from './upload-image';
 
 export type MediaRef = { path: string; alt: string; width: number; height: number };
 
 const toRef = (m: MediaItem): MediaRef => ({ path: m.path, alt: m.alt, width: m.width, height: m.height });
-const src = (path: string) => (path.startsWith('/') ? path : publicMediaUrl(path));
+const src = mediaSrc;
 
 /** Library grid with upload; returns the chosen images. */
 function MediaPicker({ open, onOpenChange, onPick, multiple = false }: { open: boolean; onOpenChange: (o: boolean) => void; onPick: (m: MediaRef[]) => void; multiple?: boolean }) {
@@ -68,9 +68,14 @@ function MediaPicker({ open, onOpenChange, onPick, multiple = false }: { open: b
           <Button type="button" variant="secondary" size="sm" onClick={() => fileRef.current?.click()} disabled={!!upload}>
             <Upload aria-hidden /> Upload
           </Button>
-          <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" multiple={multiple} className="sr-only" tabIndex={-1} onChange={(e) => onFiles(e.target.files)} />
-          <p className="type-caption font-normal text-fg-subtle" role="status">
-            {upload ? `Uploading ${upload.name}… ${upload.progress}%` : `${chosen.length} selected`}
+          <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" multiple={multiple} className="sr-only" tabIndex={-1} onChange={(e) => {
+              const files = e.target.files;
+              void onFiles(files).finally(() => (e.target.value = ''));
+            }}
+          />
+          <p className="type-caption font-normal text-fg-subtle">
+            <span role="status">{upload ? `Uploading ${upload.name}` : `${chosen.length} selected`}</span>
+            {upload && <span aria-hidden> {upload.progress}%</span>}
           </p>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto">

@@ -13,5 +13,5 @@ export default async function EditJobPage({ params }: { params: Promise<{ id: st
   const job = await getJobForEdit(id);
   if (!job) notFound();
   const { id: _id, updatedAt, applications: _a, ...initial } = job;
-  return <JobEditor key={updatedAt} id={id} initial={{ ...initial, responsibilities: initial.responsibilities.length ? initial.responsibilities : [''], requirements: initial.requirements.length ? initial.requirements : [''] }} savedAt={updatedAt} />;
+  return <JobEditor key={id} id={id} initial={{ ...initial, responsibilities: initial.responsibilities.length ? initial.responsibilities : [''], requirements: initial.requirements.length ? initial.requirements : [''] }} savedAt={updatedAt} />;
 }

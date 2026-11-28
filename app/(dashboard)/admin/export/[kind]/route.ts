@@ -1,5 +1,3 @@
-import { notFound } from 'next/navigation';
-
 import { commissionFor } from '@/content/affiliate';
 import { budgetLabel, projectTypeLabel, timelineLabel } from '@/lib/admin/format';
 import { listApplications, listInquiries, listLeads } from '@/lib/admin/pipeline';
@@ -9,7 +7,7 @@ import { requireAdmin } from '@/lib/auth';
 /** Spreadsheet formulas must not run from client-supplied text. */
 function cell(v: string | number | null | undefined) {
   const s = v === null || v === undefined ? '' : String(v);
-  const safe = /^[=+\-@\t\r]/.test(s) ? `'${s}` : s;
+  const safe = /^[\t\r\n]|^\s*[=+\-@]/.test(s) ? `'${s}` : s;
   return `"${safe.replace(/"/g, '""')}"`;
 }
 
@@ -40,9 +38,9 @@ const exports = {
 export async function GET(_req: Request, { params }: { params: Promise<{ kind: string }> }) {
   await requireAdmin();
   const { kind } = await params;
-  if (!(kind in exports)) notFound();
+  if (!Object.hasOwn(exports, kind)) return new Response('Not found', { status: 404 });
   const { header, rows } = await exports[kind as keyof typeof exports]();
-  const csv = '﻿' + [header.map(cell).join(','), ...rows.map((r) => r.map(cell).join(','))].join('\r\n');
+  const csv = '\uFEFF' + [header.map(cell).join(','), ...rows.map((r) => r.map(cell).join(','))].join('\r\n');
   return new Response(csv, {
     headers: {
       'Content-Type': 'text/csv; charset=utf-8',

@@ -9,8 +9,22 @@ export const slugField = z
   .max(80, 'Keep the slug under 80 characters.')
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Use lowercase letters, numbers and single dashes.');
 
+/**
+ * A media path: a storage path in the media bucket (`media/2026-11/uuid.jpg`
+ * or older flat names), a file under /images, or a legacy https URL.
+ * Never protocol-relative, never with "..".
+ */
+export const mediaPath = z
+  .string()
+  .min(1)
+  .max(400)
+  .refine(
+    (p) => !p.includes('..') && (/^[\w-]+(?:\/[\w.-]+)*\.(?:png|jpe?g|webp|avif|gif)$/i.test(p) || /^\/images\/[\w./-]+$/.test(p) || /^https:\/\/[^/]/.test(p)),
+    'Pick the image again from the media library.'
+  );
+
 export const mediaRef = z.object({
-  path: z.string().min(1).max(400),
+  path: mediaPath,
   alt: z.string().trim().max(250),
   width: z.number().int().nonnegative(),
   height: z.number().int().nonnegative(),
@@ -27,7 +41,7 @@ export const publishFields = {
   status: z.enum(publishStatuses),
   isFeatured: z.boolean(),
   /** datetime-local in Dhaka time, or '' */
-  publishAt: z.string().max(20),
+  publishAt: z.string().regex(/^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?$/, 'Pick a valid date and time.'),
 };
 
 const optionalHttps = z.union([z.literal(''), z.url({ protocol: /^https?$/, message: 'Use a full URL starting with https://.' })]);

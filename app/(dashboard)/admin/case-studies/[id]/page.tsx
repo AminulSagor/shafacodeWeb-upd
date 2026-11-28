@@ -13,5 +13,5 @@ export default async function EditCaseStudyPage({ params }: { params: Promise<{ 
   const item = await getCaseStudyForEdit(id);
   if (!item) notFound();
   const { id: _id, createdAt: _c, updatedAt, publishedAtIso: _p, ...initial } = item;
-  return <CaseStudyEditor key={updatedAt} id={id} initial={initial} savedAt={updatedAt} />;
+  return <CaseStudyEditor key={id} id={id} initial={initial} savedAt={updatedAt} />;
 }

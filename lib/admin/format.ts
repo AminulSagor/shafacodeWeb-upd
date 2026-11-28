@@ -12,16 +12,38 @@ export const formatDateYear = (isoDate: string) => (isoDate ? dateYearFmt.format
 export const formatDateTime = (isoDate: string) => (isoDate ? dateTimeFmt.format(new Date(isoDate)) : '');
 export const formatLongDate = (d: Date) => longFmt.format(d);
 
-/** "2h ago", "Yesterday", "Mon", then a date. Times in Dhaka. */
+const dayKey = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' });
+/** Calendar date in Dhaka, YYYY-MM-DD. */
+export const dhakaDay = (d: Date | number = Date.now()) => dayKey.format(d);
+
+/**
+ * Start of the current day, week (Monday), month or quarter in Dhaka time,
+ * as ISO. `offset` moves by whole units (months for month, and so on).
+ */
+export function dhakaStart(unit: 'day' | 'week' | 'month' | 'quarter', offset = 0, now = new Date()) {
+  const [y, m, d] = dhakaDay(now).split('-').map(Number) as [number, number, number];
+  let date: Date;
+  if (unit === 'day') date = new Date(Date.UTC(y, m - 1, d + offset));
+  else if (unit === 'week') {
+    const weekday = (new Date(Date.UTC(y, m - 1, d)).getUTCDay() + 6) % 7;
+    date = new Date(Date.UTC(y, m - 1, d - weekday + offset * 7));
+  } else if (unit === 'month') date = new Date(Date.UTC(y, m - 1 + offset, 1));
+  else date = new Date(Date.UTC(y, Math.floor((m - 1) / 3) * 3 + offset * 3, 1));
+  // Midnight in Dhaka is 18:00 UTC of the previous day.
+  return new Date(date.getTime() - 6 * 3_600_000).toISOString();
+}
+
+/** "2h ago", "Yesterday", "Mon", then a date. Times and calendar days in Dhaka. */
 export function relativeTime(isoDate: string, now = Date.now()) {
   if (!isoDate) return '';
   const t = new Date(isoDate).getTime();
+  if (Number.isNaN(t)) return '';
   const diff = now - t;
   const h = diff / 3600_000;
   if (diff < 0) {
-    const ahead = -h;
-    if (ahead < 24) return `Today ${timeFmt.format(t)}`;
-    if (ahead < 48) return `Tomorrow ${timeFmt.format(t)}`;
+    const day = dhakaDay(t);
+    if (day === dhakaDay(now)) return `Today ${timeFmt.format(t)}`;
+    if (day === dhakaDay(now + 86_400_000)) return `Tomorrow ${timeFmt.format(t)}`;
     return dateTimeFmt.format(t);
   }
   if (h < 1) return `${Math.max(1, Math.round(diff / 60_000))}m ago`;

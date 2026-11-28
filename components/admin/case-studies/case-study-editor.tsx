@@ -189,6 +189,7 @@ export function CaseStudyEditor({ id, initial, savedAt: initialSavedAt }: { id: 
                 set('slug', x);
               }}
               slugError={errors.slug}
+              errors={errors}
               prefix="/portfolio/"
               fallbackTitle={v.client ? `${v.client} case study` : 'Case study'}
               fallbackDescription={v.summary || 'Short summary of the project.'}

@@ -16,12 +16,13 @@ import { PageHeader } from '@/components/admin/ui/page-header';
 import { InquiryBadge } from '@/components/admin/ui/status-badge';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { budgetLabel, budgetShort, formatDate, formatDateTime, isRecent, projectTypeLabel, projectTypeShort, relativeTime, timelineLabel } from '@/lib/admin/format';
+import { budgetLabel, budgetShort, dhakaStart, formatDate, formatDateTime, isRecent, projectTypeLabel, projectTypeShort, relativeTime, timelineLabel } from '@/lib/admin/format';
 import { listHref, matches, paginate, readListQuery, sortBy } from '@/lib/admin/list';
 import { listNotes } from '@/lib/admin/notes';
 import { listInquiries } from '@/lib/admin/pipeline';
 import { inquiryStatuses, inquiryStatusLabel, type Inquiry } from '@/lib/admin/types';
 import { requireAdmin } from '@/lib/auth';
+import { mailtoHref, telHref } from '@/lib/safe-url';
 import { budgetOptions, projectTypeOptions } from '@/lib/schemas/inquiry';
 import type { RawSearchParams } from '@/lib/search-params';
 import { signedDownloadUrl } from '@/lib/storage';
@@ -43,9 +44,8 @@ const sorters: Record<string, (i: Inquiry) => string | number> = {
 };
 
 function kpis(all: Inquiry[]) {
-  const now = new Date();
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-  const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
+  const monthStart = dhakaStart('month');
+  const lastMonthStart = dhakaStart('month', -1);
   const thisMonth = all.filter((i) => i.createdAt >= monthStart).length;
   const lastMonth = all.filter((i) => i.createdAt >= lastMonthStart && i.createdAt < monthStart).length;
   const change = lastMonth ? Math.round(((thisMonth - lastMonth) / lastMonth) * 100) : null;
@@ -187,7 +187,7 @@ export default async function InquiriesPage({ searchParams }: { searchParams: Pr
           }
           actions={(i) => (
             <>
-              <RowLink href={listHref(BASE, params, { id: i.id, page: query.page })} label={`Open ${i.fullName}`}>
+              <RowLink record={i.id} href={listHref(BASE, params, { id: i.id, page: query.page })} label={`Open ${i.fullName}`}>
                 <Eye aria-hidden />
               </RowLink>
               <ConfirmDelete
@@ -204,13 +204,14 @@ export default async function InquiriesPage({ searchParams }: { searchParams: Pr
 
       {selected && (
         <RecordDrawer
+          recordId={selected.id}
           closeHref={here}
           name={selected.fullName}
           meta={[selected.company, formatDateTime(selected.createdAt)].filter(Boolean).join(' · ')}
           footer={
             <>
               <Button asChild>
-                <a href={`mailto:${selected.email}?subject=${encodeURIComponent('Your ShafaCode project request')}`}>
+                <a href={mailtoHref(selected.email, 'Your ShafaCode project request') ?? undefined}>
                   <Send aria-hidden /> Reply by email
                 </a>
               </Button>
@@ -223,13 +224,13 @@ export default async function InquiriesPage({ searchParams }: { searchParams: Pr
           <div className="flex flex-col gap-6">
             <div className="flex flex-wrap gap-2">
               <Button asChild variant="secondary" size="sm">
-                <a href={`mailto:${selected.email}`}>
+                <a href={mailtoHref(selected.email) ?? undefined}>
                   <Mail aria-hidden /> {selected.email}
                 </a>
               </Button>
               {selected.phone && (
                 <Button asChild variant="secondary" size="sm">
-                  <a href={`tel:${selected.phone.replace(/[^\d+]/g, '')}`}>
+                  <a href={telHref(selected.phone) ?? undefined}>
                     <Phone aria-hidden /> {selected.phone}
                   </a>
                 </Button>

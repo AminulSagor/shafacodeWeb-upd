@@ -49,11 +49,11 @@ export function PublishPanel({
         <Button type="button" variant="secondary" loading={saving} onClick={() => onSave('draft')}>
           Save draft
         </Button>
-        <Button type="button" loading={saving} onClick={() => onSave(status === 'draft' || status === 'archived' ? 'published' : status)}>
-          <Check aria-hidden /> {status === 'scheduled' ? 'Schedule' : status === 'published' ? 'Update' : 'Publish'}
+        <Button type="button" loading={saving} onClick={() => onSave(status === 'draft' ? 'published' : status)}>
+          <Check aria-hidden /> {status === 'scheduled' ? 'Schedule' : status === 'published' ? 'Update' : status === 'archived' ? 'Archive' : 'Publish'}
         </Button>
       </div>
-      <p className="type-caption font-normal text-fg-subtle" aria-live="polite">
+      <p className="type-caption font-normal text-fg-subtle" aria-live="polite" suppressHydrationWarning>
         {dirty ? 'Unsaved changes' : savedAt ? `Last saved ${relativeTime(savedAt)}` : 'Not saved yet'}
       </p>
     </EditorCard>

@@ -11,7 +11,7 @@ import { PageHeader } from '@/components/admin/ui/page-header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { departmentLabel } from '@/content/careers';
-import { formatDate } from '@/lib/admin/format';
+import { dhakaDay, formatDate } from '@/lib/admin/format';
 import { listJobsAdmin, type JobEdit } from '@/lib/admin/jobs';
 import { matches, paginate, readListQuery, sortBy } from '@/lib/admin/list';
 import { requireAdmin } from '@/lib/auth';
@@ -38,7 +38,7 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
   const filtered = all.filter((j) => (!status || j.status === status) && matches(query.q, j.title, j.department));
   const page = paginate(query.sort && sorters[query.sort] ? sortBy(filtered, sorters[query.sort], query.dir) : filtered, query.page);
   const count = (s: string) => all.filter((j) => j.status === s).length;
-  const today = new Date().toISOString().slice(0, 10);
+  const today = dhakaDay();
 
   const columns: Column<JobEdit>[] = [
     {

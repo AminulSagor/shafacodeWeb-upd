@@ -14,5 +14,5 @@ export default async function EditTestimonialPage({ params }: { params: Promise<
   const [item, cs] = await Promise.all([getTestimonialForEdit(id), listCaseStudiesAdmin()]);
   if (!item) notFound();
   const { id: _id, avatarUrl: _a, updatedAt, ...initial } = item;
-  return <TestimonialEditor key={updatedAt} id={id} initial={initial} savedAt={updatedAt} caseStudies={cs.map((c) => ({ id: c.id, label: c.client || c.title }))} />;
+  return <TestimonialEditor key={id} id={id} initial={initial} savedAt={updatedAt} caseStudies={cs.map((c) => ({ id: c.id, label: c.client || c.title }))} />;
 }

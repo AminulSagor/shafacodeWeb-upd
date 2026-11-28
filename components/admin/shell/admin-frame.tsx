@@ -146,7 +146,7 @@ export function AdminFrame({
           <Crumbs />
           <div className="ml-auto flex items-center gap-2">
             <div className="hidden w-70 md:block">
-              <CommandMenu />
+              <CommandMenu owner={user.role === 'owner'} />
             </div>
             <div className="max-sm:hidden">
               <CreateMenu />

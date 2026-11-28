@@ -26,8 +26,9 @@ export async function saveTestimonial(rawId: string | null, input: TestimonialIn
     await db().runTransaction(async (tx) => {
       const snap = rawId ? await tx.get(ref) : null;
       if (rawId && !snap?.exists) throw new Error('Testimonial not found');
-      const writeUsage = await prepareUsage(tx, `testimonial:${ref.id}`, images(snap?.data() as never), images(d));
       const video = d.type === 'video';
+      const saved = { avatar: d.avatar, poster: video ? d.poster : null };
+      const writeUsage = await prepareUsage(tx, `testimonial:${ref.id}`, images(snap?.data() as never), images(saved));
       tx.set(
         ref,
         {

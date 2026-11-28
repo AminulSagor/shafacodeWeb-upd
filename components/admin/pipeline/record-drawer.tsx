@@ -12,12 +12,14 @@ import { initials } from '@/lib/admin/format';
  */
 export function RecordDrawer({
   closeHref,
+  recordId,
   name,
   meta,
   children,
   footer,
 }: {
   closeHref: string;
+  recordId: string;
   name: string;
   meta: string;
   children: React.ReactNode;
@@ -26,7 +28,18 @@ export function RecordDrawer({
   const router = useRouter();
   return (
     <Sheet open onOpenChange={(open) => !open && router.replace(closeHref, { scroll: false })}>
-      <SheetContent side="right" className="w-full gap-0 p-0 sm:w-120">
+      <SheetContent
+        side="right"
+        className="w-full gap-0 p-0 sm:w-120"
+        onCloseAutoFocus={(e) => {
+          // Back to the row that opened the drawer.
+          const opener = document.querySelector<HTMLElement>(`[data-open-record="${CSS.escape(recordId)}"]`);
+          if (opener) {
+            e.preventDefault();
+            opener.focus();
+          }
+        }}
+      >
         <div className="flex items-center gap-3 border-b border-line-subtle px-6 py-5 pr-14">
           <span aria-hidden className="grid size-12 shrink-0 place-items-center rounded-full bg-surface-3 type-label text-fg-muted">
             {initials(name)}

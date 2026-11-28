@@ -12,7 +12,7 @@ import { ConfirmDelete } from '@/components/admin/ui/confirm-delete';
 import { PageHeader } from '@/components/admin/ui/page-header';
 import { StageBadge } from '@/components/admin/ui/status-badge';
 import { Button } from '@/components/ui/button';
-import { formatDate } from '@/lib/admin/format';
+import { dhakaStart, formatDate } from '@/lib/admin/format';
 import { matches, paginate, readListQuery, sortBy } from '@/lib/admin/list';
 import { listApplications } from '@/lib/admin/pipeline';
 import { applicationStages, stageLabel, type Application } from '@/lib/admin/types';
@@ -29,12 +29,6 @@ const sorters: Record<string, (a: Application) => string | number> = {
   applied: (a) => a.createdAt,
 };
 
-function sinceMonday() {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
-  return d.toISOString();
-}
 
 /** Applications. Figma: 61:7711 */
 export default async function ApplicationsPage({ searchParams }: { searchParams: Promise<RawSearchParams> }) {
@@ -50,7 +44,7 @@ export default async function ApplicationsPage({ searchParams }: { searchParams:
   const page = paginate(query.sort && sorters[query.sort] ? sortBy(filtered, sorters[query.sort], query.dir) : filtered, query.page);
   const roles = [...new Map(all.map((a) => [a.jobSlug, a.jobTitle])).entries()].filter(([slug]) => slug).sort((x, y) => x[1].localeCompare(y[1]));
   const count = (s: string) => all.filter((a) => a.stage === s).length;
-  const monday = sinceMonday();
+  const monday = dhakaStart('week');
 
   const columns: Column<Application>[] = [
     { key: 'candidate', header: 'Candidate', sortable: true, primary: true, cell: (a) => <Person name={a.fullName} sub={a.email} href={`${BASE}/${a.id}`} /> },
@@ -110,6 +104,7 @@ export default async function ApplicationsPage({ searchParams }: { searchParams:
 
       <section aria-label="Applications" className="overflow-hidden rounded-md border border-line-subtle bg-surface-1">
         <StatusTabs
+          label="Filter by stage"
           base={BASE}
           query={query}
           param="stage"

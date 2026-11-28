@@ -78,10 +78,10 @@ export function TestimonialEditor({
                   Save draft
                 </Button>
                 <Button type="button" loading={e.saving} onClick={() => e.save({ status: v.status === 'archived' ? 'archived' : 'published' })}>
-                  <Check aria-hidden /> {v.status === 'published' ? 'Update' : 'Publish'}
+                  <Check aria-hidden /> {v.status === 'published' ? 'Update' : v.status === 'archived' ? 'Archive' : 'Publish'}
                 </Button>
               </div>
-              <p className="type-caption font-normal text-fg-subtle" aria-live="polite">
+              <p className="type-caption font-normal text-fg-subtle" aria-live="polite" suppressHydrationWarning>
                 {e.dirty ? 'Unsaved changes' : e.savedAt ? `Last saved ${relativeTime(e.savedAt)}` : 'Not saved yet'}
               </p>
             </EditorCard>

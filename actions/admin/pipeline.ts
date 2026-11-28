@@ -6,12 +6,14 @@ import { z } from 'zod';
 import { logActivity } from '@/lib/admin/activity';
 import { adminAction } from '@/lib/admin/action';
 import { db } from '@/lib/admin/source';
+import { dhakaDate, issuesToFields } from '@/lib/schemas/admin/common';
 import { applicationStages, inquiryStatuses, leadStatuses, inquiryStatusLabel } from '@/lib/admin/types';
 
 const collections = { inquiry: 'contact', lead: 'affiliate-leads', application: 'apply-jobs' } as const;
 type Kind = keyof typeof collections;
 
 const id = z.string().min(1).max(128).regex(/^[\w-]+$/);
+const kindField = z.enum(['inquiry', 'lead', 'application']);
 const noteText = z.string().trim().min(1, 'Write a note first.').max(2000);
 
 async function nameOf(kind: Kind, docId: string) {
@@ -73,6 +75,7 @@ export async function setApplicationStage(rawId: string, rawStage: string) {
 }
 
 export async function addNote(kind: Kind, rawId: string, rawText: string) {
+  if (!kindField.safeParse(kind).success) return { ok: false as const, error: 'Invalid request.' };
   const parsed = z.object({ id, text: noteText }).safeParse({ id: rawId, text: rawText });
   if (!parsed.success) return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid note.' };
   return adminAction(async (admin) => {
@@ -88,16 +91,20 @@ export async function addNote(kind: Kind, rawId: string, rawText: string) {
 
 /** Deletes the record and its notes. Files stay in storage for the audit trail. */
 export async function deleteRecord(kind: Kind, rawId: string) {
+  if (!kindField.safeParse(kind).success) return { ok: false as const, error: 'Invalid request.' };
   const parsed = id.safeParse(rawId);
   if (!parsed.success) return { ok: false as const, error: 'Invalid id.' };
   return adminAction(async (admin) => {
     const ref = db().collection(collections[kind]).doc(parsed.data);
     const name = await nameOf(kind, parsed.data);
     const notes = await ref.collection('notes').get();
-    const batch = db().batch();
-    notes.docs.forEach((n) => batch.delete(n.ref));
-    batch.delete(ref);
-    await batch.commit();
+    // Batches hold up to 500 writes.
+    for (let i = 0; i < notes.docs.length; i += 450) {
+      const batch = db().batch();
+      notes.docs.slice(i, i + 450).forEach((n) => batch.delete(n.ref));
+      await batch.commit();
+    }
+    await ref.delete();
     await logActivity(admin, `deleted ${kind === 'application' ? 'the application of' : 'the ' + kind + ' from'} ${name}`);
     return { ok: true, message: 'Deleted' };
   });
@@ -107,7 +114,7 @@ export async function deleteRecord(kind: Kind, rawId: string) {
 export async function setInterviewTime(rawId: string, local: string) {
   const parsedId = id.safeParse(rawId);
   if (!parsedId.success) return { ok: false as const, error: 'Invalid id.' };
-  const at = local ? new Date(`${local}:00+06:00`) : null;
+  const at = local ? dhakaDate(local) : null;
   if (local && (!at || Number.isNaN(at.getTime()))) return { ok: false as const, error: 'Pick a valid date and time.' };
   return adminAction(async (admin) => {
     const ref = db().collection('apply-jobs').doc(parsedId.data);
@@ -135,7 +142,7 @@ export async function updateLeadReferral(rawId: string, form: { referredProject:
   const parsed = referral.safeParse(form);
   if (!parsedId.success) return { ok: false as const, error: 'Invalid id.' };
   if (!parsed.success) {
-    return { ok: false as const, error: 'Check the referral details.', fieldErrors: { estValue: parsed.error.issues[0]?.message ?? 'Invalid value.' } };
+    return { ok: false as const, error: 'Check the referral details.', fieldErrors: issuesToFields(parsed.error.issues) };
   }
   return adminAction(async (admin) => {
     const ref = db().collection('affiliate-leads').doc(parsedId.data);

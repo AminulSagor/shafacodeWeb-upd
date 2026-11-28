@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { createHash, timingSafeEqual } from 'node:crypto';
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
@@ -9,6 +10,13 @@ import type { AdminRole } from './session';
 export type AdminUser = { id: string; email: string; name: string; role: AdminRole; sessionVersion: number };
 
 const COLLECTION = 'admins';
+
+/** Constant-time string comparison (hashes first, so lengths never leak). */
+function sameSecret(a: string, b: string) {
+  const x = createHash('sha256').update(a).digest();
+  const y = createHash('sha256').update(b).digest();
+  return timingSafeEqual(x, y);
+}
 const normalize = (email: string) => email.trim().toLowerCase();
 
 /**
@@ -43,7 +51,7 @@ export async function authenticate(emailInput: string, password: string): Promis
 
   if (devMode()) {
     const dev = devUser();
-    const ok = dev && email === dev.email && password === process.env.ADMIN_PASS;
+    const ok = dev && email === dev.email && sameSecret(password, process.env.ADMIN_PASS!);
     if (!ok) await burnPasswordCheck(password);
     return ok ? dev : null;
   }
@@ -61,7 +69,9 @@ export async function authenticate(emailInput: string, password: string): Promis
 
   const envUser = process.env.ADMIN_USER;
   const envPass = process.env.ADMIN_PASS;
-  if (envUser && envPass && email === normalize(envUser) && password === envPass) {
+  // Bootstrap only while there is no admin at all; after that the env pair is ignored.
+  const noAdmins = envUser && envPass ? (await db.collection(COLLECTION).limit(1).get()).empty : false;
+  if (noAdmins && email === normalize(envUser!) && sameSecret(password, envPass!)) {
     const ref = db.collection(COLLECTION).doc();
     const created = await db.runTransaction(async (tx) => {
       const any = await tx.get(db.collection(COLLECTION).limit(1));
@@ -103,5 +113,6 @@ export async function bumpSessionVersion(id: string) {
     devAdmin.version += 1;
     return;
   }
-  await getDb().collection(COLLECTION).doc(id).update({ sessionVersion: FieldValue.increment(1) });
+  // A deleted account has nothing to revoke; never fail the sign-out because of it.
+  await getDb().collection(COLLECTION).doc(id).update({ sessionVersion: FieldValue.increment(1) }).catch((e) => console.error('Session revoke failed', e));
 }

@@ -13,5 +13,5 @@ export default async function EditTeamMemberPage({ params }: { params: Promise<{
   const m = await getTeamMemberForEdit(id);
   if (!m) notFound();
   const { id: _id, order: _o, photoUrl: _p, updatedAt, ...initial } = m;
-  return <TeamEditor key={updatedAt} id={id} initial={initial} savedAt={updatedAt} />;
+  return <TeamEditor key={id} id={id} initial={initial} savedAt={updatedAt} />;
 }

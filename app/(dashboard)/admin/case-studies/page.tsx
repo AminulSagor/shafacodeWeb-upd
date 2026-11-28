@@ -14,7 +14,7 @@ import { PublishBadge } from '@/components/admin/ui/status-badge';
 import { Button } from '@/components/ui/button';
 import { services } from '@/content/services';
 import { listCaseStudiesAdmin, type CaseStudyRow } from '@/lib/admin/case-studies';
-import { formatDate } from '@/lib/admin/format';
+import { dhakaStart, formatDate } from '@/lib/admin/format';
 import { matches, paginate, readListQuery, sortBy } from '@/lib/admin/list';
 import { publishLabel, publishStatuses } from '@/lib/admin/types';
 import { requireAdmin } from '@/lib/auth';
@@ -42,7 +42,7 @@ export default async function CaseStudiesPage({ searchParams }: { searchParams: 
     (c) => (!status || c.status === status) && (!service || c.services.includes(service)) && matches(query.q, c.title, c.client, c.industry)
   );
   const page = paginate(query.sort && sorters[query.sort] ? sortBy(filtered, sorters[query.sort], query.dir) : filtered, query.page);
-  const month = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+  const month = dhakaStart('month');
   const count = (s: string) => all.filter((c) => c.status === s).length;
 
   const columns: Column<CaseStudyRow>[] = [
@@ -73,7 +73,7 @@ export default async function CaseStudiesPage({ searchParams }: { searchParams: 
       cell: (c) => (
         <span className="flex items-center gap-2">
           <PublishBadge status={c.status} />
-          {c.isFeatured && <Star className="size-4 fill-current text-icon-brand" aria-label="Featured" />}
+          {c.isFeatured && <Star role="img" className="size-4 fill-current text-icon-brand" aria-label="Featured" />}
         </span>
       ),
     },

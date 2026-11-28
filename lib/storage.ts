@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { fileTypeFromBuffer } from 'file-type';
 
+import { requireAdmin } from '@/lib/auth';
 import { isLegacyPublicUrl } from '@/lib/schemas/upload';
 
 export type UploadKind = 'resume' | 'attachment' | 'affiliate' | 'media';
@@ -101,10 +102,14 @@ export async function acceptUpload(kind: UploadKind, file: { path: string } | { 
   return !privateUploads() && legacyUploadsAllowed() && isLegacyPublicUrl(file.url);
 }
 
-/** A download link for a private file that expires after 10 minutes (admins only). */
-export async function signedDownloadUrl(kind: UploadKind, path: string) {
+/**
+ * A link to a private file that expires after 10 minutes; with `download`
+ * the file is served as an attachment under that name. Admins only.
+ */
+export async function signedDownloadUrl(kind: UploadKind, path: string, download?: string) {
+  await requireAdmin();
   const client = storageAdmin();
   if (!client) return null;
-  const { data, error } = await client.storage.from(uploadRules[kind].bucket).createSignedUrl(path, 600);
+  const { data, error } = await client.storage.from(uploadRules[kind].bucket).createSignedUrl(path, 600, download ? { download } : undefined);
   return error || !data ? null : data.signedUrl;
 }

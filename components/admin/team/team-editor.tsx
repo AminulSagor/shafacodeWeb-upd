@@ -46,7 +46,7 @@ export function TeamEditor({ id, initial, savedAt }: { id: string | null; initia
                 <Check aria-hidden /> Save
               </Button>
             </div>
-            <p className="type-caption font-normal text-fg-subtle" aria-live="polite">
+            <p className="type-caption font-normal text-fg-subtle" aria-live="polite" suppressHydrationWarning>
               {e.dirty ? 'Unsaved changes' : e.savedAt ? `Last saved ${relativeTime(e.savedAt)}` : 'Not saved yet'}
             </p>
           </EditorCard>

@@ -35,6 +35,7 @@ export default async function MediaPage({ searchParams }: { searchParams: Promis
       <div className={cn('grid items-start gap-4', selected && 'xl:grid-cols-[minmax(0,1fr)_--spacing(90)]')}>
         <section aria-label="Images" className="overflow-hidden rounded-md border border-line-subtle bg-surface-1">
           <StatusTabs
+          label="Filter images"
             base={BASE}
             query={query}
             param="filter"
@@ -61,7 +62,7 @@ export default async function MediaPage({ searchParams }: { searchParams: Promis
                     )}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element -- admin thumbnail */}
-                    <img src={m.url} alt={m.alt || 'Image without alt text'} className="aspect-4/3 w-full bg-surface-2 object-cover" loading="lazy" />
+                    <img src={m.url} alt="" className="aspect-4/3 w-full bg-surface-2 object-cover" loading="lazy" />
                     <span className="flex items-center justify-between gap-2 px-2.5 py-2">
                       <span className="truncate type-caption font-normal text-fg-muted">{m.alt || 'No alt text'}</span>
                       {!m.alt && <span className="shrink-0 rounded-xs bg-status-warning px-1.5 type-caption text-fg-warning">Alt</span>}

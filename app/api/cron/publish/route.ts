@@ -29,11 +29,14 @@ export async function GET(req: Request) {
   ] as const) {
     const due = await getDb().collection(collection).where('status', '==', 'scheduled').where('publishedAt', '<=', now).get();
     if (!due.empty) {
-      const batch = getDb().batch();
-      due.docs.forEach((d) => batch.update(d.ref, { status: 'published', updatedAt: now }));
-      await batch.commit();
+      for (let i = 0; i < due.docs.length; i += 450) {
+        const batch = getDb().batch();
+        due.docs.slice(i, i + 450).forEach((d) => batch.update(d.ref, { status: 'published', updatedAt: now }));
+        await batch.commit();
+      }
       revalidateTag(tag, { expire: 0 });
       revalidatePath(path);
+      if (collection === 'projects') revalidatePath('/');
     }
     result[collection] = due.size;
   }

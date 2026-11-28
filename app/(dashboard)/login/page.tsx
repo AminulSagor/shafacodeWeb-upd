@@ -3,12 +3,16 @@ import type { Metadata } from 'next';
 import { LoginForm } from '@/components/admin/auth/login-form';
 import { Logo } from '@/components/site/logo';
 import { StaticKineticDiagram } from '@/components/site/process/process-diagram';
+import { redirect } from 'next/navigation';
+
+import { getAdmin } from '@/lib/auth';
 import { first, type RawSearchParams } from '@/lib/search-params';
 
 export const metadata: Metadata = { title: 'Sign in' };
 
 /** Admin sign-in. Figma: Login 55:2397 (mobile 62:9408) */
 export default async function LoginPage({ searchParams }: { searchParams: Promise<RawSearchParams> }) {
+  if (await getAdmin()) redirect('/admin');
   const next = first((await searchParams).next) ?? '/admin';
   return (
     <div className="grid min-h-dvh bg-canvas lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">

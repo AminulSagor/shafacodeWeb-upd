@@ -48,7 +48,7 @@ export function MarkdownField({
     if (!el) return;
     const { selectionStart: s, selectionEnd: e } = el;
     const selected = value.slice(s, e) || t.placeholder || '';
-    const lineStart = t.block ? value.lastIndexOf('\n', s - 1) + 1 : s;
+    const lineStart = t.block ? (s === 0 ? 0 : value.lastIndexOf('\n', s - 1) + 1) : s;
     const next = t.block
       ? `${value.slice(0, lineStart)}${t.before}${value.slice(lineStart, s)}${selected}${value.slice(e)}`
       : `${value.slice(0, s)}${t.before}${selected}${t.after ?? ''}${value.slice(e)}`;
@@ -71,7 +71,7 @@ export function MarkdownField({
           </span>
         )}
       </label>
-      <Tabs.Root value={tab} onValueChange={setTab} className="overflow-hidden rounded-field shadow-field aria-invalid:shadow-field-error" aria-invalid={error ? true : undefined}>
+      <Tabs.Root value={tab} onValueChange={setTab} className="overflow-hidden rounded-field shadow-field data-invalid:shadow-field-error" data-invalid={error ? '' : undefined}>
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line-subtle bg-surface-2 px-2 py-1.5">
           <div role="toolbar" aria-label={`${label} formatting`} aria-controls={id} className="flex flex-wrap gap-0.5">
             {tools.map((t) => (

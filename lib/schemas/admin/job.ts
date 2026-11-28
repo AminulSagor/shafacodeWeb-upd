@@ -42,8 +42,8 @@ export const jobSchema = z
     requirements: z.array(z.string().trim().max(200)).max(20),
     status: z.enum(jobStatuses),
     acceptingApplications: z.boolean(),
-    datePosted: z.string().max(10),
-    validThrough: z.string().max(10),
+    datePosted: z.string().regex(/^$|^\d{4}-\d{2}-\d{2}$/, 'Pick a valid date.'),
+    validThrough: z.string().regex(/^$|^\d{4}-\d{2}-\d{2}$/, 'Pick a valid date.'),
     slug: slugField,
     seo: seoField,
   })

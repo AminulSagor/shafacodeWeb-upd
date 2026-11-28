@@ -237,7 +237,7 @@ export function useUnsavedWarning(dirty: boolean) {
       const a = (e.target as HTMLElement | null)?.closest('a');
       if (!a || a.target === '_blank' || a.hasAttribute('download') || e.metaKey || e.ctrlKey) return;
       const url = new URL(a.href, location.href);
-      if (url.origin !== location.origin || url.pathname === location.pathname) return;
+      if (url.origin !== location.origin || (url.pathname === location.pathname && url.search === location.search)) return;
       if (!window.confirm('You have unsaved changes. Leave without saving?')) {
         e.preventDefault();
         e.stopPropagation();

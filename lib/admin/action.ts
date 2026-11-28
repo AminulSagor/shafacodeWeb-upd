@@ -21,10 +21,12 @@ export async function adminAction<T = undefined>(
   if (demoMode()) return { ok: false, error: 'Demo data: Firestore is not configured, so nothing was saved.' };
   if (!live()) return { ok: false, error: 'Firestore is not configured.' };
   try {
-    const result = (await run(admin)) ?? { ok: true };
-    revalidatePath('/admin', 'layout');
-    for (const path of opts.revalidate ?? []) revalidatePath(path);
-    return result as ActionResult<T>;
+    const result = ((await run(admin)) ?? { ok: true }) as ActionResult<T>;
+    if (result.ok) {
+      revalidatePath('/admin', 'layout');
+      for (const path of opts.revalidate ?? []) revalidatePath(path);
+    }
+    return result;
   } catch (error) {
     console.error('Admin action failed', error);
     return { ok: false, error: 'Something went wrong. Please try again.' };

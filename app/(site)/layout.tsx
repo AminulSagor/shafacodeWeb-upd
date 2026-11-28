@@ -7,6 +7,7 @@ import { SiteFooter } from '@/components/site/site-footer';
 import { Toaster } from '@/components/ui/sonner';
 import { site } from '@/content/site';
 import { isProduction } from '@/lib/seo';
+import { mediaSrc } from '@/lib/media';
 import { getSiteSettings } from '@/lib/settings';
 
 /** Defaults come from Site Settings in the admin (title template, description, indexing switch). */
@@ -15,12 +16,20 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(site.url),
     title: {
-      default: `${s.siteName}: ${s.tagline.charAt(0).toLowerCase()}${s.tagline.slice(1)}`,
+      default: s.tagline ? `${s.siteName}: ${s.tagline.charAt(0).toLowerCase()}${s.tagline.slice(1)}` : s.siteName,
       template: s.titleTemplate,
     },
     description: s.defaultDescription,
     applicationName: s.siteName,
-    openGraph: { type: 'website', locale: 'en_US', siteName: s.siteName },
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      siteName: s.siteName,
+      // Routes with their own opengraph-image still use that one.
+      ...(s.defaultOgImage && mediaSrc(s.defaultOgImage.path)
+        ? { images: [{ url: mediaSrc(s.defaultOgImage.path), alt: s.defaultOgImage.alt, width: s.defaultOgImage.width || 1200, height: s.defaultOgImage.height || 630 }] }
+        : {}),
+    },
     twitter: { card: 'summary_large_image' },
     // Previews never get indexed; production follows the kill switch in Site Settings.
     robots: isProduction && s.allowIndexing ? undefined : { index: false, follow: false },

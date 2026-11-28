@@ -40,7 +40,7 @@ export default async function TestimonialsPage({ searchParams }: { searchParams:
       cell: (t) => (
         <span className="flex items-center gap-2">
           <PublishBadge status={t.status} />
-          {t.isFeatured && <Star className="size-4 fill-current text-icon-brand" aria-label="Featured" />}
+          {t.isFeatured && <Star role="img" className="size-4 fill-current text-icon-brand" aria-label="Featured" />}
         </span>
       ),
     },
@@ -67,6 +67,7 @@ export default async function TestimonialsPage({ searchParams }: { searchParams:
       </section>
       <section aria-label="Testimonials" className="overflow-hidden rounded-md border border-line-subtle bg-surface-1">
         <StatusTabs
+          label="Filter by type"
           base={BASE}
           query={query}
           param="type"

@@ -52,7 +52,7 @@ function toJob(d: DocumentData): Job | null {
   };
   const description =
     (str(d.description) || str(d.jobDescription)) + list('What you will do', d.responsibilities) + list('What you bring', d.requirements);
-  const location = str(d.location) || [str(d.locationCity), str(d.locationCountry)].filter(Boolean).join(', ');
+  const location = [str(d.locationCity), str(d.locationCountry)].filter(Boolean).join(', ') || str(d.location);
   const workMode = str(d.workMode);
   return {
     slug,

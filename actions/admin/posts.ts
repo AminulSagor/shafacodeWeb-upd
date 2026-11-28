@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { logActivity } from '@/lib/admin/activity';
 import { adminAction, type ActionResult } from '@/lib/admin/action';
 import { prepareUsage } from '@/lib/admin/media-usage';
+import { nextPreviousSlugs, slugTaken } from '@/lib/admin/slugs';
 import { db } from '@/lib/admin/source';
 import { readingMinutes } from '@/lib/data/posts';
 import { dhakaDate, issuesToFields } from '@/lib/schemas/admin/common';
@@ -23,8 +24,6 @@ export async function savePost(rawId: string | null, input: PostInput): Promise<
 
   return adminAction(async (admin): Promise<ActionResult<{ id: string; slug: string }>> => {
     const col = db().collection('blogs');
-    const clash = await col.where('slug', '==', d.slug).limit(2).get();
-    if (clash.docs.some((doc) => doc.id !== rawId)) return { ok: false, error: 'That URL slug is taken.', fieldErrors: { slug: 'Another post uses this slug.' } };
 
     // Author snapshot: the site renders it without reading the team collection.
     const authorSnap = d.authorId ? await db().collection('team').doc(d.authorId).get() : null;
@@ -36,8 +35,10 @@ export async function savePost(rawId: string | null, input: PostInput): Promise<
     const ref = rawId ? col.doc(rawId) : col.doc();
     const now = Timestamp.now();
     const when = dhakaDate(d.publishAt);
+    if (d.publishAt && !when) return { ok: false, error: 'Pick a valid date and time.', fieldErrors: { publishAt: 'Pick a valid date and time.' } };
 
-    await db().runTransaction(async (tx) => {
+    const taken = await db().runTransaction(async (tx) => {
+      if (await slugTaken(tx, 'blogs', d.slug, ref.id)) return true;
       const snap = rawId ? await tx.get(ref) : null;
       if (rawId && !snap?.exists) throw new Error('Post not found');
       const before = snap?.data();
@@ -58,7 +59,8 @@ export async function savePost(rawId: string | null, input: PostInput): Promise<
           category: d.category,
           tags: d.tags,
           authorId: d.authorId,
-          author,
+          // A legacy post keeps its embedded author until someone picks a team member.
+          author: author ?? before?.author ?? null,
           cover: d.cover,
           slug: d.slug,
           seo: d.seo,
@@ -68,15 +70,17 @@ export async function savePost(rawId: string | null, input: PostInput): Promise<
           publishedAt,
           updatedAt: now,
           updatedBy: admin.id,
-          ...(snap ? {} : { createdAt: now, previousSlugs: [] }),
-          ...(before?.slug && before.slug !== d.slug && wasLive ? { previousSlugs: FieldValue.arrayUnion(before.slug) } : {}),
+          ...(snap ? {} : { createdAt: now }),
+          previousSlugs: nextPreviousSlugs(before, wasLive && before?.slug ? String(before.slug) : null, d.slug),
           // The old admin stored a full URL here; the cover object replaces it.
           ...(before?.coverImage ? { coverImage: FieldValue.delete() } : {}),
         },
         { merge: true }
       );
       writeUsage();
+      return false;
     });
+    if (taken) return { ok: false, error: 'That URL slug is taken.', fieldErrors: { slug: 'Another post uses this slug, now or as an old link.' } };
 
     updateTag('blogs');
     await logActivity(admin, `${d.status === 'published' ? 'published' : rawId ? 'updated' : 'drafted'} “${d.title}”`);

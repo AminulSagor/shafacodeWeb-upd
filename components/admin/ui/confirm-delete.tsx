@@ -39,7 +39,7 @@ export function ConfirmDelete({
   const [open, setOpen] = React.useState(false);
   const [pending, startTransition] = React.useTransition();
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
+    <AlertDialog open={open} onOpenChange={(o) => !pending && setOpen(o)}>
       <AlertDialogTrigger asChild>
         {trigger ?? (
           <button

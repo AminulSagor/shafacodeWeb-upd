@@ -12,7 +12,7 @@ import { MarkdownField } from '@/components/admin/editor/markdown-field';
 import { PageHeader } from '@/components/admin/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { departmentLabels } from '@/content/careers';
-import { relativeTime } from '@/lib/admin/format';
+import { dhakaDay, relativeTime } from '@/lib/admin/format';
 import {
   employmentLabel,
   employmentTypes,
@@ -47,7 +47,7 @@ export function JobEditor({ id, initial, savedAt: initialSavedAt }: { id: string
   const dirty = JSON.stringify(v) !== snapshot;
   useUnsavedWarning(dirty);
   const set = <K extends keyof JobInput>(k: K, val: JobInput[K]) => setV((s) => ({ ...s, [k]: val }));
-  const today = new Date().toISOString().slice(0, 10);
+  const today = dhakaDay();
 
   const save = (status?: JobInput['status']) =>
     startSaving(async () => {
@@ -167,7 +167,7 @@ export function JobEditor({ id, initial, savedAt: initialSavedAt }: { id: string
                   <Check aria-hidden /> {v.status === 'open' ? 'Update' : v.status === 'closed' ? 'Save' : 'Publish'}
                 </Button>
               </div>
-              <p className="type-caption font-normal text-fg-subtle" aria-live="polite">
+              <p className="type-caption font-normal text-fg-subtle" aria-live="polite" suppressHydrationWarning>
                 {dirty ? 'Unsaved changes' : savedAt ? `Last saved ${relativeTime(savedAt)}` : 'Not saved yet'}
               </p>
             </EditorCard>

@@ -10,9 +10,8 @@ export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const session = await readSession(request.cookies.get(SESSION_COOKIE)?.value);
 
-  if (pathname === '/login' && session) {
-    return NextResponse.redirect(new URL('/admin', request.url));
-  }
+  // No "/login -> /admin" here: a revoked session still has a valid signature,
+  // which would loop. The login page checks the session for real instead.
   if (pathname.startsWith('/admin') && !session) {
     const url = new URL('/login', request.url);
     url.searchParams.set('next', pathname + search);

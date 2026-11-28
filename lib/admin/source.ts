@@ -3,6 +3,7 @@ import 'server-only';
 import type { DocumentData } from 'firebase-admin/firestore';
 
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
+import { dhakaStart } from './format';
 
 /**
  * Local development without Firestore shows demo records so every admin
@@ -19,9 +20,9 @@ export const strs = (v: unknown) => (Array.isArray(v) ? v.filter((x): x is strin
 /** Firestore Timestamp, Date or ISO string to ISO; '' when missing. */
 export function iso(v: unknown): string {
   if (v && typeof v === 'object' && 'toDate' in v) return (v as { toDate: () => Date }).toDate().toISOString();
-  if (v instanceof Date) return v.toISOString();
+  if (v instanceof Date) return Number.isNaN(v.getTime()) ? '' : v.toISOString();
   if (typeof v === 'string' && !Number.isNaN(Date.parse(v))) return new Date(v).toISOString();
-  if (typeof v === 'number') return new Date(v).toISOString();
+  if (typeof v === 'number' && Number.isFinite(v)) return new Date(v).toISOString();
   return '';
 }
 
@@ -37,12 +38,6 @@ export async function count(query: FirebaseFirestore.Query): Promise<number> {
   }
 }
 
-export const startOfToday = () => {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  return d;
-};
-export const startOfMonth = () => {
-  const d = new Date();
-  return new Date(d.getFullYear(), d.getMonth(), 1);
-};
+/** Day and month starts in Dhaka time (the team's time zone). */
+export const startOfToday = () => new Date(dhakaStart('day'));
+export const startOfMonth = () => new Date(dhakaStart('month'));

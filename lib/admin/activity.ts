@@ -2,7 +2,7 @@ import 'server-only';
 
 import { FieldValue } from 'firebase-admin/firestore';
 
-import type { AdminUser } from '@/lib/auth';
+import { requireAdmin, type AdminUser } from '@/lib/auth';
 import { demoActivity } from './demo';
 import { db, demoMode, iso, live, str } from './source';
 import type { ActivityEvent } from './types';
@@ -17,8 +17,9 @@ export async function logActivity(admin: AdminUser, text: string) {
   }
 }
 
-/** Latest events; the caller has already checked the session. */
+/** Latest events (admins only). */
 export async function recentActivity(limit = 6): Promise<ActivityEvent[]> {
+  await requireAdmin();
   if (demoMode()) return demoActivity.slice(0, limit);
   if (!live()) return [];
   try {

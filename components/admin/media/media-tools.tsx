@@ -34,7 +34,7 @@ export function MediaUpload() {
           for (const f of files) {
             setStatus(`Uploading ${f.name}`);
             try {
-              await uploadImage(f, '', (p) => setStatus(`Uploading ${f.name} ${p}%`));
+              await uploadImage(f, '');
               toast.success(`${f.name} uploaded. Add its alt text.`);
             } catch (error) {
               toast.error(error instanceof Error ? error.message : 'Upload failed.');

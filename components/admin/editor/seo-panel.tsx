@@ -13,6 +13,7 @@ export function SeoPanel({
   slug,
   onSlug,
   slugError,
+  errors = {},
   prefix,
   fallbackTitle,
   fallbackDescription,
@@ -22,6 +23,8 @@ export function SeoPanel({
   slug: string;
   onSlug: (v: string) => void;
   slugError?: string;
+  /** Field errors keyed like seo.metaTitle */
+  errors?: Record<string, string>;
   prefix: string;
   fallbackTitle: string;
   fallbackDescription: string;
@@ -32,8 +35,8 @@ export function SeoPanel({
   const description = value.metaDescription || fallbackDescription;
   return (
     <EditorCard title="SEO" description="Controls how this page appears in Google and social shares.">
-      <TextField id="seo-title" label="Meta title" value={value.metaTitle} onChange={(v) => set('metaTitle', v)} max={60} placeholder={`${fallbackTitle} | ${site.name}`} />
-      <TextAreaField id="seo-description" label="Meta description" rows={3} value={value.metaDescription} onChange={(v) => set('metaDescription', v)} max={160} placeholder={fallbackDescription} />
+      <TextField id="seo-title" label="Meta title" value={value.metaTitle} onChange={(v) => set('metaTitle', v)} error={errors['seo.metaTitle']} max={60} placeholder={`${fallbackTitle} | ${site.name}`} />
+      <TextAreaField id="seo-description" label="Meta description" rows={3} value={value.metaDescription} onChange={(v) => set('metaDescription', v)} error={errors['seo.metaDescription']} max={160} placeholder={fallbackDescription} />
       <TextField
         id="seo-slug"
         label="URL slug"
@@ -43,7 +46,7 @@ export function SeoPanel({
         error={slugError}
         helper={`${prefix}${slug || '…'} · generated from the title, must be unique`}
       />
-      <TextField id="seo-canonical" label="Canonical URL" optional type="url" value={value.canonicalUrl} onChange={(v) => set('canonicalUrl', v)} placeholder={`${site.url}${prefix}${slug}`} />
+      <TextField id="seo-canonical" label="Canonical URL" optional type="url" value={value.canonicalUrl} onChange={(v) => set('canonicalUrl', v)} error={errors['seo.canonicalUrl']} placeholder={`${site.url}${prefix}${slug}`} />
       <SwitchField id="seo-noindex" label="Hide from search engines (noindex)" checked={value.noIndex} onChange={(v) => set('noIndex', v)} />
       <figure className="rounded-field bg-surface-2 p-4">
         <figcaption className="type-mono-xs text-fg-subtle">Google preview</figcaption>

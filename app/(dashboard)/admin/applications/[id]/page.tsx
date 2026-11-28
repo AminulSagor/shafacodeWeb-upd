@@ -13,6 +13,7 @@ import { listNotes } from '@/lib/admin/notes';
 import { getApplication, markViewed } from '@/lib/admin/pipeline';
 import { stageLabel, type Application, type ApplicationStage } from '@/lib/admin/types';
 import { requireAdmin } from '@/lib/auth';
+import { mailtoHref, telHref } from '@/lib/safe-url';
 import { experienceLabels } from '@/lib/schemas/application';
 import { signedDownloadUrl } from '@/lib/storage';
 import { cn } from '@/lib/utils';
@@ -86,15 +87,18 @@ export default async function ApplicationPage({ params }: { params: Promise<{ id
   if (!app) notFound();
   if (!app.isViewed) after(() => markViewed(app.id));
 
-  const [notes, resumeHref] = await Promise.all([
+  const fileName = `${app.fullName.replace(/[^\w]+/g, '_')}_CV.pdf`;
+  const [notes, resumeHref, downloadHref] = await Promise.all([
     listNotes('apply-jobs', app.id),
     app.resume?.path ? signedDownloadUrl('resume', app.resume.path) : Promise.resolve(app.resume?.url ?? null),
+    app.resume?.path ? signedDownloadUrl('resume', app.resume.path, fileName) : Promise.resolve(app.resume?.url ?? null),
   ]);
-  const fileName = `${app.fullName.replace(/[^\w]+/g, '_')}_CV.pdf`;
+  // Inline preview only for files in the private bucket; legacy URLs open in a new tab.
+  const previewable = !!app.resume?.path && !!resumeHref;
 
   const contacts = [
-    { icon: Mail, label: 'Email', value: app.email, href: `mailto:${app.email}` },
-    app.phone && { icon: Phone, label: 'Phone', value: app.phone, href: `tel:${app.phone.replace(/[^\d+]/g, '')}` },
+    { icon: Mail, label: 'Email', value: app.email, href: mailtoHref(app.email) ?? undefined },
+    app.phone && { icon: Phone, label: 'Phone', value: app.phone, href: telHref(app.phone) ?? undefined },
     app.linkedinUrl && { icon: ExternalLink, label: 'LinkedIn', value: app.linkedinUrl.replace(/^https?:\/\/(www\.)?/, ''), href: app.linkedinUrl, external: true },
     app.portfolioUrl && { icon: Globe, label: 'Portfolio', value: app.portfolioUrl.replace(/^https?:\/\/(www\.)?/, ''), href: app.portfolioUrl, external: true },
     app.githubUrl && { icon: ExternalLink, label: 'GitHub', value: app.githubUrl.replace(/^https?:\/\/(www\.)?/, ''), href: app.githubUrl, external: true },
@@ -114,7 +118,7 @@ export default async function ApplicationPage({ params }: { params: Promise<{ id
         actions={
           resumeHref && (
             <Button asChild variant="secondary">
-              <a href={resumeHref} download={fileName}>
+              <a href={downloadHref ?? resumeHref} download={fileName}>
                 <Download aria-hidden /> Download CV
               </a>
             </Button>
@@ -143,12 +147,19 @@ export default async function ApplicationPage({ params }: { params: Promise<{ id
                     </a>
                   </Button>
                   <Button asChild variant="secondary" size="sm">
-                    <a href={resumeHref} download={fileName}>
+                    <a href={downloadHref ?? resumeHref} download={fileName}>
                       <Download aria-hidden /> Download
                     </a>
                   </Button>
                 </div>
-                <iframe src={resumeHref} title={`Resume of ${app.fullName}`} className="mt-4 h-160 w-full rounded-field border border-line-subtle bg-surface-2" />
+                {previewable && (
+                  <iframe
+                    src={resumeHref}
+                    title={`Resume of ${app.fullName}`}
+                    referrerPolicy="no-referrer"
+                    className="mt-4 h-160 w-full rounded-field border border-line-subtle bg-surface-2"
+                  />
+                )}
               </>
             ) : (
               <p className="mt-4 rounded-field bg-surface-2 p-4 type-body-sm text-fg-muted">

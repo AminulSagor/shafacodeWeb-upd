@@ -52,7 +52,7 @@ export default async function BlogPostsPage({ searchParams }: { searchParams: Pr
       cell: (p) => (
         <span className="flex items-center gap-2">
           <PublishBadge status={p.status} />
-          {p.isFeatured && <Star className="size-4 fill-current text-icon-brand" aria-label="Featured" />}
+          {p.isFeatured && <Star role="img" className="size-4 fill-current text-icon-brand" aria-label="Featured" />}
         </span>
       ),
     },

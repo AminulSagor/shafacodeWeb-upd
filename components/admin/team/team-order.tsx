@@ -21,7 +21,8 @@ export function TeamOrder({ members }: { members: Member[] }) {
   const [items, setItems] = React.useState(members);
   const [drag, setDrag] = React.useState<number | null>(null);
   const [announce, setAnnounce] = React.useState('');
-  const [, startTransition] = React.useTransition();
+  const [saving, startTransition] = React.useTransition();
+  const listRef = React.useRef<HTMLOListElement>(null);
 
   const commit = (next: Member[], moved: Member) => {
     const before = items;
@@ -35,18 +36,25 @@ export function TeamOrder({ members }: { members: Member[] }) {
       }
     });
   };
-  const move = (from: number, to: number) => {
-    if (to < 0 || to >= items.length || from === to) return;
+  const move = (from: number, to: number, focus?: 'up' | 'down') => {
+    // One save at a time, so an older response can never overwrite a newer order.
+    if (saving || to < 0 || to >= items.length || from === to) return;
     const next = [...items];
     const [m] = next.splice(from, 1);
     next.splice(to, 0, m!);
     commit(next, m!);
+    if (focus) {
+      // Keep focus on the moved row; at an end, the other arrow (this one is now disabled).
+      const atEnd = to === 0 || to === next.length - 1;
+      const dir = atEnd ? (to === 0 ? 'down' : 'up') : focus;
+      requestAnimationFrame(() => listRef.current?.querySelector<HTMLButtonElement>(`[data-move="${m!.id}-${dir}"]`)?.focus());
+    }
   };
 
   if (!items.length) return <p className="px-5 py-14 text-center type-body-sm text-fg-subtle">No team members yet.</p>;
   return (
     <>
-      <ol className="divide-y divide-line-subtle">
+      <ol ref={listRef} aria-busy={saving || undefined} className="divide-y divide-line-subtle">
         {items.map((m, i) => (
           <li
             key={m.id}
@@ -54,6 +62,7 @@ export function TeamOrder({ members }: { members: Member[] }) {
             onDragStart={(e) => {
               setDrag(i);
               e.dataTransfer.effectAllowed = 'move';
+              e.dataTransfer.setData('text/plain', m.id); // Firefox starts a drag only with data
             }}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
@@ -93,10 +102,10 @@ export function TeamOrder({ members }: { members: Member[] }) {
               )}
             </span>
             <span className="flex items-center">
-              <button type="button" disabled={i === 0} onClick={() => move(i, i - 1)} aria-label={`Move ${m.name} up`} className="grid size-9 cursor-pointer place-items-center rounded-button-sm text-icon hover:bg-hover focus-visible:focus-ring disabled:cursor-default disabled:opacity-30">
+              <button type="button" data-move={`${m.id}-up`} disabled={i === 0 || saving} onClick={() => move(i, i - 1, 'up')} aria-label={`Move ${m.name} up`} className="grid size-9 cursor-pointer place-items-center rounded-button-sm text-icon hover:bg-hover focus-visible:focus-ring disabled:cursor-default disabled:opacity-30">
                 <ArrowUp className="size-4" aria-hidden />
               </button>
-              <button type="button" disabled={i === items.length - 1} onClick={() => move(i, i + 1)} aria-label={`Move ${m.name} down`} className="grid size-9 cursor-pointer place-items-center rounded-button-sm text-icon hover:bg-hover focus-visible:focus-ring disabled:cursor-default disabled:opacity-30">
+              <button type="button" data-move={`${m.id}-down`} disabled={i === items.length - 1 || saving} onClick={() => move(i, i + 1, 'down')} aria-label={`Move ${m.name} down`} className="grid size-9 cursor-pointer place-items-center rounded-button-sm text-icon hover:bg-hover focus-visible:focus-ring disabled:cursor-default disabled:opacity-30">
                 <ArrowDown className="size-4" aria-hidden />
               </button>
               <Link href={`/admin/team/${m.id}`} aria-label={`Edit ${m.name}`} className="grid size-9 place-items-center rounded-button-sm text-icon hover:bg-hover focus-visible:focus-ring">

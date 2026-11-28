@@ -11,15 +11,17 @@ export function StatusTabs({
   query,
   param = 'status',
   tabs,
+  label = 'Filter by status',
 }: {
   base: string;
   query: ListQuery;
   param?: string;
+  label?: string;
   tabs: { value?: string; label: string; count: number }[];
 }) {
   const current = query.get(param);
   return (
-    <nav aria-label="Filter by status" className="overflow-x-auto border-b border-line-subtle px-5">
+    <nav aria-label={label} className="overflow-x-auto border-b border-line-subtle px-5">
       <ul className="flex w-max gap-6">
         {tabs.map((t) => {
           const active = (t.value ?? undefined) === current;
@@ -137,11 +139,12 @@ export function Pagination({
   );
 }
 
-/** Icon link for a row action (view, edit). */
-export function RowLink({ href, label, children }: { href: string; label: string; children: React.ReactNode }) {
+/** Icon link for a row action (view, edit); `record` lets a drawer return focus here. */
+export function RowLink({ href, label, children, record }: { href: string; label: string; children: React.ReactNode; record?: string }) {
   return (
     <Link
       href={href}
+      data-open-record={record}
       scroll={false}
       aria-label={label}
       title={label}

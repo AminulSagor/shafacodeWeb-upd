@@ -10,13 +10,14 @@ import { adminNav, createLinks } from './nav';
 
 type Entry = { href: string; label: string; hint: string; create?: boolean };
 
-const entries: Entry[] = [
+const allEntries: Entry[] = [
   ...adminNav.flatMap((g) => g.items.map((i) => ({ href: i.href, label: i.label, hint: g.label }))),
   ...createLinks.map((c) => ({ href: c.href, label: `New ${c.label.toLowerCase()}`, hint: 'Create', create: true })),
 ];
 
 /** Jump to any admin screen or create action. Opens with ⌘K / Ctrl+K. */
-export function CommandMenu() {
+export function CommandMenu({ owner }: { owner: boolean }) {
+  const entries = owner ? allEntries : allEntries.filter((e) => e.href !== '/admin/settings');
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState('');
@@ -72,7 +73,8 @@ export function CommandMenu() {
             <input
               autoFocus
               role="combobox"
-              aria-expanded
+              aria-expanded={results.length > 0}
+              aria-autocomplete="list"
               aria-controls={listId}
               aria-activedescendant={results[current] ? `${listId}-${current}` : undefined}
               aria-label="Search screens and actions"
@@ -117,8 +119,10 @@ export function CommandMenu() {
                 {i === current && <CornerDownLeft className="size-3.5 text-icon-muted" aria-hidden />}
               </li>
             ))}
-            {!results.length && <li className="px-3 py-6 text-center type-body-sm text-fg-subtle">No matches for “{query}”.</li>}
           </ul>
+          <p role="status" className={results.length ? 'sr-only' : 'px-3 pb-6 text-center type-body-sm text-fg-subtle'}>
+            {results.length ? `${results.length} results` : `No matches for “${query}”.`}
+          </p>
         </DialogContent>
       </Dialog>
     </>

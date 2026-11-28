@@ -7,11 +7,16 @@ import { publishStatuses } from '@/lib/admin/types';
 /** YouTube video id from a URL or a bare id; null when it is not one. */
 export function youtubeId(input: string) {
   const v = input.trim();
-  if (/^[\w-]{11}$/.test(v)) return v;
+  const ok = (id: string | null | undefined) => (id && /^[\w-]{11}$/.test(id) ? id : null);
+  if (ok(v)) return v;
   try {
     const u = new URL(v);
-    if (u.hostname.endsWith('youtu.be')) return u.pathname.slice(1, 12) || null;
-    if (u.hostname.includes('youtube')) return u.searchParams.get('v') ?? u.pathname.split('/').find((p) => /^[\w-]{11}$/.test(p)) ?? null;
+    if (u.protocol !== 'https:' && u.protocol !== 'http:') return null;
+    const host = u.hostname.replace(/^www\.|^m\./, '');
+    if (host === 'youtu.be') return ok(u.pathname.split('/')[1]);
+    if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
+      return ok(u.searchParams.get('v')) ?? ok(u.pathname.match(/^\/(?:embed|shorts|live)\/([\w-]{11})$/)?.[1]);
+    }
   } catch {
     /* not a URL */
   }

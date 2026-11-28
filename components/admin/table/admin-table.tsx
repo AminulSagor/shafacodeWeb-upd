@@ -44,16 +44,17 @@ export function AdminTable<T>({
   if (!rows.length) return <div className="px-5 py-14 text-center">{empty}</div>;
   return (
     <div className="md:overflow-x-auto">
-      <table className="w-full border-collapse type-body-sm md:min-w-240 xl:min-w-0">
+      <table role="table" className="w-full border-collapse type-body-sm md:min-w-240 xl:min-w-0">
         <caption className="sr-only">{caption}</caption>
-        <thead className="max-md:sr-only">
-          <tr className="border-b border-line-subtle bg-surface-2">
+        <thead role="rowgroup" className="max-md:hidden">
+          <tr role="row" className="border-b border-line-subtle bg-surface-2">
             {columns.map((c) => {
               const active = query.sort === c.key;
               const nextDir = active && query.dir === 'desc' ? 'asc' : 'desc';
               return (
                 <th
                   key={c.key}
+                  role="columnheader"
                   scope="col"
                   aria-sort={active ? (query.dir === 'asc' ? 'ascending' : 'descending') : undefined}
                   className={cn(
@@ -86,21 +87,23 @@ export function AdminTable<T>({
               );
             })}
             {actions && (
-              <th scope="col" className="px-4 py-3 md:sticky md:right-0 md:bg-surface-2 xl:static">
+              <th role="columnheader" scope="col" className="px-4 py-3 md:sticky md:right-0 md:bg-surface-2 xl:static">
                 <span className="sr-only">Actions</span>
               </th>
             )}
           </tr>
         </thead>
-        <tbody className="max-md:flex max-md:flex-col max-md:gap-3 max-md:p-4">
+        <tbody role="rowgroup" className="max-md:flex max-md:flex-col max-md:gap-3 max-md:p-4">
           {rows.map((row) => (
             <tr
               key={rowKey(row)}
+              role="row"
               className="group relative border-line-subtle hover:bg-hover max-md:flex max-md:flex-col max-md:gap-2 max-md:rounded-md max-md:border max-md:p-4 md:border-b md:last:border-0"
             >
               {columns.map((c) => (
                 <td
                   key={c.key}
+                  role="cell"
                   data-label={c.header}
                   className={cn(
                     'px-4 py-3.5 align-middle max-md:p-0',
@@ -115,7 +118,7 @@ export function AdminTable<T>({
                 </td>
               ))}
               {actions && (
-                <td className="px-4 py-3.5 text-right max-md:border-t max-md:border-line-subtle max-md:p-0 max-md:pt-2 md:sticky md:right-0 md:bg-surface-1 md:group-hover:bg-surface-2 xl:static xl:bg-transparent xl:group-hover:bg-transparent">
+                <td role="cell" className="px-4 py-3.5 text-right max-md:border-t max-md:border-line-subtle max-md:p-0 max-md:pt-2 md:sticky md:right-0 md:bg-surface-1 md:group-hover:bg-surface-2 xl:static xl:bg-transparent xl:group-hover:bg-transparent">
                   <div className="relative z-2 flex items-center justify-end gap-1">{actions(row)}</div>
                 </td>
               )}

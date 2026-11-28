@@ -49,7 +49,8 @@ export const defaultSettings: SiteSettings = {
   address: `${site.address.locality}, ${site.address.country}`,
   linkedinUrl: site.social.linkedin,
   facebookUrl: site.social.facebook,
-  notifications: { inquiry: true, application: true, affiliate: true, weeklySummary: false, recipient: site.email },
+  // Until settings are saved, notifications go to TO_EMAIL (server env) like before.
+  notifications: { inquiry: true, application: true, affiliate: true, weeklySummary: false, recipient: '' },
   ga4Id: '',
   searchConsoleVerification: '',
 };

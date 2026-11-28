@@ -26,7 +26,7 @@ export async function uploadImage(file: File, alt: string, onProgress?: (p: numb
     body.append('', file);
     xhr.send(body);
   });
-  const res = await registerMedia({ path, alt, width, height, size: file.size, type });
+  const res = await registerMedia({ path, alt, width, height, size: file.size, type: type as 'image/png' | 'image/jpeg' | 'image/webp' });
   if (!res.ok || !res.data) throw new Error(res.ok ? 'Upload failed.' : res.error);
   return res.data;
 }
