@@ -29,7 +29,6 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
     description:
       'Join a growing team of designers, developers and innovators in Barishal, Bangladesh, working on real products for real businesses. Remote-friendly.',
     path: '/careers',
-    canonical: '/careers',
     noIndex: Boolean(first(p.department) || first(p.q)),
   });
 }
@@ -136,13 +135,16 @@ export default async function CareersPage({ searchParams }: { searchParams: Sear
                 Search roles
               </label>
               <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4.5 -translate-y-1/2 text-icon" aria-hidden />
-              <Input key={q ?? ''} id="role-search" name="q" type="search" defaultValue={q} placeholder="Search roles…" className="pl-10" />
+              <Input key={q ?? ''} id="role-search" name="q" type="search" defaultValue={q} placeholder="Search roles…" className="pr-20 pl-10" />
+              <Button type="submit" size="sm" variant="ghost" className="absolute top-1/2 right-1.5 -translate-y-1/2">
+                Search
+              </Button>
             </form>
           </div>
 
           {departments.length > 1 && (
-            <nav aria-label="Departments" className="-mx-page overflow-x-auto px-page md:mx-0 md:overflow-visible md:px-0">
-              <ul className="flex w-max gap-2 py-1 md:w-auto md:flex-wrap">
+            <nav aria-label="Departments" className="-mx-page min-w-0 overflow-x-auto px-page md:mx-0 md:overflow-visible md:px-0">
+              <ul className="flex w-max gap-2 py-1 pr-page md:w-auto md:flex-wrap md:pr-0">
                 <li>
                   <Link href={href({ department: undefined })} aria-current={!department ? 'page' : undefined} className={chipClassName(!department)}>
                     All <span className={cn('type-mono-xs', !department ? 'text-fg-on-brand' : 'text-fg-subtle')}>{jobs.length}</span>
@@ -187,6 +189,11 @@ export default async function CareersPage({ searchParams }: { searchParams: Sear
                 </a>
                 .
               </p>
+              {(department || q) && (
+                <Button asChild variant="secondary" className="mt-5">
+                  <Link href="/careers#open-positions">Clear filters</Link>
+                </Button>
+              )}
             </div>
           )}
         </div>

@@ -21,12 +21,14 @@ export function ShareRoleButton({ url, title, label = 'Share role', ...props }: 
     }
   };
   return (
-    <Button type="button" onClick={share} {...props}>
-      {copied ? <Check aria-hidden /> : <Share2 aria-hidden />}
-      {copied ? 'Link copied' : label}
+    <>
+      <Button type="button" onClick={share} {...props}>
+        {copied ? <Check aria-hidden /> : <Share2 aria-hidden />}
+        {copied ? 'Link copied' : label}
+      </Button>
       <span role="status" className="sr-only">
         {copied ? 'Link copied to clipboard' : ''}
       </span>
-    </Button>
+    </>
   );
 }

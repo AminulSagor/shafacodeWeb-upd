@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, Minus } from 'lucide-react';
 import type { Service as ServiceLd, WithContext } from 'schema-dts';
 
 import { cn } from '@/lib/utils';
@@ -29,11 +29,17 @@ function Cell({ value }: { value: string | boolean }) {
   if (value === true)
     return (
       <>
-        <span aria-hidden className="mx-auto block size-2 rounded-full bg-action-primary" />
+        <Check className="mx-auto size-4 text-icon-brand" strokeWidth={2.5} aria-hidden />
         <span className="sr-only">Included</span>
       </>
     );
-  if (value === false) return <span className="text-fg-subtle">Not included</span>;
+  if (value === false)
+    return (
+      <>
+        <Minus className="mx-auto size-4 text-icon-muted" aria-hidden />
+        <span className="sr-only">Not included</span>
+      </>
+    );
   return <>{value}</>;
 }
 
@@ -55,7 +61,7 @@ export default function PackagesPage() {
         priceSpecification: {
           '@type': 'PriceSpecification',
           priceCurrency: 'BDT',
-          minPrice: Number(t.price.replace(/[^\d]/g, '')) * (t.price.includes('k') ? 1000 : 1),
+          minPrice: t.fromBdt,
         },
       })),
     },
@@ -162,14 +168,14 @@ export default function PackagesPage() {
           <div
             role="region"
             tabIndex={0}
-            aria-labelledby="compare-title"
+            aria-label="Package comparison table"
             className="relative mt-section-head overflow-x-auto rounded-md border border-line-subtle focus-visible:focus-ring"
           >
             <table className="w-full min-w-160 border-collapse type-body-sm">
               <caption className="sr-only">Features included in the Basic, App + Website and Premium packages</caption>
               <thead>
                 <tr className="bg-surface-1">
-                  <th scope="col" className="px-5 py-3.5 text-left type-mono-xs font-medium text-fg-subtle">
+                  <th scope="col" className="sticky left-0 z-1 bg-surface-1 px-5 py-3.5 text-left type-mono-xs font-medium text-fg-subtle">
                     Feature
                   </th>
                   {['Basic', 'App + Website', 'Premium'].map((h, i) => (
@@ -186,7 +192,7 @@ export default function PackagesPage() {
               <tbody>
                 {packageComparison.map((row) => (
                   <tr key={row.feature} className="border-t border-line-subtle">
-                    <th scope="row" className="px-5 py-4 text-left font-medium text-fg">
+                    <th scope="row" className="sticky left-0 z-1 bg-canvas px-5 py-4 text-left font-medium text-fg">
                       {row.feature}
                     </th>
                     {row.values.map((v, i) => (

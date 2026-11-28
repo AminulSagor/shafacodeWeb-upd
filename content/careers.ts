@@ -14,10 +14,12 @@ export type Job = {
   summary: string;
   /** Markdown: role, responsibilities, requirements, benefits */
   description: string;
-  postedAt: string; // ISO
+  postedAt: string; // ISO, '' when unknown
   validThrough?: string; // ISO
   team?: string;
   reportsTo?: string;
+  /** ISO country codes a remote role can hire from (Google for Jobs). */
+  applicantCountries?: string[];
 };
 
 export const perks: { icon: LucideIcon; title: string; body: string }[] = [

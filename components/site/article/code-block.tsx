@@ -36,6 +36,7 @@ export function CodeBlock({ title, language, children }: { title?: string; langu
       <pre
         ref={ref}
         tabIndex={0}
+        role="region"
         aria-label={`${label} code`}
         className="overflow-x-auto p-4 type-mono-sm text-fg focus-visible:focus-ring [&>code]:bg-transparent [&>code]:p-0"
       >

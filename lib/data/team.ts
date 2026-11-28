@@ -20,6 +20,7 @@ const readTeam = unstable_cache(
         bio: str(d.bio),
         photo: d.photo?.path ? publicMediaUrl(str(d.photo.path)) : null,
         linkedinUrl: str(d.linkedinUrl) || undefined,
+        email: str(d.email) || undefined,
       }))
       .filter((m) => m.name);
   },
@@ -27,14 +28,16 @@ const readTeam = unstable_cache(
   { tags: ['team'], revalidate: 3600 }
 );
 
-/** Visible team members in display order; the design seed when there are none. */
+/**
+ * Visible team members in display order. The design seed only without
+ * Firestore (local development); with Firestore, never placeholder people.
+ */
 export async function getTeam(): Promise<TeamMember[]> {
-  if (!hasFirebaseCredentials()) return fallbackTeam;
+  if (!hasFirebaseCredentials()) return process.env.NODE_ENV === 'production' ? [] : fallbackTeam;
   try {
-    const team = await readTeam();
-    return team.length ? team : fallbackTeam;
+    return await readTeam();
   } catch (error) {
     console.error('Failed to read team', error);
-    return fallbackTeam;
+    return [];
   }
 }

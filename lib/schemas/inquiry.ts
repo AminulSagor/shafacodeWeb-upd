@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { emailField, uploadedFile } from './upload';
+
 export const projectTypeOptions = [
   { value: 'website', label: 'Website' },
   { value: 'web-app', label: 'Web application' },
@@ -29,15 +31,12 @@ export const timelineOptions = [
 
 const values = <T extends readonly { value: string }[]>(o: T) => o.map((x) => x.value) as [T[number]['value'], ...T[number]['value'][]];
 
-const attachment = z.union([
-  z.object({ path: z.string().min(1).max(200), name: z.string().max(200), size: z.number(), type: z.string() }),
-  z.object({ url: z.url(), name: z.string().max(200), size: z.number(), type: z.string() }),
-]);
+const attachment = uploadedFile;
 
 /** Contact inquiry, shared by the form and the server action. */
 export const inquirySchema = z.object({
   fullName: z.string().trim().min(2, 'Enter your full name.').max(120),
-  email: z.email('Enter a valid email address.').max(200),
+  email: emailField(),
   phone: z.string().trim().max(40).optional(),
   company: z.string().trim().max(120).optional(),
   projectType: z.enum(values(projectTypeOptions), { message: 'Choose a project type.' }),

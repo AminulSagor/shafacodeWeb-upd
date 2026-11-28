@@ -20,3 +20,20 @@ export function extractToc(markdown: string) {
   }
   return items;
 }
+
+/**
+ * Markdown to HTML for structured data (JobPosting.description). Raw HTML in
+ * the source is dropped, not passed through.
+ */
+export async function markdownToHtml(markdown: string) {
+  const [{ unified }, { default: remarkParse }, { default: remarkGfm }, { default: remarkRehype }, { toHtml }] = await Promise.all([
+    import('unified'),
+    import('remark-parse'),
+    import('remark-gfm'),
+    import('remark-rehype'),
+    import('hast-util-to-html'),
+  ]);
+  const processor = unified().use(remarkParse).use(remarkGfm).use(remarkRehype);
+  const tree = await processor.run(processor.parse(markdown));
+  return toHtml(tree);
+}

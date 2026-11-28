@@ -23,7 +23,8 @@ export function renderNotification(title: string, rows: Row[], footer = 'Sent fr
     .filter((r) => r.value)
     .map((r) => {
       const value = escapeHtml(r.value).replace(/\n/g, '<br/>');
-      const content = r.href ? `<a href="${escapeHtml(r.href)}" style="color:#4c6f00">${value}</a>` : value;
+      const safeHref = r.href && /^(https?:|mailto:)/i.test(r.href) ? r.href : null;
+      const content = safeHref ? `<a href="${escapeHtml(safeHref)}" style="color:#4c6f00">${value}</a>` : value;
       return `<tr><td style="padding:8px 0;color:#6e7464;font:13px/20px Arial,sans-serif;width:160px;vertical-align:top">${escapeHtml(r.label)}</td><td style="padding:8px 0;color:#0d100f;font:15px/22px Arial,sans-serif">${content}</td></tr>`;
     })
     .join('');
@@ -36,7 +37,7 @@ export function renderNotification(title: string, rows: Row[], footer = 'Sent fr
 }
 
 export async function sendMail(options: { subject: string; html: string; text: string; replyTo?: string }) {
-  if (!process.env.ZOHO_HOST || !process.env.ZOHO_USER) {
+  if (!process.env.ZOHO_HOST || !process.env.ZOHO_USER || !process.env.ZOHO_PASS) {
     console.warn('Mail is not configured; skipping notification:', options.subject);
     return;
   }

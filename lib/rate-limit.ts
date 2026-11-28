@@ -1,11 +1,12 @@
 import 'server-only';
 
+import { createHash } from 'node:crypto';
 import { headers } from 'next/headers';
 import { FieldValue } from 'firebase-admin/firestore';
 
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
 
-/** Client IP from the platform's trusted header (Vercel sets x-forwarded-for). */
+/** Client IP from the platform's header (Vercel overwrites x-real-ip and x-forwarded-for, so clients cannot spoof them there). */
 export async function clientIp() {
   const h = await headers();
   return (h.get('x-real-ip') || h.get('x-forwarded-for')?.split(',')[0] || 'unknown').trim();
@@ -19,7 +20,9 @@ export async function clientIp() {
 export async function rateLimit(key: string, limit: number, windowSeconds: number): Promise<boolean> {
   if (!hasFirebaseCredentials()) return true;
   const windowId = Math.floor(Date.now() / 1000 / windowSeconds);
-  const ref = getDb().collection('rateLimits').doc(`${key}:${windowId}`.replace(/\//g, '_'));
+  // Hashed: a valid doc id whatever the key holds, and no raw IPs or emails stored.
+  const id = createHash('sha256').update(`${key}:${windowId}`).digest('hex').slice(0, 40);
+  const ref = getDb().collection('rateLimits').doc(id);
   try {
     return await getDb().runTransaction(async (tx) => {
       const snap = await tx.get(ref);

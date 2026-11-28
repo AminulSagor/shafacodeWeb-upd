@@ -29,6 +29,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...services.map((s) => ({ url: `${site.url}/services/${s.slug}`, lastModified: now })),
     ...caseStudies.map((c) => ({ url: `${site.url}/portfolio/${c.slug}`, lastModified: now })),
     ...posts.map((p) => ({ url: `${site.url}/blogs/${p.slug}`, lastModified: new Date(p.updatedAt) })),
-    ...jobs.map((j) => ({ url: `${site.url}/careers/${j.slug}`, lastModified: new Date(j.postedAt) })),
+    ...jobs.map((j) => ({ url: `${site.url}/careers/${j.slug}`, ...(j.postedAt ? { lastModified: new Date(j.postedAt) } : {}) })),
   ];
 }

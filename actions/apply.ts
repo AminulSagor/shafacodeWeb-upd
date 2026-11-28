@@ -8,7 +8,7 @@ import { getJob } from '@/lib/data/jobs';
 import { renderNotification, sendMail } from '@/lib/mail';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { applicationSchema, experienceLabels, type ApplicationInput } from '@/lib/schemas/application';
-import { verifyUpload } from '@/lib/storage';
+import { acceptUpload } from '@/lib/storage';
 
 export type FormResult = { ok: true } | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
@@ -31,7 +31,7 @@ export async function submitApplication(input: ApplicationInput): Promise<FormRe
   const job = await getJob(data.jobSlug);
   if (!job) return { ok: false, error: 'This role is no longer open.' };
 
-  if ('path' in data.resume && !(await verifyUpload('resume', data.resume.path))) {
+  if (!(await acceptUpload('resume', data.resume))) {
     return { ok: false, error: 'The resume could not be verified as a PDF.', fieldErrors: { resume: 'Upload a PDF up to 5 MB.' } };
   }
 

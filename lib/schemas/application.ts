@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { emailField, uploadedFile } from './upload';
+
 export const experienceRanges = ['0-1', '1-3', '3-5', '5-8', '8+'] as const;
 export const experienceLabels: Record<(typeof experienceRanges)[number], string> = {
   '0-1': 'Less than 1 year',
@@ -17,16 +19,13 @@ const optionalUrl = z
   .pipe(z.union([z.literal(''), z.url({ message: 'Enter a valid link.' })]))
   .optional();
 
-const uploaded = z.union([
-  z.object({ path: z.string().min(1).max(200), name: z.string().max(200), size: z.number(), type: z.string() }),
-  z.object({ url: z.url(), name: z.string().max(200), size: z.number(), type: z.string() }),
-]);
+const uploaded = uploadedFile;
 
 /** Job application, shared by the form and the server action. */
 export const applicationSchema = z.object({
   jobSlug: z.string().min(1).max(120),
   fullName: z.string().trim().min(2, 'Enter your full name.').max(120),
-  email: z.email('Enter a valid email address.').max(200),
+  email: emailField(),
   phone: z.string().trim().max(40).optional(),
   location: z.string().trim().max(120).optional(),
   portfolioUrl: optionalUrl,

@@ -7,7 +7,7 @@ export const commissionTiers = [
 
 export function commissionFor(value: number) {
   const tier = commissionTiers.find((t) => value <= t.upTo) ?? commissionTiers[commissionTiers.length - 1];
-  return { low: Math.round(value * tier.low), high: Math.round(value * tier.high) };
+  return { low: Math.round(value * tier.low), high: Math.round(value * tier.high), lowRate: tier.low, highRate: tier.high };
 }
 
 export const partnerSteps = [

@@ -54,9 +54,9 @@ function prefillFrom(p: RawSearchParams): ContactPrefill {
   if (source !== 'estimator' || !type || !projectTypes.some((t) => t.id === type)) {
     return { projectType: projectType && projectTypeOptions.some((o) => o.value === projectType) ? projectType : undefined, source };
   }
-  const features = (first(p.features) ?? '')
-    .split(',')
-    .filter((f): f is FeatureId => estimatorFeatures.some((e) => e.id === f));
+  const features = [...new Set((first(p.features) ?? '').split(','))].filter((f): f is FeatureId =>
+    estimatorFeatures.some((e) => e.id === f)
+  );
   const r = estimate(type as ProjectTypeId, features);
   const typeLabel = projectTypes.find((t) => t.id === type)?.label ?? type;
   const featureLabels = features.map((f) => estimatorFeatures.find((e) => e.id === f)?.label).filter(Boolean);
@@ -65,7 +65,7 @@ function prefillFrom(p: RawSearchParams): ContactPrefill {
   return {
     projectType,
     source,
-    estimate: summary,
+    estimate: summary.slice(0, 300),
     message: `We want to build a ${typeLabel}${withFeatures}.\n\n`,
   };
 }
@@ -109,7 +109,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
       />
 
       <div className="container-page grid gap-10 pb-section xl:grid-cols-[minmax(0,1fr)_--spacing(95)] xl:gap-grid">
-        <ContactForm prefill={prefill} />
+        <ContactForm key={JSON.stringify(prefill)} prefill={prefill} />
 
         <aside aria-labelledby="direct-title" className="flex flex-col gap-3">
           <h2 id="direct-title" className="type-h5 text-fg">

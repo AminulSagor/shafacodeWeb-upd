@@ -6,7 +6,7 @@ import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
 import { renderNotification, sendMail } from '@/lib/mail';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { budgetOptions, inquirySchema, projectTypeOptions, timelineOptions, type InquiryInput } from '@/lib/schemas/inquiry';
-import { verifyUpload } from '@/lib/storage';
+import { acceptUpload } from '@/lib/storage';
 import type { FormResult } from '@/actions/apply';
 
 const label = (opts: readonly { value: string; label: string }[], v?: string) => opts.find((o) => o.value === v)?.label ?? v;
@@ -27,7 +27,7 @@ export async function submitInquiry(input: InquiryInput): Promise<FormResult> {
   }
 
   for (const a of d.attachments) {
-    if ('path' in a && !(await verifyUpload('attachment', a.path))) {
+    if (!(await acceptUpload('attachment', a))) {
       return { ok: false, error: `“${a.name}” could not be verified.`, fieldErrors: { attachments: 'Use PDF, PNG, JPG or WebP files up to 10 MB.' } };
     }
   }

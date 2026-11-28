@@ -50,6 +50,8 @@ export type PackageTier = {
   name: string;
   audience: string;
   price: string;
+  /** Starting price in BDT, for structured data. */
+  fromBdt: number;
   usd: string;
   features: string[];
   cta: string;
@@ -64,6 +66,7 @@ export const packageTiers: PackageTier[] = [
     name: 'Basic App or Website',
     audience: 'For small businesses, personal brands, startups and simple launches.',
     price: '৳80,000',
+    fromBdt: 80_000,
     usd: '≈ $670',
     features: [
       'Basic UI/UX design',
@@ -81,6 +84,7 @@ export const packageTiers: PackageTier[] = [
     name: 'App + Website',
     audience: 'For businesses that need a customer-facing website and a mobile app.',
     price: '৳150,000',
+    fromBdt: 150_000,
     usd: '≈ $1,250',
     features: [
       'Website design and development',
@@ -98,6 +102,7 @@ export const packageTiers: PackageTier[] = [
     name: 'Premium Digital Product',
     audience: 'For SaaS platforms, marketplaces, dashboards and automation.',
     price: '৳300k +',
+    fromBdt: 300_000,
     usd: '≈ $2,500 +',
     features: [
       'Complete product planning',

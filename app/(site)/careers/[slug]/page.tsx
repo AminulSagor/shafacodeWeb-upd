@@ -14,6 +14,8 @@ import { PageHero } from '@/components/site/sections/page-hero';
 import { departmentLabel } from '@/content/careers';
 import { site } from '@/content/site';
 import { getJob, getJobs } from '@/lib/data/jobs';
+import { formatIso } from '@/lib/dates';
+import { markdownToHtml } from '@/lib/markdown';
 import { absoluteUrl, buildMetadata } from '@/lib/seo';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -44,14 +46,17 @@ export default async function JobPage({ params }: Props) {
   const others = (await getJobs()).filter((j) => j.slug !== job.slug).slice(0, 3);
   const url = absoluteUrl(jobHref(job.slug));
   const applyHref = `${jobHref(job.slug)}/apply`;
-  const remote = /remote/i.test(job.workMode);
+  // TELECOMMUTE only for fully remote roles; hybrid roles keep the office location only.
+  const remote = job.workMode.trim().toLowerCase() === 'remote';
+  const posted = formatIso(dateFmt, job.postedAt);
+  const applyBy = formatIso(dateFmt, job.validThrough);
 
   const facts = [
     job.employmentType,
     job.location ?? job.workMode,
     job.salary,
-    `Posted ${dateFmt.format(new Date(job.postedAt))}`,
-    job.validThrough && `Apply by ${dateFmt.format(new Date(job.validThrough))}`,
+    posted && `Posted ${posted}`,
+    applyBy && `Apply by ${applyBy}`,
   ].filter(Boolean) as string[];
 
   const employmentType: Record<string, string> = {
@@ -65,15 +70,22 @@ export default async function JobPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'JobPosting',
     title: job.title,
-    description: job.description || job.summary,
-    datePosted: job.postedAt,
+    description: await markdownToHtml(job.description || job.summary),
+    ...(job.postedAt ? { datePosted: job.postedAt } : {}),
     validThrough: job.validThrough,
     employmentType: employmentType[job.employmentType] ?? 'FULL_TIME',
     hiringOrganization: { '@type': 'Organization', name: site.name, sameAs: site.url, logo: absoluteUrl('/icon.png') },
     directApply: true,
     url,
     // Remote roles add TELECOMMUTE; the office address stays as the job location.
-    ...(remote ? { jobLocationType: 'TELECOMMUTE' } : {}),
+    ...(remote
+      ? {
+          jobLocationType: 'TELECOMMUTE',
+          applicantLocationRequirements: (job.applicantCountries?.length ? job.applicantCountries : [site.address.countryCode]).map(
+            (code) => ({ '@type': 'Country' as const, name: code })
+          ),
+        }
+      : {}),
     jobLocation: {
       '@type': 'Place',
       address: {

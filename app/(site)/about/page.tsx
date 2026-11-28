@@ -66,8 +66,8 @@ export default async function AboutPage() {
         actions={
           <>
             <Button asChild size="lg">
-              <Link href="#team">
-                Meet the team <ArrowRight aria-hidden />
+              <Link href={team.length ? '#team' : '/careers'}>
+                {team.length ? 'Meet the team' : 'Join the team'} <ArrowRight aria-hidden />
               </Link>
             </Button>
             <Button asChild size="lg" variant="secondary">
@@ -130,65 +130,67 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <section id="team" aria-labelledby="team-title" className="scroll-mt-nav-offset bg-surface-1 section-y">
-        <div className="container-page">
-          <SectionHeader
-            id="team-title"
-            eyebrow="The team"
-            title={
-              <>
-                Meet the people <Accent>behind ShafaCode</Accent>
-              </>
-            }
-            lede="Designers, developers, product thinkers and problem solvers building meaningful digital products together."
-            ledeBelow
-          />
-          <ul className="mt-section-head grid grid-cols-1 gap-grid sm:grid-cols-2 xl:grid-cols-4">
-            {team.map((m) => (
-              <li key={m.name}>
-                <article className="flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-canvas">
-                  <div className="relative aspect-290/300 bg-surface-2">
-                    {m.photo ? (
-                      <Image src={m.photo} alt={`Portrait of ${m.name}`} fill sizes="(min-width: 1280px) 290px, (min-width: 640px) 46vw, 92vw" className="object-cover" />
-                    ) : (
-                      <span aria-hidden className="absolute inset-0 grid place-items-center type-display text-fg-subtle">
-                        {m.name
-                          .split(' ')
-                          .map((w) => w[0])
-                          .join('')
-                          .slice(0, 2)}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex flex-1 flex-col gap-1 p-card">
-                    <h3 className="type-h5 text-fg">{m.name}</h3>
-                    <p className="type-mono-xs text-fg-brand">{m.role}</p>
-                    {m.bio && <p className="mt-2 type-body-sm text-fg-muted">{m.bio}</p>}
-                    {(m.linkedinUrl || m.email) && (
-                      <div className="mt-auto flex gap-1 pt-4">
-                        {m.linkedinUrl && (
-                          <IconButton asChild variant="ghost" size="sm" aria-label={`${m.name} on LinkedIn`}>
-                            <a href={m.linkedinUrl} target="_blank" rel="noopener noreferrer">
-                              <LinkedInIcon />
-                            </a>
-                          </IconButton>
-                        )}
-                        {m.email && (
-                          <IconButton asChild variant="ghost" size="sm" aria-label={`Email ${m.name}`}>
-                            <a href={`mailto:${m.email}`}>
-                              <Mail aria-hidden />
-                            </a>
-                          </IconButton>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {team.length > 0 && (
+        <section id="team" aria-labelledby="team-title" className="scroll-mt-nav-offset bg-surface-1 section-y">
+          <div className="container-page">
+            <SectionHeader
+              id="team-title"
+              eyebrow="The team"
+              title={
+                <>
+                  Meet the people <Accent>behind ShafaCode</Accent>
+                </>
+              }
+              lede="Designers, developers, product thinkers and problem solvers building meaningful digital products together."
+              ledeBelow
+            />
+            <ul className="mt-section-head grid grid-cols-1 gap-grid sm:grid-cols-2 xl:grid-cols-4">
+              {team.map((m) => (
+                <li key={`${m.name}-${m.role}`}>
+                  <article className="flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-canvas">
+                    <div className="relative aspect-290/300 bg-surface-2">
+                      {m.photo ? (
+                        <Image src={m.photo} alt={`Portrait of ${m.name}`} fill sizes="(min-width: 1280px) 290px, (min-width: 640px) 46vw, 92vw" className="object-cover" />
+                      ) : (
+                        <span aria-hidden className="absolute inset-0 grid place-items-center type-display text-fg-subtle">
+                          {m.name
+                            .split(' ')
+                            .map((w) => w[0])
+                            .join('')
+                            .slice(0, 2)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1 p-card">
+                      <h3 className="type-h5 text-fg">{m.name}</h3>
+                      <p className="type-mono-xs text-fg-brand">{m.role}</p>
+                      {m.bio && <p className="mt-2 type-body-sm text-fg-muted">{m.bio}</p>}
+                      {(m.linkedinUrl || m.email) && (
+                        <div className="mt-auto flex gap-1 pt-4">
+                          {m.linkedinUrl && (
+                            <IconButton asChild variant="ghost" size="sm" aria-label={`${m.name} on LinkedIn`}>
+                              <a href={m.linkedinUrl} target="_blank" rel="noopener noreferrer">
+                                <LinkedInIcon />
+                              </a>
+                            </IconButton>
+                          )}
+                          {m.email && (
+                            <IconButton asChild variant="ghost" size="sm" aria-label={`Email ${m.name}`}>
+                              <a href={`mailto:${m.email}`}>
+                                <Mail aria-hidden />
+                              </a>
+                            </IconButton>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       <section aria-labelledby="method-title" className="section-y">
         <div className="container-page">

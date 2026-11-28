@@ -5,6 +5,7 @@ import { Check } from 'lucide-react';
 import { Accent } from '@/components/ui/accent';
 import { jobHref } from '@/components/site/cards/job-row';
 import { ApplyForm } from '@/components/site/careers/apply-form';
+import { privateUploads } from '@/lib/storage';
 import { PageHero } from '@/components/site/sections/page-hero';
 import { nextSteps } from '@/content/careers';
 import { getJob, getJobs } from '@/lib/data/jobs';
@@ -59,7 +60,7 @@ export default async function ApplyPage({ params }: Props) {
       />
 
       <div className="container-page grid gap-10 pb-section xl:grid-cols-[minmax(0,1fr)_--spacing(75)] xl:gap-grid">
-        <ApplyForm jobSlug={job.slug} jobTitle={shortTitle} />
+        <ApplyForm jobSlug={job.slug} jobTitle={shortTitle} privateUploads={privateUploads()} />
 
         <aside aria-label="About this role" className="flex flex-col gap-4 xl:sticky xl:top-sticky xl:self-start">
           <section aria-labelledby="highlights-title" className="rounded-md border border-line-subtle bg-surface-1 p-5">

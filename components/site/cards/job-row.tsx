@@ -20,8 +20,8 @@ export function JobRow({ job, headingLevel: H = 'h3' }: { job: Job; headingLevel
           </Link>
         </H>
         <ul className="mt-1.5 flex flex-wrap gap-x-2.5 type-mono-xs text-fg-subtle" aria-label="Role details">
-          {jobMeta(job).map((m) => (
-            <li key={m}>{m}</li>
+          {jobMeta(job).map((m, i) => (
+            <li key={`${i}-${m}`}>{m}</li>
           ))}
         </ul>
       </div>

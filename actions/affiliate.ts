@@ -6,7 +6,7 @@ import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
 import { renderNotification, sendMail } from '@/lib/mail';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { affiliateSchema, type AffiliateInput } from '@/lib/schemas/affiliate';
-import { verifyUpload } from '@/lib/storage';
+import { acceptUpload } from '@/lib/storage';
 import type { FormResult } from '@/actions/apply';
 
 /** Partner application: validate, rate limit, store in `affiliate-leads`, notify. */
@@ -22,7 +22,7 @@ export async function submitAffiliateLead(input: AffiliateInput): Promise<FormRe
   if (!(await rateLimit(`affiliate:${await clientIp()}`, 5, 3600))) {
     return { ok: false, error: 'Too many requests from this connection. Please try again in an hour.' };
   }
-  if (d.attachment && 'path' in d.attachment && !(await verifyUpload('affiliate', d.attachment.path))) {
+  if (d.attachment && !(await acceptUpload('affiliate', d.attachment))) {
     return { ok: false, error: 'The file could not be verified.', fieldErrors: { attachment: 'Use a PDF or image up to 10 MB.' } };
   }
   if (!hasFirebaseCredentials()) {

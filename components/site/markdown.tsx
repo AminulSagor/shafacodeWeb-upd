@@ -35,6 +35,15 @@ function rehypeCodeTitle() {
   };
 }
 
+const siteOrigin = new URL(site.url).origin;
+function sameOrigin(href: string) {
+  try {
+    return new URL(href).origin === siteOrigin;
+  } catch {
+    return false;
+  }
+}
+
 const components: Components = {
   h1: ({ node: _node, ...p }) => <h2 className="mt-12 mb-4 scroll-mt-sticky type-h3 text-fg first:mt-0" {...p} />,
   h2: ({ node: _node, ...p }) => <h2 className="mt-12 mb-4 scroll-mt-sticky type-h3 text-fg first:mt-0" {...p} />,
@@ -42,7 +51,7 @@ const components: Components = {
   h4: ({ node: _node, ...p }) => <h4 className="mt-8 mb-2 type-h5 text-fg" {...p} />,
   p: ({ node: _node, ...p }) => <p className="my-5 type-article text-fg-muted" {...p} />,
   a: ({ node: _node, href = '', ...p }) => {
-    const external = /^https?:\/\//.test(href) && !href.startsWith(site.url);
+    const external = /^https?:\/\//.test(href) && !sameOrigin(href);
     return (
       <a
         href={href}

@@ -22,7 +22,8 @@ export function buildMetadata(p: SeoInput): Metadata {
   return {
     title: p.title,
     description: p.description,
-    alternates: { canonical: p.canonical ?? p.path },
+    // A noindex page gets no canonical: the two together send Google mixed signals.
+    ...(p.noIndex ? {} : { alternates: { canonical: p.canonical ?? p.path } }),
     openGraph: {
       title: p.title,
       description: p.description,

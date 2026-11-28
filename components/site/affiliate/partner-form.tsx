@@ -1,16 +1,18 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, CheckCircle2, TriangleAlert } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import Link from 'next/link';
 
 import { submitAffiliateLead } from '@/actions/affiliate';
 import { Button } from '@/components/ui/button';
 import { Field } from '@/components/ui/field';
 import { FileDropzone } from '@/components/ui/file-dropzone';
+import { FormAlert, Honeypot, HONEYPOT, fieldErrors } from '@/components/site/forms/form-parts';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { affiliateSchema } from '@/lib/schemas/affiliate';
-import { uploadFile, type UploadedFile } from '@/lib/upload-client';
+import { fileMime, uploadFile, type UploadedFile } from '@/lib/upload-client';
 
 const ALLOWED = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'];
 
@@ -21,24 +23,22 @@ export function PartnerForm() {
   const [pending, setPending] = React.useState(false);
   const [done, setDone] = React.useState(false);
   const [file, setFile] = React.useState<UploadedFile | null>(null);
-  const [picked, setPicked] = React.useState<{ name: string; size: number } | null>(null);
-  const [progress, setProgress] = React.useState<number | null>(null);
+  const [uploading, setUploading] = React.useState<{ name: string; progress: number } | null>(null);
   const summaryRef = React.useRef<HTMLDivElement>(null);
   const doneRef = React.useRef<HTMLHeadingElement>(null);
 
-  const onFile = async (f: File) => {
+  const onFile = async ([f]: File[]) => {
+    if (!f) return;
     setErrors((e) => ({ ...e, attachment: '' }));
-    if (!ALLOWED.includes(f.type)) return setErrors((e) => ({ ...e, attachment: 'Use a PDF or image file.' }));
+    if (!ALLOWED.includes(fileMime(f))) return setErrors((e) => ({ ...e, attachment: 'Use a PDF or image file.' }));
     if (f.size > 10 * 1024 * 1024) return setErrors((e) => ({ ...e, attachment: 'The file can be up to 10 MB.' }));
-    setPicked({ name: f.name, size: f.size });
-    setProgress(0);
+    setUploading({ name: f.name, progress: 0 });
     try {
-      setFile(await uploadFile('affiliate', f, setProgress));
+      setFile(await uploadFile('affiliate', f, (p) => setUploading({ name: f.name, progress: p })));
     } catch (err) {
-      setPicked(null);
       setErrors((e) => ({ ...e, attachment: err instanceof Error ? err.message : 'Upload failed.' }));
     } finally {
-      setProgress(null);
+      setUploading(null);
     }
   };
 
@@ -51,21 +51,27 @@ export function PartnerForm() {
       phone: String(fd.get('phone') ?? ''),
       message: String(fd.get('message') ?? ''),
       attachment: file ?? undefined,
-      website: String(fd.get('website') ?? ''),
+      website: String(fd.get(HONEYPOT) ?? ''),
     };
-    const parsed = affiliateSchema.safeParse(values);
+    setErrors({});
+    // The honeypot is checked on the server only, so autofill can never block a person.
+    const parsed = affiliateSchema.omit({ website: true }).safeParse(values);
     if (!parsed.success) {
-      const next: Record<string, string> = {};
-      for (const issue of parsed.error.issues) next[String(issue.path[0])] ??= issue.message;
-      setErrors(next);
+      setErrors(fieldErrors(parsed.error.issues));
       setFormError('Please check the highlighted fields.');
       requestAnimationFrame(() => summaryRef.current?.focus());
       return;
     }
     setPending(true);
     setFormError(null);
-    const res = await submitAffiliateLead(values);
-    setPending(false);
+    let res: Awaited<ReturnType<typeof submitAffiliateLead>>;
+    try {
+      res = await submitAffiliateLead(values);
+    } catch {
+      res = { ok: false, error: 'We could not send your details. Check your connection and try again.' };
+    } finally {
+      setPending(false);
+    }
     if (res.ok) {
       setDone(true);
       requestAnimationFrame(() => doneRef.current?.focus());
@@ -94,15 +100,11 @@ export function PartnerForm() {
   return (
     <form onSubmit={onSubmit} noValidate className="rounded-card border border-line-subtle bg-surface-1 p-card md:p-6">
       {formError && (
-        <div ref={summaryRef} role="alert" tabIndex={-1} className="mb-5 flex items-start gap-2.5 rounded-sm bg-status-danger p-4 type-body-sm text-fg-danger outline-none">
-          <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />
+        <FormAlert ref={summaryRef} className="mb-5">
           {formError}
-        </div>
+        </FormAlert>
       )}
-      <div aria-hidden className="absolute -left-2500 h-px w-px overflow-hidden">
-        <label htmlFor="partner-website">Website</label>
-        <input id="partner-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
-      </div>
+      <Honeypot id="partner-hp" />
       <div className="grid gap-5 md:grid-cols-2">
         <Field id="partner-name" label="Full name" required error={err('fullName')}>
           {(a) => <Input {...a} name="fullName" autoComplete="name" placeholder="Your name" />}
@@ -121,14 +123,10 @@ export function PartnerForm() {
             <FileDropzone
               id={a.id}
               accept=".pdf,.png,.jpg,.jpeg,.webp,application/pdf,image/png,image/jpeg,image/webp"
-              file={picked}
-              uploading={progress !== null}
-              progress={progress}
-              onFile={onFile}
-              onRemove={() => {
-                setPicked(null);
-                setFile(null);
-              }}
+              files={file ? [file] : []}
+              uploading={uploading}
+              onFiles={onFile}
+              onRemove={() => setFile(null)}
               hint="PDF or image, up to 10 MB"
               invalid={a['aria-invalid']}
               describedBy={a['aria-describedby']}
@@ -137,9 +135,16 @@ export function PartnerForm() {
           )}
         </Field>
       </div>
-      <Button type="submit" size="lg" className="mt-6 w-full" loading={pending} disabled={progress !== null}>
+      <Button type="submit" size="lg" className="mt-6 w-full" loading={pending} disabled={!!uploading}>
         Submit application <ArrowRight aria-hidden />
       </Button>
+      <p className="mt-3 type-caption font-normal text-fg-subtle">
+        We use these details only to set up your partner account. See the{' '}
+        <Link href="/privacy-policy" className="rounded-sm text-fg-brand underline underline-offset-4 focus-visible:focus-ring">
+          privacy policy
+        </Link>
+        .
+      </p>
     </form>
   );
 }

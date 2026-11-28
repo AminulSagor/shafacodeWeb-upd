@@ -6,6 +6,7 @@ import type { DocumentData } from 'firebase-admin/firestore';
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
 import { fallbackCaseStudies, portfolioCategories, type CaseStudy, type CaseStudySummary } from '@/content/case-studies';
 import { serviceSlugs, type ServiceSlug } from '@/content/services';
+import { toMillis } from '@/lib/dates';
 import { publicMediaUrl } from '@/lib/media';
 
 const str = (v: unknown) => (typeof v === 'string' ? v : '');
@@ -74,7 +75,7 @@ const readAll = unstable_cache(
   async (): Promise<CaseStudy[]> => {
     // Errors propagate so unstable_cache does not store a failed read.
     const snap = await getDb().collection('projects').get();
-    const time = (d: DocumentData) => (d.publishedAt?.toMillis?.() ?? d.createdAt?.toMillis?.() ?? 0) as number;
+    const time = (d: DocumentData) => toMillis(d.publishedAt) || toMillis(d.createdAt);
     return snap.docs
       .sort((a, b) => Number(b.data().isFeatured === true) - Number(a.data().isFeatured === true) || time(b.data()) - time(a.data()))
       .map((doc) => toCaseStudy(doc.id, doc.data()))

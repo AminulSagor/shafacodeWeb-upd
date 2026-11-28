@@ -3,7 +3,7 @@
 import { z } from 'zod';
 
 import { clientIp, rateLimit } from '@/lib/rate-limit';
-import { createSignedUpload, uploadRules, type UploadKind } from '@/lib/storage';
+import { createSignedUpload, legacyUploadsAllowed, uploadRules, type UploadKind } from '@/lib/storage';
 
 const input = z.object({
   kind: z.enum(['resume', 'attachment', 'affiliate']),
@@ -18,8 +18,8 @@ export type UploadTicket =
 
 /**
  * Issues a signed upload URL after checking the declared type and size and
- * the rate limit. Until SUPABASE_SERVICE_ROLE_KEY is set, returns `legacy` so
- * the browser keeps using the previous public-bucket upload.
+ * the rate limit. Without SUPABASE_SERVICE_ROLE_KEY it returns `legacy` (the
+ * previous public bucket) only where legacyUploadsAllowed(); else it refuses.
  */
 export async function requestUpload(raw: { kind: UploadKind; type: string; size: number }): Promise<UploadTicket> {
   const parsed = input.safeParse(raw);
@@ -31,6 +31,13 @@ export async function requestUpload(raw: { kind: UploadKind; type: string; size:
   if (!(await rateLimit(`upload:${await clientIp()}`, 20, 3600))) {
     return { ok: false, error: 'Too many uploads. Please try again later.' };
   }
-  const ticket = await createSignedUpload(kind, type);
-  return ticket ? { ok: true, mode: 'signed', ...ticket } : { ok: true, mode: 'legacy' };
+  try {
+    const ticket = await createSignedUpload(kind, type);
+    if (ticket) return { ok: true, mode: 'signed', ...ticket };
+  } catch (error) {
+    console.error('Signed upload failed', error);
+    return { ok: false, error: 'Upload is unavailable right now. Please try again or email us.' };
+  }
+  if (legacyUploadsAllowed()) return { ok: true, mode: 'legacy' };
+  return { ok: false, error: 'Uploads are not available right now. Please email us your file.' };
 }
