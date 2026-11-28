@@ -21,7 +21,7 @@ function Crumbs() {
   const pathname = usePathname();
   const hit = locate(pathname);
   const rest = hit ? pathname.slice(hit.item.href.length).split('/').filter(Boolean) : [];
-  const tail = rest[0] === 'new' ? 'New' : rest.length ? 'Edit' : null;
+  const tail = rest[0] === 'new' ? 'New' : rest.length ? (hit?.item.href === '/admin/applications' ? 'Details' : 'Edit') : null;
   const items = [
     { label: 'Admin', href: '/admin' },
     ...(hit ? [{ label: hit.group.label }, { label: hit.item.label, href: tail ? hit.item.href : undefined }] : []),

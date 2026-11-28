@@ -56,6 +56,8 @@ export type Application = {
   whyUs: string;
   resume?: { path?: string; url?: string };
   stage: ApplicationStage;
+  /** When each stage was reached (ISO). */
+  stageDates: Partial<Record<ApplicationStage, string>>;
   interviewAt: string;
   isViewed: boolean;
   createdAt: string;
@@ -86,7 +88,7 @@ export const inquiryStatusLabel: Record<InquiryStatus, string> = {
 export const leadStatusLabel: Record<LeadStatus, string> = { new: 'New', discussion: 'In discussion', won: 'Won', lost: 'Lost' };
 export const stageLabel: Record<ApplicationStage, string> = {
   new: 'New',
-  screening: 'Reviewing',
+  screening: 'Screening',
   interview: 'Interview',
   offer: 'Offer',
   hired: 'Hired',

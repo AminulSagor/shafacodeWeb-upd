@@ -38,6 +38,10 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: '/terms-and-conditions', destination: '/terms', permanent: true },
+      // Old admin routes
+      { source: '/admin/job-applications/:id', destination: '/admin/applications/:id', permanent: false },
+      { source: '/admin/job-applications', destination: '/admin/applications', permanent: false },
+      { source: '/admin/dashboard', destination: '/admin', permanent: false },
     ];
   },
 };

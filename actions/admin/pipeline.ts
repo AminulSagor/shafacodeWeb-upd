@@ -61,7 +61,12 @@ export async function setApplicationStage(rawId: string, rawStage: string) {
     const snap = await ref.get();
     if (!snap.exists) return { ok: false, error: 'This application no longer exists.' };
     const previous = String(snap.get('stage') ?? 'new');
-    await ref.update({ stage: parsed.data.stage, isViewed: true, updatedAt: FieldValue.serverTimestamp() });
+    await ref.update({
+      stage: parsed.data.stage,
+      [`stageDates.${parsed.data.stage}`]: FieldValue.serverTimestamp(),
+      isViewed: true,
+      updatedAt: FieldValue.serverTimestamp(),
+    });
     await logActivity(admin, `moved ${snap.get('fullName') ?? 'an applicant'} to ${parsed.data.stage}`);
     return { ok: true, message: 'Stage updated', data: previous };
   });
@@ -98,12 +103,19 @@ export async function deleteRecord(kind: Kind, rawId: string) {
   });
 }
 
-/** Marks an application as seen when an admin opens it. */
-export async function markApplicationViewed(rawId: string) {
-  const parsed = id.safeParse(rawId);
-  if (!parsed.success) return { ok: false as const, error: 'Invalid id.' };
-  return adminAction(async () => {
-    await db().collection('apply-jobs').doc(parsed.data).update({ isViewed: true });
+/** Interview time from a datetime-local value in Dhaka time (GMT+6); empty clears it. */
+export async function setInterviewTime(rawId: string, local: string) {
+  const parsedId = id.safeParse(rawId);
+  if (!parsedId.success) return { ok: false as const, error: 'Invalid id.' };
+  const at = local ? new Date(`${local}:00+06:00`) : null;
+  if (local && (!at || Number.isNaN(at.getTime()))) return { ok: false as const, error: 'Pick a valid date and time.' };
+  return adminAction(async (admin) => {
+    const ref = db().collection('apply-jobs').doc(parsedId.data);
+    const snap = await ref.get();
+    if (!snap.exists) return { ok: false, error: 'This application no longer exists.' };
+    await ref.update({ interviewAt: at ?? FieldValue.delete(), updatedAt: FieldValue.serverTimestamp() });
+    if (at) await logActivity(admin, `scheduled an interview with ${snap.get('fullName') ?? 'a candidate'}`);
+    return { ok: true, message: at ? 'Interview time saved' : 'Interview time cleared' };
   });
 }
 

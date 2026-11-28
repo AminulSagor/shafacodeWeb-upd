@@ -86,6 +86,9 @@ function toApplication(id: string, d: DocumentData): Application {
     whyUs: str(d.whyUs) || str(d.coverLetter),
     resume: path || url ? { path: path || undefined, url: url || undefined } : undefined,
     stage: pick(applicationStages, d.stage, 'new'),
+    stageDates: Object.fromEntries(
+      applicationStages.map((s) => [s, iso(d.stageDates?.[s])] as const).filter(([, v]) => v)
+    ) as Application['stageDates'],
     interviewAt: iso(d.interviewAt),
     isViewed: d.isViewed === true,
     createdAt: iso(d.createdAt) || iso(d.date),
@@ -140,3 +143,13 @@ export async function pipelineCounts() {
 }
 
 export type { InquiryStatus, LeadStatus, ApplicationStage };
+
+/** Marks an application as seen (called after the detail page renders). */
+export async function markViewed(id: string) {
+  if (!live()) return;
+  try {
+    await db().collection('apply-jobs').doc(id).update({ isViewed: true });
+  } catch (error) {
+    console.error('Mark viewed failed', error);
+  }
+}

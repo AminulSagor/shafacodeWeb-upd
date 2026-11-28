@@ -50,6 +50,7 @@ const application = (p: Partial<Application> & Pick<Application, 'id' | 'fullNam
   primaryFramework: 'React / Next.js',
   whyUs: 'I like how you ship small, reviewed increments and keep clients close to the work.',
   interviewAt: '',
+  stageDates: p.stage === 'new' ? {} : { screening: ago(hours - 40 > 0 ? hours - 40 : 1) },
   isViewed: p.stage !== 'new',
   createdAt: ago(hours),
   ...p,
