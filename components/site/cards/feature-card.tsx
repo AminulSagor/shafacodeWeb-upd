@@ -12,7 +12,7 @@ export function FeatureCard({
 }: {
   icon: LucideIcon;
   title: string;
-  body: React.ReactNode;
+  body: string;
   className?: string;
   as?: 'h2' | 'h3';
 }) {

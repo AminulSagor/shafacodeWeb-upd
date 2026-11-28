@@ -37,7 +37,10 @@ export function InView({
       { rootMargin }
     );
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      if (el.dataset.inview !== 'true') delete el.dataset.inview;
+    };
   }, [rootMargin]);
 
   return React.createElement(Tag, { ref, className }, children);

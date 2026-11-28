@@ -7,7 +7,7 @@ import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Chip } from '@/components/ui/chip';
+import { ChipRadioGroup } from '@/components/ui/chip-radio-group';
 import {
   estimate,
   estimatorFeatures,
@@ -26,20 +26,17 @@ import {
 export function ScopeEstimator({ className }: { className?: string }) {
   const [type, setType] = React.useState<ProjectTypeId>('web-app');
   const [features, setFeatures] = React.useState<FeatureId[]>(['accounts', 'admin', 'payments', 'integrations']);
-  const result = React.useMemo(() => estimate(type, features), [type, features]);
-  const [shown, setShown] = React.useState(result);
-
-  // Short debounce so the live region does not announce every click.
-  React.useEffect(() => {
-    const t = window.setTimeout(() => setShown(result), 180);
-    return () => window.clearTimeout(t);
-  }, [result]);
+  const shown = React.useMemo(() => estimate(type, features), [type, features]);
+  const uid = React.useId();
 
   const toggle = (id: FeatureId, on: boolean) =>
     setFeatures((f) => (on ? [...new Set([...f, id])] : f.filter((x) => x !== id)));
 
-  const params = new URLSearchParams({ type, features: features.join(','), source: 'estimator' });
-  const titleId = React.useId();
+  // A mobile-app project already is the app: do not send the add-on twice.
+  const sentFeatures = features.filter((f) => !(type === 'mobile-app' && f === 'mobile'));
+  const params = new URLSearchParams({ type, source: 'estimator' });
+  if (sentFeatures.length) params.set('features', sentFeatures.join(','));
+  const titleId = `${uid}-title`;
 
   return (
     <section
@@ -56,22 +53,21 @@ export function ScopeEstimator({ className }: { className?: string }) {
         <p className="type-caption font-normal text-fg-subtle">Ballpark, not a quote</p>
       </div>
 
-      <fieldset className="mt-5">
-        <legend className="type-mono-xs text-fg-subtle">1 · What are you building?</legend>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {projectTypes.map((p) => (
-            <Chip key={p.id} selected={type === p.id} onClick={() => setType(p.id)}>
-              {p.label}
-            </Chip>
-          ))}
-        </div>
-      </fieldset>
+      <ChipRadioGroup
+        className="mt-5"
+        name={`${uid}-type`}
+        legend="1 · What are you building?"
+        legendClassName="type-mono-xs text-fg-subtle"
+        options={projectTypes.map((p) => ({ value: p.id, label: p.label }))}
+        value={type}
+        onChange={(v) => setType(v as ProjectTypeId)}
+      />
 
       <fieldset className="mt-5">
         <legend className="type-mono-xs text-fg-subtle">2 · Must-haves</legend>
         <div className="mt-3 flex flex-wrap gap-x-5 gap-y-3">
           {estimatorFeatures.map((f) => {
-            const id = `est-${f.id}`;
+            const id = `${uid}-${f.id}`;
             const disabled = type === 'mobile-app' && f.id === 'mobile';
             return (
               <label key={f.id} htmlFor={id} className={cn('flex cursor-pointer items-center gap-2.5 type-body-sm text-fg', disabled && 'cursor-not-allowed opacity-50')}>
@@ -88,7 +84,7 @@ export function ScopeEstimator({ className }: { className?: string }) {
         </div>
       </fieldset>
 
-      <output aria-live="polite" className="mt-5 block border-t border-line-subtle pt-5">
+      <output aria-live="polite" aria-atomic="true" className="mt-5 block border-t border-line-subtle pt-5">
         <span className="block type-mono-xs text-fg-brand">Estimated range</span>
         <span className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span className="type-stat text-fg">

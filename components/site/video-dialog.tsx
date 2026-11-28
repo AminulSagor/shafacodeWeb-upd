@@ -20,7 +20,7 @@ export function VideoDialog({ video, children }: { video: VideoSource; children:
         <Dialog.Overlay className="fixed inset-0 z-[60] bg-scrim backdrop-blur-sm data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
         <Dialog.Content
           aria-describedby={undefined}
-          className="fixed top-1/2 left-1/2 z-[60] w-[min(1120px,calc(100vw-2*var(--page-margin)))] -translate-x-1/2 -translate-y-1/2 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95"
+          className="fixed top-1/2 left-1/2 z-[60] w-[min(1120px,calc(100vw-2*var(--page-margin)),calc((100dvh-120px)*16/9))] -translate-x-1/2 -translate-y-1/2 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95"
         >
           <div className="mb-3 flex items-center justify-between gap-4">
             <Dialog.Title className="type-label text-fg">
@@ -36,7 +36,8 @@ export function VideoDialog({ video, children }: { video: VideoSource; children:
             {video.youtubeId ? (
               <iframe
                 className="size-full"
-                src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+                src={`https://www.youtube-nocookie.com/embed/${encodeURIComponent(video.youtubeId)}?autoplay=1&rel=0&modestbranding=1`}
+                referrerPolicy="strict-origin-when-cross-origin"
                 title={video.title}
                 allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
                 allowFullScreen

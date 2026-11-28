@@ -54,7 +54,7 @@ export default async function HomePage() {
         items={homeFaqs}
         title={
           <>
-            Common questions <Accent>before starting</Accent> a project
+            Common questions <Accent className="md:inline">before starting</Accent> a project
           </>
         }
       />

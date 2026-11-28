@@ -6,7 +6,7 @@ import { TimezoneOverlap } from '@/components/site/interactive/timezone-overlap'
 export function WorkAnywhere() {
   return (
     <section aria-labelledby="anywhere-title" className="section-y">
-      <div className="container-page grid items-center gap-10 xl:grid-cols-[624px_560px] xl:justify-between">
+      <div className="container-page grid items-center gap-10 xl:grid-cols-[minmax(0,624px)_minmax(0,560px)] xl:justify-between">
         <div className="flex flex-col items-start">
           <Eyebrow>Global delivery</Eyebrow>
           <h2 id="anywhere-title" className="mt-4 type-h2 text-fg">

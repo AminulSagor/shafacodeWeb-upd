@@ -52,6 +52,7 @@ function servicesListLd(): WithContext<ItemList> {
     itemListElement: services.map((s, i) => ({
       '@type': 'ListItem',
       position: i + 1,
+      url: absoluteUrl(serviceHref(s.slug)),
       item: {
         '@type': 'Service',
         name: s.title,
@@ -65,7 +66,6 @@ function servicesListLd(): WithContext<ItemList> {
 
 /** Services. Figma: Services 28:3276 (mobile 53:12912) */
 export default function ServicesPage() {
-  const [last] = services.slice(-1);
   return (
     <>
       <JsonLd data={servicesListLd()} />
@@ -92,17 +92,21 @@ export default function ServicesPage() {
         }
       />
 
-      <section aria-label="All services" className="pt-6 pb-[var(--section-y)]">
+      <section aria-labelledby="all-services-title" className="pt-6 pb-[var(--section-y)]">
         <div className="container-page">
+          <h2 id="all-services-title" className="sr-only">
+            All services
+          </h2>
           <ul className="grid gap-[var(--grid-gap)] md:grid-cols-2 xl:grid-cols-3">
-            {services.slice(0, -1).map((s, i) => (
-              <li key={s.slug}>
-                <ServiceCard service={s} index={i} />
-              </li>
-            ))}
-            <li className="md:col-span-2 xl:col-span-3">
-              <ServiceCard service={last} index={services.length - 1} wide />
-            </li>
+            {services.map((s, i) => {
+              // A lone last card spans the full row (Figma: wide IoT card).
+              const wide = i === services.length - 1 && services.length % 6 === 1;
+              return (
+                <li key={s.slug} className={wide ? 'md:col-span-2 xl:col-span-3' : undefined}>
+                  <ServiceCard service={s} index={i} wide={wide} />
+                </li>
+              );
+            })}
           </ul>
         </div>
       </section>
@@ -119,7 +123,7 @@ export default function ServicesPage() {
             }
             lede="Every model comes with a named project lead, weekly updates and full ownership of the code."
           />
-          <ul className="mt-[var(--section-head-gap)] grid gap-[var(--grid-gap)] md:grid-cols-3">
+          <ul className="mt-[var(--section-head-gap)] grid gap-[var(--grid-gap)] lg:grid-cols-3">
             {models.map((m) => (
               <li key={m.title}>
                 <FeatureCard {...m} />
@@ -147,8 +151,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <div className="border-t border-line-subtle">
-        <FaqSection
+      <FaqSection
+          className="border-t border-line-subtle"
           items={servicesFaqs}
           title={
             <>
@@ -156,7 +160,6 @@ export default function ServicesPage() {
             </>
           }
         />
-      </div>
 
       <CtaBand
         showSteps={false}

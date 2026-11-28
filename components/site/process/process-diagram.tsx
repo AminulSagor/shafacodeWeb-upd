@@ -4,7 +4,8 @@ import { CoreDisc, Rings, StepCard } from './parts';
 import { KineticCoreLoader } from './kinetic-core-loader';
 
 /**
- * Process stages. Below 1280px: a plain grid of the six cards. From 1280px:
+ * Process stages. Below 1440px: a plain grid of the six cards. From 1440px
+ * (where the 1240px diagram fits):
  * the Kinetic Core diagram, server-rendered with static curves, upgraded to
  * the draggable version when it nears the viewport (pointer devices without
  * reduced motion). The cards are the same ordered list in every mode.
@@ -41,14 +42,14 @@ export function ProcessDiagram() {
 
   return (
     <>
-      <ol className="grid gap-[var(--grid-gap)] md:grid-cols-2 xl:hidden">
+      <ol className="grid gap-[var(--grid-gap)] md:grid-cols-2 xl:grid-cols-3 min-[1440px]:hidden">
         {processSteps.map((step, i) => (
           <li key={step.title}>
             <StepCard step={step} index={i} />
           </li>
         ))}
       </ol>
-      <div className="max-xl:hidden">
+      <div className="max-[1439px]:hidden">
         <KineticCoreLoader fallback={staticDiagram} />
       </div>
     </>

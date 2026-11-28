@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Chip } from '@/components/ui/chip';
+import { ChipRadioGroup } from '@/components/ui/chip-radio-group';
 import { site } from '@/content/site';
 
 type City = { label: string; zone: string };
@@ -24,10 +24,15 @@ const VISITOR_START = 9;
 const VISITOR_END = 18;
 
 /** Current UTC offset of an IANA zone in minutes, via Intl (no date library). */
-function offsetMinutes(zone: string, at = new Date()) {
-  const name = new Intl.DateTimeFormat('en-US', { timeZone: zone, timeZoneName: 'shortOffset' })
-    .formatToParts(at)
-    .find((p) => p.type === 'timeZoneName')?.value;
+function offsetMinutes(zone: string, at: Date) {
+  let name: string | undefined;
+  try {
+    name = new Intl.DateTimeFormat('en-US', { timeZone: zone, timeZoneName: 'shortOffset' })
+      .formatToParts(at)
+      .find((p) => p.type === 'timeZoneName')?.value;
+  } catch {
+    return 0;
+  }
   const m = name?.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
   if (!m) return 0;
   const sign = m[1] === '-' ? -1 : 1;
@@ -58,16 +63,24 @@ export function TimezoneOverlap({ className }: { className?: string }) {
     () => Intl.DateTimeFormat().resolvedOptions().timeZone,
     () => null
   );
+  // Offsets depend on the date (daylight saving), so read "now" on the client
+  // only; the static server render uses a fixed winter date.
+  const hour = React.useSyncExternalStore(
+    noopSubscribe,
+    () => Math.floor(Date.now() / 3_600_000),
+    () => null
+  );
+  const now = hour === null ? new Date(Date.UTC(2026, 0, 15, 12)) : new Date(hour * 3_600_000);
   const [picked, setZone] = React.useState<string | null>(null);
 
-  const ownUsable = own && own !== 'Asia/Dhaka' && own !== 'UTC' ? own : null;
+  const ownUsable = own && !/^(Asia\/(Dhaka|Dacca)|(Etc\/)?(UTC|GMT|Universal|Zulu))$/.test(own) ? own : null;
   const cities =
     ownUsable && !CITIES.some((c) => c.zone === ownUsable)
       ? [{ label: ownUsable.split('/').pop()?.replace(/_/g, ' ') ?? 'Your city', zone: ownUsable }, ...CITIES]
       : CITIES;
   const zone = picked ?? ownUsable ?? CITIES[0].zone;
   const city = cities.find((c) => c.zone === zone) ?? cities[0];
-  const offset = offsetMinutes(zone);
+  const offset = offsetMinutes(zone, now);
   const shift = TEAM_OFFSET - offset; // add to visitor time to get BD time
   const vStart = VISITOR_START * 60 + shift;
   const vEnd = VISITOR_END * 60 + shift;
@@ -90,19 +103,20 @@ export function TimezoneOverlap({ className }: { className?: string }) {
       <h3 id={titleId} className="type-h4 text-fg">
         Your hours, our hours
       </h3>
-      <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Choose your city">
-        {cities.map((c) => (
-          <Chip key={c.zone} selected={c.zone === zone} onClick={() => setZone(c.zone)}>
-            {c.label}
-          </Chip>
-        ))}
-      </div>
+      <ChipRadioGroup
+        className="mt-1"
+        name={`${titleId}-city`}
+        legend={<span className="sr-only">Choose your city</span>}
+        options={cities.map((c) => ({ value: c.zone, label: c.label }))}
+        value={zone}
+        onChange={setZone}
+      />
 
-      <div className="mt-5" aria-hidden>
+      <div className="mt-5">
         <p className="type-caption font-normal text-fg-muted">
           Barishal team ({gmtLabel(TEAM_OFFSET)}) · {hhmm(TEAM_START * 60)} to {hhmm(TEAM_END * 60)}
         </p>
-        <div className="mt-2 grid grid-cols-24 gap-1">
+        <div aria-hidden className="mt-2 grid grid-cols-24 gap-1">
           {Array.from({ length: 24 }, (_, h) => (
             <span
               key={h}
@@ -114,7 +128,7 @@ export function TimezoneOverlap({ className }: { className?: string }) {
           {city.label} ({gmtLabel(offset)}) · your {hhmm(VISITOR_START * 60)} to {hhmm(VISITOR_END * 60)}, shown in
           Bangladesh time
         </p>
-        <div className="mt-2 grid grid-cols-24 gap-1">
+        <div aria-hidden className="mt-2 grid grid-cols-24 gap-1">
           {Array.from({ length: 24 }, (_, h) => (
             <span
               key={h}
@@ -125,14 +139,14 @@ export function TimezoneOverlap({ className }: { className?: string }) {
             />
           ))}
         </div>
-        <div className="mt-3 flex justify-between type-mono-xs text-fg-subtle tabular">
+        <div aria-hidden className="mt-3 flex justify-between type-mono-xs text-fg-subtle tabular">
           {['00', '06', '12', '18', '24'].map((t) => (
             <span key={t}>{t}</span>
           ))}
         </div>
       </div>
 
-      <output aria-live="polite" className="mt-5 flex items-center gap-4 border-t border-line-subtle pt-5">
+      <output aria-live="polite" aria-atomic="true" className="mt-5 flex items-center gap-4 border-t border-line-subtle pt-5">
         <span className="type-stat text-fg-brand">{overlapHours}h</span>
         <span className="flex flex-col">
           <span className="type-label-sm text-fg">

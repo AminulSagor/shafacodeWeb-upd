@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { Cloud, Cpu, Globe, Monitor, PenTool, Smartphone, SquareTerminal } from 'lucide-react';
+import { Cloud, Cpu, Globe, Monitor, PenTool, Smartphone, Terminal } from 'lucide-react';
 
 export const serviceSlugs = [
   'custom-software-development',
@@ -36,7 +36,7 @@ export const services: readonly Service[] = [
     slug: 'custom-software-development',
     title: 'Custom Software Development',
     shortTitle: 'Custom Software',
-    icon: SquareTerminal,
+    icon: Terminal,
     description:
       'Internal tools, CRMs, dashboards, automation and custom workflows that help your team operate faster.',
     menuDescription: 'Internal tools, CRMs, dashboards and automation.',

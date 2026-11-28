@@ -188,9 +188,7 @@ export default async function ServicePage({ params }: Props) {
         </section>
       )}
 
-      <div className="border-t border-line-subtle">
-        <FaqSection items={serviceFaqs(d)} title={<AccentText value={d.faqTitle} />} />
-      </div>
+      <FaqSection className="border-t border-line-subtle" items={serviceFaqs(d)} title={<AccentText value={d.faqTitle} />} />
 
       <CtaBand showSteps={false} title={<AccentText value={d.ctaTitle} />} />
     </>

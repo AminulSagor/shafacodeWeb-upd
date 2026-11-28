@@ -32,7 +32,7 @@ function CellText({ index, title, body }: { index: string; title: string; body: 
 }
 
 const cell = 'flex flex-col p-[var(--card-pad)] xl:p-10';
-const visual = 'flex flex-col xl:h-[300px]';
+const visual = 'flex flex-col xl:min-h-[300px]';
 
 function ProgressVisual() {
   return (
@@ -93,7 +93,7 @@ function Gauge({ label, value }: { label: string; value: number }) {
   const c = 2 * Math.PI * r;
   return (
     <figure className="flex flex-col items-center gap-3.5">
-      <div className="relative size-[88px] md:size-[108px]">
+      <div className="relative size-[76px] sm:size-[88px] md:size-[108px]">
         <svg viewBox="0 0 108 108" className="size-full -rotate-90" aria-hidden>
           <circle cx="54" cy="54" r={r} fill="none" stroke="var(--line-subtle)" strokeWidth="4" />
           <circle
@@ -121,7 +121,7 @@ function LighthouseVisual() {
   return (
     <InView className={cn(visual, 'group')}>
       <p className="type-mono-xs text-fg-subtle">Lighthouse · measured before launch</p>
-      <div className="flex flex-1 items-center justify-between gap-4 py-8 xl:py-0">
+      <div className="flex flex-1 items-center justify-between gap-2 py-8 sm:gap-4 xl:py-0">
         {scores.map((s) => (
           <Gauge key={s.label} {...s} />
         ))}
@@ -174,7 +174,7 @@ export function WhyBento() {
               />
             </div>
             <div className={cell}>
-              <div className={cn(visual, 'relative aspect-[16/9] overflow-hidden rounded-md xl:aspect-auto')}>
+              <div className={cn('relative flex aspect-[16/9] flex-col overflow-hidden rounded-md xl:aspect-auto xl:h-[300px]')}>
                 <Image
                   src="/images/home/adaptive-ux.jpg"
                   alt="Hands using a responsive analytics dashboard on a laptop, tablet and phone with lime charts"

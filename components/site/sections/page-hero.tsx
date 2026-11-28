@@ -7,7 +7,7 @@ type PageHeroProps = {
   eyebrow: string;
   /** H1 content; put the accent phrase in <Accent>. */
   title: React.ReactNode;
-  lede?: React.ReactNode;
+  lede?: string;
   /** Buttons or other actions under the lede */
   actions?: React.ReactNode;
   /** Optional content to the right (desktop) or below (mobile) */

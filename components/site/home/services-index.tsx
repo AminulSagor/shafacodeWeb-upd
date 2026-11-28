@@ -36,32 +36,32 @@ export function ServicesIndex({
             return (
               <li
                 key={s.slug}
-                className="group relative grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-3 border-b border-line-subtle py-6 transition-colors duration-[var(--duration-base)] hover:bg-hover md:gap-x-8 md:py-8 xl:grid-cols-[60px_minmax(0,1fr)_minmax(0,1fr)_220px_40px]"
+                className="group card-focus relative grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-3 border-b border-line-subtle py-6 transition-colors duration-[var(--duration-base)] hover:bg-hover md:gap-x-8 md:py-8 xl:grid-cols-[60px_minmax(0,1fr)_minmax(0,1fr)_220px_40px]"
               >
                 <span className="flex items-center gap-3 self-start pt-1 xl:self-center xl:pt-0">
-                  <span className="w-5 type-mono-sm text-fg-subtle tabular">{String(i + 1).padStart(2, '0')}</span>
+                  <span aria-hidden className="w-5 type-mono-sm text-fg-subtle tabular">{String(i + 1).padStart(2, '0')}</span>
                   <Icon className="size-6 text-icon-brand" strokeWidth={1.75} aria-hidden />
                 </span>
                 <h3 className="type-h3 text-fg">
                   <Link
                     href={serviceHref(s.slug)}
-                    className="rounded-sm after:absolute after:inset-0 focus-visible:focus-ring"
+                    className="after:absolute after:inset-0"
                   >
                     {s.title}
                   </Link>
                 </h3>
                 <span
                   aria-hidden
-                  className="grid size-10 place-items-center self-start rounded-[var(--button-radius-sm)] bg-action-secondary text-icon-strong shadow-btn-secondary transition-[background-color,transform] duration-[var(--duration-fast)] group-hover:bg-action-primary group-hover:text-fg-on-brand group-hover:shadow-btn-primary xl:order-last xl:self-center"
+                  className="grid size-10 place-items-center self-start rounded-[var(--button-radius-sm)] bg-action-secondary text-icon-strong shadow-btn-secondary transition-[background-color,color,box-shadow] duration-[var(--duration-fast)] group-hover:bg-action-primary group-focus-within:bg-action-primary group-focus-within:text-fg-on-brand group-focus-within:shadow-btn-primary group-hover:text-fg-on-brand group-hover:shadow-btn-primary xl:order-last xl:self-center"
                 >
                   <ArrowUpRight className="size-[18px] transition-transform duration-[var(--duration-fast)] group-hover:translate-x-px group-hover:-translate-y-px" />
                 </span>
-                <p className="col-span-3 type-body text-fg-muted max-xl:pl-[52px] max-md:pl-0 xl:col-span-1">
+                <p className="col-span-3 type-body text-fg-muted md:col-span-1 md:col-start-2 xl:col-start-auto">
                   {s.description}
                 </p>
                 <TagList
                   items={s.stack}
-                  className="col-span-3 max-xl:pl-[52px] max-md:pl-0 xl:col-span-1"
+                  className="col-span-3 md:col-span-1 md:col-start-2 xl:col-start-auto"
                 />
               </li>
             );

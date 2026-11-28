@@ -23,7 +23,7 @@ export function Testimonials({ items }: { items: TextTestimonial[] }) {
           {items.map((t) => (
             <li
               key={t.name}
-              className="flex h-full flex-col border-line-subtle py-8 max-md:border-b max-md:last:border-b-0 md:border-l md:px-8 md:py-10 md:first:border-l-0 md:first:pl-0 md:last:pr-0"
+              className="flex h-full flex-col border-line-subtle py-8 max-md:border-b max-md:last:border-b-0 md:border-l md:px-6 md:py-10 md:first:border-l-0 xl:px-8 md:first:pl-0 md:last:pr-0"
             >
               <figure className="flex h-full flex-col">
                 <span aria-hidden className="h-12 type-h1 leading-none text-fg-brand md:h-[62px]">

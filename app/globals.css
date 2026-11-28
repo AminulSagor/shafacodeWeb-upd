@@ -357,8 +357,10 @@ h1, h2, h3, h4 {
 /* iOS continuous corners (Figma corner smoothing 60%) on every rounded box,
    where the browser supports corner-shape. Circles and pills stay round.
    Unsupported browsers keep plain border-radius. */
-@supports (corner-shape: squircle) {
-  :where(*:not(.rounded-full, [data-round])) { corner-shape: squircle; }
+@layer base {
+  @supports (corner-shape: squircle) {
+    :where(*:not(.rounded-full, [data-round])) { corner-shape: squircle; }
+  }
 }
 
 /* Utilities from the semantic layer */
@@ -480,6 +482,12 @@ h1, h2, h3, h4 {
 @utility section-y { padding-block: var(--section-y); }
 @utility focus-ring { outline: 2px solid var(--line-focus); outline-offset: 2px; }
 @utility glass { background: var(--glass); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+/* Whole-card focus for the stretched-link pattern: the ring goes around the
+   card, not around the (possibly wrapped) inline title link. */
+@utility card-focus {
+  &:has(a:focus-visible) { outline: 2px solid var(--line-focus); outline-offset: 2px; }
+  & a:focus-visible { outline: none; }
+}
 @utility hairline-t { border-top: 1px solid var(--line-subtle); }
 @utility hairline-b { border-bottom: 1px solid var(--line-subtle); }
 @utility tabular { font-variant-numeric: tabular-nums; }

@@ -26,7 +26,7 @@ export function CaseStudyCard({
   return (
     <article
       className={cn(
-        'group relative flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color,translate] duration-[var(--duration-base)] ease-out hover:-translate-y-0.5 hover:border-line-brand',
+        'group card-focus relative flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color,translate] duration-[var(--duration-base)] ease-out hover:border-line-brand motion-safe:hover:-translate-y-0.5',
         className
       )}
     >
@@ -42,20 +42,20 @@ export function CaseStudyCard({
         </div>
       )}
       <div className="flex flex-1 flex-col gap-4 p-[var(--card-pad)]">
-        <p className="flex flex-wrap gap-x-2 type-mono-xs text-fg-subtle">
+        <ul className="flex flex-wrap gap-x-2 type-mono-xs text-fg-subtle" aria-label="Tags">
           {item.tags.map((t) => (
-            <span key={t}>{t}</span>
+            <li key={t}>{t}</li>
           ))}
-        </p>
+        </ul>
         <H className="type-h4 text-fg">
-          <Link href={caseStudyHref(item.slug)} className="rounded-sm after:absolute after:inset-0 focus-visible:focus-ring">
+          <Link href={caseStudyHref(item.slug)} className="after:absolute after:inset-0">
             {item.title}
           </Link>
         </H>
         <p className="type-body-sm text-fg-muted">{item.summary}</p>
         <span className="mt-auto inline-flex items-center gap-1.5 pt-2 type-label text-fg-brand" aria-hidden>
           Read the case study
-          <ArrowRight className="size-4 transition-transform duration-[var(--duration-fast)] group-hover:translate-x-0.5" />
+          <ArrowRight className="size-4 shrink-0 transition-transform duration-[var(--duration-fast)] motion-safe:group-hover:translate-x-0.5" />
         </span>
       </div>
     </article>

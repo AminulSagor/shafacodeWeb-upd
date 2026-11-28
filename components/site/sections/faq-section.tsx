@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, Minus } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { JsonLd } from '@/components/site/json-ld';
@@ -13,6 +14,7 @@ type FaqSectionProps = {
   eyebrow?: string;
   intro?: string;
   id?: string;
+  className?: string;
 };
 
 /**
@@ -25,11 +27,12 @@ export function FaqSection({
   eyebrow = 'FAQ',
   intro = "Can't find your answer? Talk to us directly. We usually reply within 12 hours.",
   id = 'faq',
+  className,
 }: FaqSectionProps) {
   return (
-    <section aria-labelledby={`${id}-title`} className="section-y">
+    <section aria-labelledby={`${id}-title`} className={cn('section-y', className)}>
       <JsonLd data={faqLd(items)} />
-      <div className="container-page grid gap-10 xl:grid-cols-[436px_1fr]">
+      <div className="container-page grid gap-10 xl:grid-cols-[minmax(0,436px)_minmax(0,1fr)] xl:gap-x-14">
         <div className="flex flex-col items-start gap-5 xl:sticky xl:top-[calc(var(--nav-height)+32px)] xl:self-start">
           <Eyebrow>{eyebrow}</Eyebrow>
           <h2 id={`${id}-title`} className="type-h2 text-fg">
@@ -51,7 +54,7 @@ export function FaqSection({
                   <Minus className="size-3.5" strokeWidth={2.5} />
                 </span>
               </dt>
-              <dd className="type-body-sm text-fg-muted md:type-body">{item.a}</dd>
+              <dd className="type-body-sm text-fg-muted md:type-body xl:pr-10">{item.a}</dd>
             </div>
           ))}
         </dl>

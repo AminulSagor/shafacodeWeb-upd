@@ -17,7 +17,7 @@ export function KineticCoreLoader({ fallback }: { fallback: React.ReactNode }) {
     const el = ref.current;
     if (!el) return;
     const ok =
-      window.matchMedia('(min-width: 1280px)').matches &&
+      window.matchMedia('(min-width: 1440px)').matches &&
       window.matchMedia('(pointer: fine)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!ok) return;
@@ -26,9 +26,11 @@ export function KineticCoreLoader({ fallback }: { fallback: React.ReactNode }) {
       ([e]) => {
         if (!e.isIntersecting) return;
         io.disconnect();
-        import('./kinetic-core').then((m) => {
-          if (!cancelled) setCore(() => m.KineticCore);
-        });
+        import('./kinetic-core')
+          .then((m) => {
+            if (!cancelled) setCore(() => m.KineticCore);
+          })
+          .catch(() => {}); // keep the static diagram if the chunk fails
       },
       { rootMargin: '400px 0px' }
     );

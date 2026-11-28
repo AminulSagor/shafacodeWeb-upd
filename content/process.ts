@@ -13,7 +13,7 @@ export const processSteps: ProcessStep[] = [
   { title: 'Launch', body: 'Deploy, monitor, support', time: '+30 days', icon: Rocket },
 ];
 
-export type LifecycleStep = { title: string; body: string; time: string };
+export type LifecycleStep = Omit<ProcessStep, 'icon'>;
 
 /** Services "How we turn services into real products" (Figma 28:3770). */
 export const lifecycleSteps: LifecycleStep[] = [

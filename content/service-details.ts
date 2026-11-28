@@ -23,7 +23,7 @@ import {
   Zap,
 } from 'lucide-react';
 
-import { homeFaqs, type Faq } from '@/content/faq';
+import { sharedFaqs, type Faq } from '@/content/faq';
 import type { ServiceSlug } from '@/content/services';
 
 /** A heading with one serif accent phrase: `${before} {accent}${after}` */
@@ -360,5 +360,5 @@ export function serviceSteps(detail: ServiceDetail) {
 }
 
 export function serviceFaqs(detail: ServiceDetail): Faq[] {
-  return [detail.firstFaq, homeFaqs[1], homeFaqs[2], homeFaqs[3], homeFaqs[4]];
+  return [detail.firstFaq, sharedFaqs.designAndDevelop, sharedFaqs.ownCode, sharedFaqs.supportAfterLaunch, sharedFaqs.updates];
 }

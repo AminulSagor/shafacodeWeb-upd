@@ -64,7 +64,7 @@ export function MobileMenu({ pathname }: { pathname: string }) {
             </Dialog.Close>
           </div>
 
-          <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-[var(--page-margin)] pt-2">
+          <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-[var(--page-margin)] pt-2 pb-6">
             <Collapsible.Root open={servicesOpen} onOpenChange={setServicesOpen}>
               <Collapsible.Trigger className={cn(rowClass, 'cursor-pointer')}>
                 Services
@@ -118,7 +118,7 @@ export function MobileMenu({ pathname }: { pathname: string }) {
             </ul>
           </nav>
 
-          <div className="shrink-0 px-[var(--page-margin)] pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+          <div className="shrink-0 border-t border-line-subtle px-[var(--page-margin)] pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
             <Button asChild size="lg" className="w-full">
               <Link href="/contact?type=project" onClick={() => setOpen(false)}>
                 Start a project

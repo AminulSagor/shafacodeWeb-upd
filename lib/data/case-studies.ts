@@ -66,14 +66,9 @@ function toCaseStudy(id: string, d: DocumentData): CaseStudy | null {
 
 const readAll = unstable_cache(
   async (): Promise<CaseStudy[]> => {
-    if (!hasFirebaseCredentials()) return [];
-    try {
-      const snap = await getDb().collection('projects').get();
-      return snap.docs.map((doc) => toCaseStudy(doc.id, doc.data())).filter((x): x is CaseStudy => x !== null);
-    } catch (error) {
-      console.error('Failed to read case studies', error);
-      return [];
-    }
+    // Errors propagate so unstable_cache does not store a failed read.
+    const snap = await getDb().collection('projects').get();
+    return snap.docs.map((doc) => toCaseStudy(doc.id, doc.data())).filter((x): x is CaseStudy => x !== null);
   },
   ['case-studies:all'],
   { tags: ['projects'], revalidate: 3600 }
@@ -81,8 +76,14 @@ const readAll = unstable_cache(
 
 /** Every public case study: CMS entries when there are any, else the design seed. */
 export async function getCaseStudies(): Promise<CaseStudy[]> {
-  const items = await readAll();
-  return items.length > 0 ? items : fallbackCaseStudies;
+  if (!hasFirebaseCredentials()) return fallbackCaseStudies;
+  try {
+    const items = await readAll();
+    return items.length > 0 ? items : fallbackCaseStudies;
+  } catch (error) {
+    console.error('Failed to read case studies', error);
+    return fallbackCaseStudies;
+  }
 }
 
 export async function getCaseStudy(slug: string): Promise<CaseStudy | null> {

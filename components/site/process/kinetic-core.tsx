@@ -1,15 +1,15 @@
 'use client';
 
 import * as React from 'react';
-import { LazyMotion, animate, m, useMotionValue, useTransform, type MotionValue } from 'motion/react';
+import { LazyMotion, animate, domMax, m, useMotionValue, useTransform, type MotionValue } from 'motion/react';
 
 import { processSteps } from '@/content/process';
 import { ANCHORS, BOX, CORE, NODES, SUCKERS, pathD, pointAt, tentacle } from './geometry';
 import { CoreDisc, DragHint, Rings, StepCard } from './parts';
 
-const loadFeatures = () => import('motion/react').then((mod) => mod.domMax);
 const SPRING = { type: 'spring', stiffness: 180, damping: 12 } as const;
 const LIMIT = 120;
+const CONSTRAINTS = { left: -LIMIT, right: LIMIT, top: -LIMIT, bottom: LIMIT };
 
 type XY = { x: MotionValue<number>; y: MotionValue<number> };
 
@@ -76,10 +76,8 @@ export function KineticCore() {
     items.current[next]?.focus();
   };
 
-  const constraints = { left: -LIMIT, right: LIMIT, top: -LIMIT, bottom: LIMIT };
-
   return (
-    <LazyMotion features={loadFeatures} strict>
+    <LazyMotion features={domMax} strict>
       <div className="relative mx-auto h-[760px] w-[1240px] select-none">
         <Rings />
         <svg aria-hidden viewBox={`0 0 ${BOX.w} ${BOX.h}`} className="pointer-events-none absolute inset-0 size-full overflow-visible">
@@ -93,7 +91,7 @@ export function KineticCore() {
           className="absolute top-[272px] left-[492px] size-64 rounded-full border border-line-brand bg-brand-soft"
           style={{ x: hub.x, y: hub.y }}
           animate={{ scale: [1, 1.06, 1], opacity: [0.5, 0.15, 0.5] }}
-          transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 1.6, repeat: 2, ease: 'easeInOut' }} // finite: stops within 5s (WCAG 2.2.2)
         />
         <m.div
           className="absolute top-[304px] left-[524px] cursor-grab rounded-full active:cursor-grabbing"
@@ -101,7 +99,7 @@ export function KineticCore() {
           drag
           dragElastic={0.2}
           dragMomentum={false}
-          dragConstraints={constraints}
+          dragConstraints={CONSTRAINTS}
           onDragEnd={() => springHome(hub)}
           whileDrag={{ scale: 1.04 }}
         >
@@ -122,7 +120,7 @@ export function KineticCore() {
               drag
               dragElastic={0.2}
               dragMomentum={false}
-              dragConstraints={constraints}
+              dragConstraints={CONSTRAINTS}
               onDragEnd={() => springHome(nodes[i])}
               whileDrag={{ scale: 1.03, zIndex: 10 }}
               onPointerEnter={() => setActive(i)}

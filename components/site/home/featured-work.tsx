@@ -4,7 +4,6 @@ import { ArrowRight } from 'lucide-react';
 
 import { Accent } from '@/components/ui/accent';
 import { Button } from '@/components/ui/button';
-import { TextLink } from '@/components/ui/text-link';
 import { SectionHeader } from '@/components/site/sections/section-header';
 import type { CaseStudySummary } from '@/content/case-studies';
 
@@ -63,7 +62,7 @@ function FeatureCase({ item }: { item: CaseStudySummary }) {
 
 function CaseCard({ item }: { item: CaseStudySummary }) {
   return (
-    <article className="group relative flex h-full flex-col">
+    <article className="group card-focus relative flex h-full flex-col rounded-[var(--card-radius)]">
       <div className="relative aspect-[600/340] overflow-hidden rounded-[var(--card-radius)] bg-surface-1">
         {item.cover && (
           <Image
@@ -79,16 +78,15 @@ function CaseCard({ item }: { item: CaseStudySummary }) {
         <Meta tags={item.tags} />
       </div>
       <h3 className="mt-5 type-h4 text-fg">
-        <Link href={caseHref(item.slug)} className="rounded-sm focus-visible:focus-ring">
+        <Link href={caseHref(item.slug)} className="after:absolute after:inset-0">
           {item.title}
         </Link>
       </h3>
       <p className="mt-5 type-body text-fg-muted">{item.summary}</p>
-      <div className="mt-auto pt-5">
-        <TextLink href={caseHref(item.slug)} aria-label={`Read the case study: ${item.client}`}>
-          Read the case study
-        </TextLink>
-      </div>
+      <span className="mt-auto inline-flex items-center gap-1.5 pt-5 type-label-sm text-fg-brand" aria-hidden>
+        Read the case study
+        <ArrowRight className="size-4 shrink-0 transition-transform duration-[var(--duration-fast)] motion-safe:group-hover:translate-x-0.5" />
+      </span>
     </article>
   );
 }
