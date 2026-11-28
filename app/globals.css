@@ -455,27 +455,6 @@ h1, h2, h3, h4 {
   --shadow-field: var(--field-shadow);
   --shadow-field-focus: var(--field-focus);
   --shadow-field-error: var(--field-error);
-
-  /* shadcn/ui bridge so existing primitives pick up the theme */
-  --color-background: var(--canvas);
-  --color-foreground: var(--fg);
-  --color-card: var(--surface-1);
-  --color-card-foreground: var(--fg);
-  --color-popover: var(--surface-1);
-  --color-popover-foreground: var(--fg);
-  --color-primary: var(--action-primary);
-  --color-primary-foreground: var(--fg-on-brand);
-  --color-secondary: var(--action-secondary);
-  --color-secondary-foreground: var(--fg);
-  --color-muted: var(--surface-2);
-  --color-muted-foreground: var(--fg-subtle);
-  --color-accent: var(--hover);
-  --color-accent-foreground: var(--fg);
-  --color-destructive: var(--action-danger);
-  --color-destructive-foreground: var(--fg-on-danger);
-  --color-border: var(--line-subtle);
-  --color-input: var(--line-control);
-  --color-ring: var(--line-focus);
 }
 
 /* Typography: one utility per Figma text style. `type-` (not `text-`) so
@@ -531,46 +510,3 @@ h1, h2, h3, h4 {
 @utility hairline-t { border-top: 1px solid var(--line-subtle); }
 @utility hairline-b { border-bottom: 1px solid var(--line-subtle); }
 @utility tabular { font-variant-numeric: tabular-nums; }
-
-/* Marquee (client logos): pauses on hover and focus, static under reduced motion */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-@utility animate-marquee { animation: marquee 40s linear infinite; }
-
-/* ------------------------------------------------------------------
-   LEGACY: tokens the not-yet-rebuilt pages and the old admin still use.
-   Remove this block once every page and admin screen is rebuilt.
-   ------------------------------------------------------------------ */
-@theme inline {
-  --color-brand: var(--p-lime-400);
-  --color-surface: var(--p-neutral-950);
-  --color-panel: var(--p-neutral-900);
-  --color-slate-100: #f1f5f9;
-  --color-slate-200: #e2e8f0;
-  --color-slate-300: #cbd5e1;
-  --color-slate-400: #94a3b8;
-  --color-slate-500: #64748b;
-  --color-slate-700: #334155;
-  --color-slate-800: #1e293b;
-  --color-rose-500: #f43f5e;
-  --color-red-500: #ef4444;
-  --color-sky-400: #38bdf8;
-  --color-sky-500: #0ea5e9;
-  --color-gray-500: #6b7280;
-  --color-green-500: #22c55e;
-  --color-chart-1: var(--p-lime-500);
-  --color-chart-2: var(--p-green-400);
-  --color-chart-3: var(--p-amber-400);
-  --color-chart-4: var(--p-violet-400);
-  --color-chart-5: var(--p-red-400);
-  --color-sidebar: var(--surface-1);
-  --color-sidebar-foreground: var(--fg);
-  --color-sidebar-primary: var(--action-primary);
-  --color-sidebar-primary-foreground: var(--fg-on-brand);
-  --color-sidebar-accent: var(--hover);
-  --color-sidebar-accent-foreground: var(--fg);
-  --color-sidebar-border: var(--line-subtle);
-  --color-sidebar-ring: var(--line-focus);
-}

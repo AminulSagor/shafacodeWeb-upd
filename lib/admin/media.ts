@@ -23,7 +23,7 @@ const demo: MediaItem[] = [
   ['meghswar-courier.jpg', 'Courier rider checking a delivery route on a phone', ['case-study:meghswar-courier']],
   ['chorki.jpg', 'Streaming dashboard on a laptop in a living room', ['case-study:chorki']],
   ['texas-airway-institute.jpg', 'Two students reviewing a course dashboard in a library', ['case-study:texas-airway-institute']],
-  ['tri-gardening.jpg', '', []],
+  ['trigardening.jpg', '', []],
 ].map(([file, alt, used], i) => ({
   id: `d-media-${i + 1}`,
   path: `/images/work/${file}`,
