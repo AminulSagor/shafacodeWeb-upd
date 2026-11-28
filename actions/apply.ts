@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
 import { getJob } from '@/lib/data/jobs';
 import { renderNotification, sendMail } from '@/lib/mail';
+import { getSiteSettings } from '@/lib/settings';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { applicationSchema, experienceLabels, type ApplicationInput } from '@/lib/schemas/application';
 import { acceptUpload } from '@/lib/storage';
@@ -84,7 +85,8 @@ export async function submitApplication(input: ApplicationInput): Promise<FormRe
       { label: 'Why ShafaCode', value: data.whyUs },
       { label: 'Resume', value: 'Open it from the admin (Applications).' },
     ]);
-    await sendMail({ subject: `New application: ${job.title} from ${data.fullName}`, html, text, replyTo: data.email });
+    const settings = await getSiteSettings();
+    if (settings.notifications.application) await sendMail({ subject: `New application: ${job.title} from ${data.fullName}`, html, text, replyTo: data.email, to: settings.notifications.recipient });
   } catch (error) {
     console.error('Application stored but the notification email failed', error);
   }

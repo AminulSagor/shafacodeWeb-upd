@@ -36,7 +36,8 @@ export function renderNotification(title: string, rows: Row[], footer = 'Sent fr
   return { html, text };
 }
 
-export async function sendMail(options: { subject: string; html: string; text: string; replyTo?: string }) {
+/** Sends a team notification; `to` defaults to TO_EMAIL (Site Settings passes its recipient). */
+export async function sendMail(options: { subject: string; html: string; text: string; replyTo?: string; to?: string }) {
   if (!process.env.ZOHO_HOST || !process.env.ZOHO_USER || !process.env.ZOHO_PASS) {
     console.warn('Mail is not configured; skipping notification:', options.subject);
     return;
@@ -49,7 +50,7 @@ export async function sendMail(options: { subject: string; html: string; text: s
   });
   await transporter.sendMail({
     from: process.env.ZOHO_USER,
-    to: process.env.TO_EMAIL || process.env.ZOHO_USER,
+    to: options.to || process.env.TO_EMAIL || process.env.ZOHO_USER,
     subject: headerSafe(options.subject),
     html: options.html,
     text: options.text,

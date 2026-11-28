@@ -4,6 +4,7 @@ import { FieldValue } from 'firebase-admin/firestore';
 
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
 import { renderNotification, sendMail } from '@/lib/mail';
+import { getSiteSettings } from '@/lib/settings';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { affiliateSchema, type AffiliateInput } from '@/lib/schemas/affiliate';
 import { acceptUpload } from '@/lib/storage';
@@ -54,7 +55,8 @@ export async function submitAffiliateLead(input: AffiliateInput): Promise<FormRe
       { label: 'Message', value: d.message },
       { label: 'File', value: d.attachment?.name },
     ]);
-    await sendMail({ subject: `New partner application from ${d.fullName}`, html, text, replyTo: d.email });
+    const settings = await getSiteSettings();
+    if (settings.notifications.affiliate) await sendMail({ subject: `New partner application from ${d.fullName}`, html, text, replyTo: d.email, to: settings.notifications.recipient });
   } catch (error) {
     console.error('Partner lead stored but the notification email failed', error);
   }

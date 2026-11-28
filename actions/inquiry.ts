@@ -4,6 +4,7 @@ import { FieldValue } from 'firebase-admin/firestore';
 
 import { getDb, hasFirebaseCredentials } from '@/db/firebase-admin';
 import { renderNotification, sendMail } from '@/lib/mail';
+import { getSiteSettings } from '@/lib/settings';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { budgetOptions, inquirySchema, projectTypeOptions, timelineOptions, type InquiryInput } from '@/lib/schemas/inquiry';
 import { acceptUpload } from '@/lib/storage';
@@ -76,7 +77,8 @@ export async function submitInquiry(input: InquiryInput): Promise<FormResult> {
       { label: 'Description', value: d.message },
       { label: 'Attachments', value: d.attachments.length ? d.attachments.map((a) => a.name).join(', ') : '' },
     ]);
-    await sendMail({ subject: `New inquiry: ${label(projectTypeOptions, d.projectType)} from ${d.fullName}`, html, text, replyTo: d.email });
+    const settings = await getSiteSettings();
+    if (settings.notifications.inquiry) await sendMail({ subject: `New inquiry: ${label(projectTypeOptions, d.projectType)} from ${d.fullName}`, html, text, replyTo: d.email, to: settings.notifications.recipient });
   } catch (error) {
     console.error('Inquiry stored but the notification email failed', error);
   }

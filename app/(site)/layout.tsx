@@ -7,20 +7,26 @@ import { SiteFooter } from '@/components/site/site-footer';
 import { Toaster } from '@/components/ui/sonner';
 import { site } from '@/content/site';
 import { isProduction } from '@/lib/seo';
+import { getSiteSettings } from '@/lib/settings';
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name}: transparent software partner for growing teams`,
-    template: `%s | ${site.name}`,
-  },
-  description: site.description,
-  applicationName: site.name,
-  openGraph: { type: 'website', locale: 'en_US', siteName: site.name },
-  twitter: { card: 'summary_large_image' },
-  // Every deployment that is not production stays out of search results.
-  robots: isProduction ? undefined : { index: false, follow: false },
-};
+/** Defaults come from Site Settings in the admin (title template, description, indexing switch). */
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSiteSettings();
+  return {
+    metadataBase: new URL(site.url),
+    title: {
+      default: `${s.siteName}: ${s.tagline.charAt(0).toLowerCase()}${s.tagline.slice(1)}`,
+      template: s.titleTemplate,
+    },
+    description: s.defaultDescription,
+    applicationName: s.siteName,
+    openGraph: { type: 'website', locale: 'en_US', siteName: s.siteName },
+    twitter: { card: 'summary_large_image' },
+    // Previews never get indexed; production follows the kill switch in Site Settings.
+    robots: isProduction && s.allowIndexing ? undefined : { index: false, follow: false },
+    ...(s.searchConsoleVerification ? { verification: { google: s.searchConsoleVerification } } : {}),
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: '#0d100f',

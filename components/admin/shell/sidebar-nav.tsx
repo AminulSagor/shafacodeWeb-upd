@@ -30,7 +30,7 @@ export function SidebarNav({
           <div key={group.label} className="mt-4 first:mt-1">
             <p className={cn('px-3 pb-1.5 type-mono-xs text-fg-subtle', collapsed && 'sr-only')}>{group.label}</p>
             <ul className="flex flex-col gap-0.5">
-              {group.items.map((item) => {
+              {group.items.filter((item) => user.role === 'owner' || item.href !== '/admin/settings').map((item) => {
                 const active = isActive(item, pathname);
                 const count = item.count ? counts[item.count] : undefined;
                 return (
