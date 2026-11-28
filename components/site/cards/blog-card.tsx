@@ -57,23 +57,23 @@ export function BlogCard({
   return (
     <article
       className={cn(
-        'group card-focus relative flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color,translate] duration-[var(--duration-base)] ease-out hover:border-line-brand motion-safe:hover:-translate-y-0.5',
+        'group card-focus relative flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color,translate] duration-(--duration-base) ease-out hover:border-line-brand motion-safe:hover:-translate-y-0.5',
         horizontal && 'xl:grid xl:grid-cols-[579px_1fr]'
       )}
     >
       {post.cover && (
-        <div className={cn('relative w-full overflow-hidden bg-surface-2', horizontal ? 'aspect-[4/3] xl:aspect-auto xl:min-h-[460px]' : 'h-[var(--media-card)]')}>
+        <div className={cn('relative w-full overflow-hidden bg-surface-2', horizontal ? 'aspect-[4/3] xl:aspect-auto xl:min-h-[460px]' : 'h-media-card')}>
           <Image
             src={post.cover.src}
             alt={post.cover.alt}
             fill
             preload={preload}
             sizes={horizontal ? '(min-width: 1280px) 579px, 92vw' : '(min-width: 1280px) 395px, (min-width: 768px) 46vw, 92vw'}
-            className="object-cover transition-transform duration-[var(--duration-slow)] ease-out motion-safe:group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out motion-safe:group-hover:scale-[1.03]"
           />
         </div>
       )}
-      <div className={cn('flex flex-1 flex-col gap-3 p-[var(--card-pad)]', horizontal && 'justify-center md:p-[var(--card-pad-lg)]')}>
+      <div className={cn('flex flex-1 flex-col gap-3 p-card', horizontal && 'justify-center md:p-card-lg')}>
         <PostMeta post={post} />
         <H className={horizontal ? 'type-h3 text-fg' : 'type-h5 text-fg'}>
           <Link href={postHref(post.slug)} className="after:absolute after:inset-0">

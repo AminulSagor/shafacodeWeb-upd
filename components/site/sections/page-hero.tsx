@@ -25,12 +25,12 @@ export function PageHero({ crumbs, eyebrow, title, lede, actions, aside, classNa
   return (
     <section aria-labelledby="page-title" className={cn('relative isolate', className)}>
       {/* Glow: clipped horizontally only, so it never causes sideways scroll */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 -top-[var(--nav-height)] -z-10 h-[900px] overflow-x-clip">
-        <div className="absolute top-0 left-[calc(50%-1100px)] h-full w-[1400px] bg-[radial-gradient(closest-side,var(--brand-glow),transparent)] opacity-20 max-md:left-[-300px] max-md:opacity-15" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 -top-nav -z-10 h-[900px] overflow-x-clip">
+        <div className="absolute top-0 left-[calc(50%-1100px)] h-full w-[1400px] bg-glow opacity-20 max-md:left-[-300px] max-md:opacity-15" />
       </div>
       <div
         className={cn(
-          'container-page pt-[var(--hero-top)] pb-[var(--hero-bottom)]',
+          'container-page pt-hero-top pb-hero-bottom',
           aside && 'grid gap-10 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end'
         )}
       >

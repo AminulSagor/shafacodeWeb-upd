@@ -12,7 +12,7 @@ const trustPhotos = ['/images/people/trust-1.jpg', '/images/people/trust-2.jpg',
 
 function PlayPill({ label, sub }: { label: string; sub: string }) {
   return (
-    <span className="relative inline-flex items-center gap-3 rounded-full bg-action-primary py-2.5 pr-5.5 pl-2.5 text-fg-on-brand shadow-btn-primary transition-transform duration-[var(--duration-base)] ease-out group-hover/reel:scale-[1.03]">
+    <span className="relative inline-flex items-center gap-3 rounded-full bg-action-primary py-2.5 pr-5.5 pl-2.5 text-fg-on-brand shadow-btn-primary transition-transform duration-(--duration-base) ease-out group-hover/reel:scale-[1.03]">
       <span
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(50%_100%_at_50%_0%,rgb(255_255_255/0.42),transparent)]"
@@ -37,7 +37,7 @@ function Showreel() {
         fill
         preload
         sizes="(min-width: 1340px) 1240px, 92vw"
-        className="object-cover transition-transform duration-[var(--duration-slower)] ease-out group-hover/reel:scale-[1.02]"
+        className="object-cover transition-transform duration-(--duration-slower) ease-out group-hover/reel:scale-[1.02]"
       />
       <span aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgb(13_15_15/0.78))]" />
       <span className="absolute inset-0 grid place-items-center">
@@ -58,7 +58,7 @@ function Showreel() {
   );
 
   const frame =
-    'group/reel relative block aspect-[4/3] w-full overflow-hidden rounded-[var(--card-radius)] bg-surface-1 focus-visible:focus-ring md:aspect-[16/9] xl:aspect-auto xl:h-[600px]';
+    'group/reel relative block aspect-[4/3] w-full overflow-hidden rounded-card bg-surface-1 focus-visible:focus-ring md:aspect-[16/9] xl:aspect-auto xl:h-[600px]';
 
   return hasVideo(homeDemoVideo) ? (
     <VideoDialog video={homeDemoVideo}>
@@ -78,9 +78,9 @@ export function HomeHero() {
   return (
     <section aria-labelledby="hero-title" className="relative isolate">
       {/* Soft radial glows, fading to transparent inside their own box */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -top-[var(--nav-height)] -z-10 overflow-x-clip">
-        <div className="absolute -top-[448px] left-[calc(50%-1140px)] h-[1000px] w-[1500px] bg-[radial-gradient(closest-side,var(--brand-glow),transparent)] opacity-25" />
-        <div className="absolute -top-[228px] left-[calc(50%+100px)] h-[900px] w-[1000px] bg-[radial-gradient(closest-side,var(--brand-glow),transparent)] opacity-15 max-md:hidden" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 -top-nav -z-10 overflow-x-clip">
+        <div className="absolute -top-[448px] left-[calc(50%-1140px)] h-[1000px] w-[1500px] bg-glow opacity-25" />
+        <div className="absolute -top-[228px] left-[calc(50%+100px)] h-[900px] w-[1000px] bg-glow opacity-15 max-md:hidden" />
       </div>
 
       <div className="container-page flex flex-col gap-10 pt-10 pb-6 md:gap-12 md:pt-14 xl:pt-18">

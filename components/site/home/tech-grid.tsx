@@ -22,7 +22,7 @@ export function TechGrid() {
           }
           lede="We choose technologies based on your product goals, performance needs, budget and long-term scalability."
         />
-        <ul className="mt-[var(--section-head-gap)] grid grid-cols-2 overflow-hidden rounded-[var(--card-radius)] border border-line-subtle bg-surface-1 md:grid-cols-3 xl:grid-cols-6">
+        <ul className="mt-section-head grid grid-cols-2 overflow-hidden rounded-card border border-line-subtle bg-surface-1 md:grid-cols-3 xl:grid-cols-6">
           {techStack.map((t) => {
             const Icon = t.icon;
             return (

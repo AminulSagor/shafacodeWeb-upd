@@ -1,4 +1,5 @@
 import ReactMarkdown, { type Components } from 'react-markdown';
+import { Check } from 'lucide-react';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 
@@ -24,8 +25,8 @@ function rehypeCodeTitle() {
 
 const components: Components = {
   h1: ({ node: _node, ...p }) => <h2 className="mt-12 mb-4 type-h3 text-fg first:mt-0" {...p} />,
-  h2: ({ node: _node, ...p }) => <h2 className="mt-12 mb-4 scroll-mt-[calc(var(--nav-height)+24px)] type-h3 text-fg first:mt-0" {...p} />,
-  h3: ({ node: _node, ...p }) => <h3 className="mt-10 mb-3 scroll-mt-[calc(var(--nav-height)+24px)] type-h4 text-fg" {...p} />,
+  h2: ({ node: _node, ...p }) => <h2 className="mt-12 mb-4 scroll-mt-sticky type-h3 text-fg first:mt-0" {...p} />,
+  h3: ({ node: _node, ...p }) => <h3 className="mt-10 mb-3 scroll-mt-sticky type-h4 text-fg" {...p} />,
   h4: ({ node: _node, ...p }) => <h4 className="mt-8 mb-2 type-h5 text-fg" {...p} />,
   p: ({ node: _node, ...p }) => <p className="my-5 type-article text-fg-muted" {...p} />,
   a: ({ node: _node, href = '', ...p }) => {
@@ -83,10 +84,34 @@ const components: Components = {
  * with the type utilities (replaces @tailwindcss/typography). Headings get
  * ids from rehype-slug for the table of contents.
  */
-export function Markdown({ children, className }: { children: string; className?: string }) {
+const checkComponents: Components = {
+  ...components,
+  ul: ({ node: _node, ...p }) => <ul className="my-5 flex flex-col gap-2.5 type-body text-fg-muted" {...p} />,
+  li: ({ node: _node, children, ...p }) => (
+    <li className="flex items-start gap-2.5" {...p}>
+      <Check className="mt-[5px] size-4 shrink-0 text-icon-brand" strokeWidth={2.5} aria-hidden />
+      <span>{children}</span>
+    </li>
+  ),
+};
+
+export function Markdown({
+  children,
+  className,
+  lists = 'bullets',
+}: {
+  children: string;
+  className?: string;
+  /** `checks` renders unordered lists as lime check items (job pages). */
+  lists?: 'bullets' | 'checks';
+}) {
   return (
     <div className={cn('min-w-0', className)}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug, rehypeCodeTitle]} components={components}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeSlug, rehypeCodeTitle]}
+        components={lists === 'checks' ? checkComponents : components}
+      >
         {children}
       </ReactMarkdown>
     </div>

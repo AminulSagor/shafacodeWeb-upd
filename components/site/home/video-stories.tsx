@@ -14,7 +14,7 @@ function Poster({ story }: { story: VideoStory }) {
         alt={story.poster.alt}
         fill
         sizes="(min-width: 1280px) 397px, (min-width: 768px) 31vw, 92vw"
-        className={story.youtubeId ? 'object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]' : 'object-cover'}
+        className={story.youtubeId ? 'object-cover transition-transform duration-(--duration-slow) ease-out group-hover:scale-[1.03]' : 'object-cover'}
       />
       <span className="absolute bottom-3 left-3 inline-flex xl:bottom-5 xl:left-5 items-center gap-2.5 rounded-full bg-action-primary py-2 pr-4 pl-2 text-fg-on-brand">
         <span className="grid size-8 place-items-center rounded-full bg-fg-on-brand text-action-primary">
@@ -26,7 +26,7 @@ function Poster({ story }: { story: VideoStory }) {
       </span>
     </>
   );
-  const frame = 'relative block aspect-[397/300] w-full overflow-hidden rounded-[var(--card-radius)] bg-surface-1';
+  const frame = 'relative block aspect-[397/300] w-full overflow-hidden rounded-card bg-surface-1';
   if (!story.youtubeId) return <div className={frame}>{inner}</div>;
   return (
     <VideoDialog video={{ title: `${story.name}, ${story.role}`, duration: story.duration, youtubeId: story.youtubeId }}>
@@ -52,7 +52,7 @@ export function VideoStories({ items }: { items: VideoStory[] }) {
           }
           lede="See the impact of ShafaCode engineering in action, in the words of the founders we build with."
         />
-        <ul className="mt-[var(--section-head-gap)] grid gap-x-6 gap-y-10 md:grid-cols-3">
+        <ul className="mt-section-head grid gap-x-6 gap-y-10 md:grid-cols-3">
           {items.map((s) => (
             <li key={s.name}>
               <figure className="flex h-full flex-col gap-5">

@@ -92,12 +92,12 @@ export default function ServicesPage() {
         }
       />
 
-      <section aria-labelledby="all-services-title" className="pt-6 pb-[var(--section-y)]">
+      <section aria-labelledby="all-services-title" className="pt-6 pb-section">
         <div className="container-page">
           <h2 id="all-services-title" className="sr-only">
             All services
           </h2>
-          <ul className="grid gap-[var(--grid-gap)] md:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid gap-grid md:grid-cols-2 xl:grid-cols-3">
             {services.map((s, i) => {
               // A lone last card spans the full row (Figma: wide IoT card).
               const wide = i === services.length - 1 && services.length % 6 === 1;
@@ -123,7 +123,7 @@ export default function ServicesPage() {
             }
             lede="Every model comes with a named project lead, weekly updates and full ownership of the code."
           />
-          <ul className="mt-[var(--section-head-gap)] grid gap-[var(--grid-gap)] lg:grid-cols-3">
+          <ul className="mt-section-head grid gap-grid lg:grid-cols-3">
             {models.map((m) => (
               <li key={m.title}>
                 <FeatureCard {...m} />
@@ -145,7 +145,7 @@ export default function ServicesPage() {
             }
             lede="A high-precision lifecycle that keeps every project clear, tested and on schedule."
           />
-          <div className="mt-[var(--section-head-gap)]">
+          <div className="mt-section-head">
             <LifecycleSteps steps={lifecycleSteps} />
           </div>
         </div>

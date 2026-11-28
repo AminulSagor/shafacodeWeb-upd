@@ -16,14 +16,14 @@ function Meta({ tags, suffix }: { tags: string[]; suffix?: string }) {
 function FeatureCase({ item }: { item: CaseStudySummary }) {
   return (
     <article className="group relative grid items-center gap-8 xl:grid-cols-2 xl:gap-14">
-      <div className="relative aspect-[592/440] overflow-hidden rounded-[var(--card-radius)] bg-surface-1">
+      <div className="relative aspect-[592/440] overflow-hidden rounded-card bg-surface-1">
         {item.cover && (
           <Image
             src={item.cover.src}
             alt={item.cover.alt}
             fill
             sizes="(min-width: 1280px) 592px, 92vw"
-            className="object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out group-hover:scale-[1.03]"
           />
         )}
       </div>
@@ -62,15 +62,15 @@ function FeatureCase({ item }: { item: CaseStudySummary }) {
 
 function CaseCard({ item }: { item: CaseStudySummary }) {
   return (
-    <article className="group card-focus relative flex h-full flex-col rounded-[var(--card-radius)]">
-      <div className="relative aspect-[600/340] overflow-hidden rounded-[var(--card-radius)] bg-surface-1">
+    <article className="group card-focus relative flex h-full flex-col rounded-card">
+      <div className="relative aspect-[600/340] overflow-hidden rounded-card bg-surface-1">
         {item.cover && (
           <Image
             src={item.cover.src}
             alt={item.cover.alt}
             fill
             sizes="(min-width: 1280px) 600px, (min-width: 768px) 46vw, 92vw"
-            className="object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out group-hover:scale-[1.03]"
           />
         )}
       </div>
@@ -85,7 +85,7 @@ function CaseCard({ item }: { item: CaseStudySummary }) {
       <p className="mt-5 type-body text-fg-muted">{item.summary}</p>
       <span className="mt-auto inline-flex items-center gap-1.5 pt-5 type-label-sm text-fg-brand" aria-hidden>
         Read the case study
-        <ArrowRight className="size-4 shrink-0 transition-transform duration-[var(--duration-fast)] motion-safe:group-hover:translate-x-0.5" />
+        <ArrowRight className="size-4 shrink-0 transition-transform duration-(--duration-fast) motion-safe:group-hover:translate-x-0.5" />
       </span>
     </article>
   );
@@ -108,7 +108,7 @@ export function FeaturedWork({ items }: { items: CaseStudySummary[] }) {
           }
           lede="How we turn client problems into usable, scalable and business-ready digital products."
         />
-        <div className="mt-[var(--section-head-gap)] flex flex-col gap-14">
+        <div className="mt-section-head flex flex-col gap-14">
           <FeatureCase item={feature} />
           {rest.length > 0 && (
             <div className="grid gap-x-10 gap-y-12 md:grid-cols-2">

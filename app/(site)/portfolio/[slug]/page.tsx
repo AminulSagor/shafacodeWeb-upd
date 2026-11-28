@@ -113,7 +113,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
       {item.cover && (
         <div className="container-page mt-7">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--card-radius)] border border-line md:aspect-[1240/460]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-card border border-line md:aspect-[1240/460]">
             <Image src={item.cover.src} alt={item.cover.alt} fill preload sizes="(min-width: 1340px) 1240px, 92vw" className="object-cover" />
           </div>
         </div>
@@ -133,7 +133,7 @@ export default async function CaseStudyPage({ params }: Props) {
               lede="Measured in the first three months after launch."
               ledeBelow
             />
-            <dl className="mt-10 grid grid-cols-2 gap-3 md:gap-[var(--grid-gap)] xl:grid-cols-4">
+            <dl className="mt-10 grid grid-cols-2 gap-3 md:gap-grid xl:grid-cols-4">
               {item.stats.map((s) => (
                 <div key={s.label} className="flex flex-col rounded-md border border-line-subtle bg-surface-1 p-5 md:p-6">
                   <dt className="order-last mt-1 type-caption font-normal text-fg-subtle">{s.label}</dt>
@@ -149,10 +149,10 @@ export default async function CaseStudyPage({ params }: Props) {
       )}
 
       {(item.challenge || item.solution) && (
-        <section aria-label="Story" className={item.stats?.length ? 'pb-[var(--section-y)]' : 'section-y'}>
-          <div className="container-page grid gap-[var(--grid-gap)] md:grid-cols-2">
+        <section aria-label="Story" className={item.stats?.length ? 'pb-section' : 'section-y'}>
+          <div className="container-page grid gap-grid md:grid-cols-2">
             {item.challenge && (
-              <div className="rounded-md border border-line-subtle bg-surface-1 p-[var(--card-pad)] md:p-[var(--card-pad-lg)]">
+              <div className="rounded-md border border-line-subtle bg-surface-1 p-card md:p-card-lg">
                 <h2 className="type-h3 text-fg">
                   The <Accent className="md:inline">challenge</Accent>
                 </h2>
@@ -160,7 +160,7 @@ export default async function CaseStudyPage({ params }: Props) {
               </div>
             )}
             {item.solution && (
-              <div className="rounded-md border border-line-subtle bg-surface-1 p-[var(--card-pad)] md:p-[var(--card-pad-lg)]">
+              <div className="rounded-md border border-line-subtle bg-surface-1 p-card md:p-card-lg">
                 <h2 className="type-h3 text-fg">
                   Our <Accent className="md:inline">solution</Accent>
                 </h2>
@@ -181,7 +181,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
       {item.gallery && item.gallery.length > 0 && (
         <section aria-label="Gallery" className="bg-surface-1 section-y">
-          <ul className="container-page grid gap-[var(--grid-gap)] md:grid-cols-3">
+          <ul className="container-page grid gap-grid md:grid-cols-3">
             {item.gallery.map((g, i) => {
               const wide = i === 3;
               return (
@@ -256,7 +256,7 @@ export default async function CaseStudyPage({ params }: Props) {
                 </>
               }
             />
-            <ul className="mt-[var(--section-head-gap)] grid gap-[var(--grid-gap)] md:grid-cols-2">
+            <ul className="mt-section-head grid gap-grid md:grid-cols-2">
               {related.map((c) => (
                 <li key={c.slug}>
                   <CaseStudyCard item={c} />

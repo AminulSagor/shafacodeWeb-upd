@@ -98,7 +98,7 @@ export function TimezoneOverlap({ className }: { className?: string }) {
   return (
     <section
       aria-labelledby={titleId}
-      className={cn('rounded-[var(--card-radius)] border border-line-subtle bg-surface-1 p-[var(--card-pad)] md:p-6', className)}
+      className={cn('rounded-card border border-line-subtle bg-surface-1 p-card md:p-6', className)}
     >
       <h3 id={titleId} className="type-h4 text-fg">
         Your hours, our hours
@@ -120,7 +120,7 @@ export function TimezoneOverlap({ className }: { className?: string }) {
           {Array.from({ length: 24 }, (_, h) => (
             <span
               key={h}
-              className={cn('h-5 rounded-[5px] transition-colors duration-[var(--duration-base)]', inTeam(h) ? 'bg-action-primary' : 'bg-surface-2')}
+              className={cn('h-5 rounded-[5px] transition-colors duration-(--duration-base)', inTeam(h) ? 'bg-action-primary' : 'bg-surface-2')}
             />
           ))}
         </div>
@@ -133,7 +133,7 @@ export function TimezoneOverlap({ className }: { className?: string }) {
             <span
               key={h}
               className={cn(
-                'h-5 rounded-[5px] transition-colors duration-[var(--duration-base)]',
+                'h-5 rounded-[5px] transition-colors duration-(--duration-base)',
                 overlap[h] ? 'bg-action-primary' : inVisitor(h) ? 'bg-surface-3' : 'bg-surface-2'
               )}
             />

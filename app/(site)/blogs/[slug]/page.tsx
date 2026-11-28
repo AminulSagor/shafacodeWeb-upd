@@ -72,7 +72,7 @@ export default async function ArticlePage({ params }: Props) {
       <ReadingProgress targetId="article-body" />
 
       <article aria-labelledby="page-title">
-        <header className="container-page pt-[calc(var(--hero-top)-48px)]">
+        <header className="container-page pt-article-top">
           <Breadcrumbs
             items={[
               { name: 'Blog', path: '/blogs' },
@@ -116,13 +116,13 @@ export default async function ArticlePage({ params }: Props) {
 
         {post.cover && (
           <div className="container-page mt-8 md:mt-10">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--card-radius)] bg-surface-1 md:aspect-[1240/460]">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-card bg-surface-1 md:aspect-[1240/460]">
               <Image src={post.cover.src} alt={post.cover.alt} fill preload sizes="(min-width: 1340px) 1240px, 92vw" className="object-cover" />
             </div>
           </div>
         )}
 
-        <div className="container-page grid gap-12 pt-10 pb-[var(--section-y)] md:pt-14 xl:grid-cols-[minmax(0,1fr)_300px] xl:gap-[var(--grid-gap)]">
+        <div className="container-page grid gap-12 pt-10 pb-section md:pt-14 xl:grid-cols-[minmax(0,1fr)_300px] xl:gap-grid">
           <div id="article-body" className="min-w-0 xl:max-w-[720px]">
             <Markdown>{post.content}</Markdown>
 
@@ -137,7 +137,7 @@ export default async function ArticlePage({ params }: Props) {
             </aside>
           </div>
 
-          <aside aria-label="Article tools" className="flex flex-col gap-4 xl:sticky xl:top-[calc(var(--nav-height)+24px)] xl:self-start">
+          <aside aria-label="Article tools" className="flex flex-col gap-4 xl:sticky xl:top-sticky xl:self-start">
             <div className="max-xl:hidden">
               <TableOfContents items={toc} />
             </div>
@@ -161,7 +161,7 @@ export default async function ArticlePage({ params }: Props) {
             <h2 id="related-title" className="type-h2 text-fg">
               Keep <Accent>reading</Accent>
             </h2>
-            <ul className="mt-[var(--section-head-gap)] grid gap-[var(--grid-gap)] md:grid-cols-2 xl:grid-cols-3">
+            <ul className="mt-section-head grid gap-grid md:grid-cols-2 xl:grid-cols-3">
               {related.map((p) => (
                 <li key={p.slug}>
                   <BlogCard post={p} />

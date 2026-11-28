@@ -15,7 +15,7 @@ function NativeSelect({ className, children, ...props }: React.ComponentProps<'s
         data-slot="native-select"
         className={cn(
           fieldBase,
-          'h-[var(--control-height)] cursor-pointer appearance-none truncate pr-10 pl-3.5',
+          'h-control cursor-pointer appearance-none truncate pr-10 pl-3.5',
           'invalid:text-fg-subtle',
           className
         )}

@@ -20,7 +20,7 @@ export function VideoDialog({ video, children }: { video: VideoSource; children:
         <Dialog.Overlay className="fixed inset-0 z-[60] bg-scrim backdrop-blur-sm data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
         <Dialog.Content
           aria-describedby={undefined}
-          className="fixed top-1/2 left-1/2 z-[60] w-[min(1120px,calc(100vw-2*var(--page-margin)),calc((100dvh-120px)*16/9))] -translate-x-1/2 -translate-y-1/2 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95"
+          className="fixed top-1/2 left-1/2 z-[60] w-dialog -translate-x-1/2 -translate-y-1/2 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95"
         >
           <div className="mb-3 flex items-center justify-between gap-4">
             <Dialog.Title className="type-label text-fg">
@@ -32,7 +32,7 @@ export function VideoDialog({ video, children }: { video: VideoSource; children:
               </IconButton>
             </Dialog.Close>
           </div>
-          <div className="aspect-video overflow-hidden rounded-[var(--card-radius)] border border-line bg-surface-1">
+          <div className="aspect-video overflow-hidden rounded-card border border-line bg-surface-1">
             {video.youtubeId ? (
               <iframe
                 className="size-full"

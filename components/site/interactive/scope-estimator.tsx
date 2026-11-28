@@ -42,7 +42,7 @@ export function ScopeEstimator({ className }: { className?: string }) {
     <section
       aria-labelledby={titleId}
       className={cn(
-        'rounded-[var(--card-radius)] border border-line-subtle bg-surface-1 p-[var(--card-pad)] md:p-6',
+        'rounded-card border border-line-subtle bg-surface-1 p-card md:p-6',
         className
       )}
     >

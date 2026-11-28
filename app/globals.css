@@ -417,6 +417,33 @@ h1, h2, h3, h4 {
   --color-status-neutral: var(--status-neutral-bg);
   --color-field: var(--field-bg);
 
+  /* Layout tokens as utilities: px-page, py-section, mt-section-head, gap-grid,
+     p-card, p-card-lg, pt-hero-top, h-nav, top-sticky, scroll-mt-nav-offset,
+     h-control, h-button, h-media-card. They follow the Responsive collection. */
+  --spacing-page: var(--page-margin);
+  --spacing-section: var(--section-y);
+  --spacing-section-head: var(--section-head-gap);
+  --spacing-grid: var(--grid-gap);
+  --spacing-card: var(--card-pad);
+  --spacing-card-lg: var(--card-pad-lg);
+  --spacing-hero-top: var(--hero-top);
+  --spacing-hero-bottom: var(--hero-bottom);
+  --spacing-article-top: calc(var(--hero-top) - 48px);
+  --spacing-nav: var(--nav-height);
+  --spacing-nav-offset: calc(var(--nav-height) + 16px);
+  --spacing-sticky: calc(var(--nav-height) + 24px);
+  --spacing-control: var(--control-height);
+  --spacing-button: var(--button-height);
+  --spacing-media-card: var(--media-card);
+
+  /* Shape tokens: rounded-card, rounded-field, rounded-chip, rounded-button(-sm|-lg) */
+  --radius-card: var(--card-radius);
+  --radius-field: var(--field-radius);
+  --radius-chip: var(--chip-radius);
+  --radius-button: var(--button-radius);
+  --radius-button-sm: var(--button-radius-sm);
+  --radius-button-lg: var(--button-radius-lg);
+
   /* No drop shadows and no glows (design rule): only the tactile insets. */
   --shadow-btn-primary: var(--btn-primary-shadow);
   --shadow-btn-primary-pressed: var(--btn-primary-pressed);
@@ -488,6 +515,16 @@ h1, h2, h3, h4 {
   &:has(a:focus-visible) { outline: 2px solid var(--line-focus); outline-offset: 2px; }
   & a:focus-visible { outline: none; }
 }
+/* Soft radial lime glow that fades to transparent inside its own box */
+@utility bg-glow { background-image: radial-gradient(closest-side, var(--brand-glow), transparent); }
+/* Outlined display text (footer wordmark) */
+@utility text-outline { color: transparent; -webkit-text-stroke: 1.5px var(--line-brand); }
+/* Video dialog: never wider than the viewport, never taller than it either */
+@utility w-dialog { width: min(1120px, calc(100vw - 2 * var(--page-margin)), calc((100dvh - 120px) * 16 / 9)); }
+/* Core disc of the Kinetic Core diagram */
+@utility bg-core { background-image: radial-gradient(circle at 50% 35%, var(--surface-2), var(--canvas)); }
+/* Lighthouse gauge arc: empty until its InView group scrolls in */
+@utility gauge-arc { :where([data-inview='false']) & { stroke-dashoffset: var(--c); } }
 @utility hairline-t { border-top: 1px solid var(--line-subtle); }
 @utility hairline-b { border-bottom: 1px solid var(--line-subtle); }
 @utility tabular { font-variant-numeric: tabular-nums; }

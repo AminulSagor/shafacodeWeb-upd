@@ -75,12 +75,12 @@ export function HeroRotator() {
           className={
             instant
               ? 'block'
-              : 'block transition-transform duration-[var(--duration-slower)] ease-[var(--ease-emphasized)] motion-reduce:transition-none'
+              : 'block transition-transform duration-(--duration-slower) ease-emphasized motion-reduce:transition-none'
           }
           style={{ transform: `translateY(calc(${-index} * (var(--type-display-lh) + 0.22em)))` }}
         >
           {PHRASES.map((p, i) => (
-            <span key={i} className="block h-[calc(var(--type-display-lh)+0.22em)] whitespace-nowrap">
+            <span key={i} className="block whitespace-nowrap" style={{ height: 'calc(var(--type-display-lh) + 0.22em)' }}>
               {p}
             </span>
           ))}

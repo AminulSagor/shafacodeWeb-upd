@@ -21,7 +21,7 @@ function TextLink({ className, children, arrow = true, ...props }: TextLinkProps
       {children}
       {arrow && (
         <ArrowRight
-          className="size-4 transition-transform duration-[var(--duration-fast)] ease-out group-hover/link:translate-x-0.5"
+          className="size-4 transition-transform duration-(--duration-fast) ease-out group-hover/link:translate-x-0.5"
           aria-hidden
         />
       )}

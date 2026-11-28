@@ -19,7 +19,7 @@ export function isActivePath(pathname: string, href: string) {
 }
 
 const navLinkClass =
-  'inline-flex h-9 items-center gap-1 rounded-[var(--button-radius-sm)] px-3 type-label-sm text-fg-muted transition-colors hover:text-fg focus-visible:focus-ring aria-[current=page]:text-fg data-[state=open]:text-fg';
+  'inline-flex h-9 items-center gap-1 rounded-button-sm px-3 type-label-sm text-fg-muted transition-colors hover:text-fg focus-visible:focus-ring aria-[current=page]:text-fg data-[state=open]:text-fg';
 
 /**
  * Sticky site header: transparent over the hero, glass after 24px of scroll.
@@ -40,7 +40,7 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 h-[var(--nav-height)] border-b transition-[background-color,border-color,backdrop-filter] duration-[var(--duration-base)]',
+        'sticky top-0 z-50 h-nav border-b transition-[background-color,border-color,backdrop-filter] duration-(--duration-base)',
         scrolled ? 'glass border-line-subtle' : 'border-line-subtle bg-canvas/0'
       )}
     >
@@ -60,7 +60,7 @@ export function SiteHeader() {
               >
                 Services
                 <ChevronDown
-                  className="size-4 transition-transform duration-[var(--duration-fast)] group-data-[state=open]:rotate-180"
+                  className="size-4 transition-transform duration-(--duration-fast) group-data-[state=open]:rotate-180"
                   aria-hidden
                 />
               </NavigationMenu.Trigger>
@@ -84,7 +84,7 @@ export function SiteHeader() {
           </NavigationMenu.List>
 
           <div className="absolute top-[calc(100%+14px)] left-1/2 -translate-x-1/2">
-            <NavigationMenu.Viewport className="origin-top transition-[width,height] duration-[var(--duration-fast)] data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:zoom-out-[0.98] data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-[0.98]" />
+            <NavigationMenu.Viewport className="origin-top transition-[width,height] duration-(--duration-fast) data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=closed]:zoom-out-[0.98] data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-[0.98]" />
           </div>
         </NavigationMenu.Root>
 

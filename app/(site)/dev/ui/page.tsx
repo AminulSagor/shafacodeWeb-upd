@@ -133,10 +133,10 @@ export default function UiGallery() {
   return (
     <div className="container-page flex flex-col gap-16 section-y">
       <h1 className="type-h2">UI primitives</h1>
-      <div data-theme="dark" className="rounded-[var(--card-radius)] border border-line-subtle bg-canvas p-8 text-fg">
+      <div data-theme="dark" className="rounded-card border border-line-subtle bg-canvas p-8 text-fg">
         <Primitives />
       </div>
-      <div data-theme="light" data-ui="admin" className="rounded-[var(--card-radius)] bg-canvas p-8 text-fg">
+      <div data-theme="light" data-ui="admin" className="rounded-card bg-canvas p-8 text-fg">
         <Primitives />
       </div>
     </div>

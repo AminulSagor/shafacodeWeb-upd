@@ -50,12 +50,12 @@ export function FooterWordmark() {
 
   return (
     <div ref={ref} aria-hidden className="overflow-hidden pt-4 select-none">
-      <p className="type-wordmark flex justify-center text-transparent [-webkit-text-stroke:1.5px_var(--line-brand)]">
+      <p className="type-wordmark flex justify-center text-transparent text-outline">
         {LETTERS.map((l, i) => (
           <span
             key={i}
             data-letter
-            className="inline-block transition-transform duration-[var(--duration-slow)] ease-out"
+            className="inline-block transition-transform duration-(--duration-slow) ease-out"
           >
             {l}
           </span>

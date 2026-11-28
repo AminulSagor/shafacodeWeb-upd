@@ -114,7 +114,7 @@ export default async function BlogPage({ searchParams }: { searchParams: SearchP
         </section>
       )}
 
-      <section id="latest" aria-labelledby="latest-title" className="scroll-mt-[calc(var(--nav-height)+16px)] pt-6 pb-[var(--section-y)] xl:pt-24">
+      <section id="latest" aria-labelledby="latest-title" className="scroll-mt-nav-offset pt-6 pb-section xl:pt-24">
         <div className="container-page flex flex-col gap-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <h2 id="latest-title" className="type-h2 text-fg">
@@ -131,7 +131,7 @@ export default async function BlogPage({ searchParams }: { searchParams: SearchP
           </div>
 
           {categories.length > 1 && (
-            <nav aria-label="Topics" className="-mx-[var(--page-margin)] overflow-x-auto px-[var(--page-margin)] md:mx-0 md:overflow-visible md:px-0">
+            <nav aria-label="Topics" className="-mx-page overflow-x-auto px-page md:mx-0 md:overflow-visible md:px-0">
               <ul className="flex w-max gap-2 py-1 md:w-auto md:flex-wrap">
                 <li>
                   <Link href={hrefWith(f, { category: undefined, page: 1 })} aria-current={!f.category ? 'page' : undefined} className={chipClassName(!f.category)}>
@@ -159,7 +159,7 @@ export default async function BlogPage({ searchParams }: { searchParams: SearchP
           )}
 
           {visible.length > 0 ? (
-            <ul className="grid gap-[var(--grid-gap)] md:grid-cols-2 xl:grid-cols-3">
+            <ul className="grid gap-grid md:grid-cols-2 xl:grid-cols-3">
               {visible.map((p) => (
                 <li key={p.slug}>
                   <BlogCard post={p} />

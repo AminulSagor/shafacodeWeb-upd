@@ -82,7 +82,7 @@ function filterItems(all: CaseStudy[], f: ReturnType<typeof parse>) {
 
 function FeatureCase({ item }: { item: CaseStudy }) {
   return (
-    <article className="group relative grid overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color] duration-[var(--duration-base)] hover:border-line-brand xl:grid-cols-[579px_1fr]">
+    <article className="group relative grid overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color] duration-(--duration-base) hover:border-line-brand xl:grid-cols-[579px_1fr]">
       {item.cover && (
         <div className="relative aspect-[4/3] overflow-hidden xl:aspect-auto xl:min-h-[460px]">
           <Image
@@ -91,11 +91,11 @@ function FeatureCase({ item }: { item: CaseStudy }) {
             fill
             preload
             sizes="(min-width: 1280px) 579px, 92vw"
-            className="object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out group-hover:scale-[1.03]"
           />
         </div>
       )}
-      <div className="flex flex-col justify-center gap-4 p-[var(--card-pad)] md:p-[var(--card-pad-lg)]">
+      <div className="flex flex-col justify-center gap-4 p-card md:p-card-lg">
         <p className="flex flex-wrap gap-x-2 type-mono-xs text-fg-subtle">
           {item.tags.map((t) => (
             <span key={t}>{t}</span>
@@ -119,7 +119,7 @@ function FeatureCase({ item }: { item: CaseStudy }) {
         )}
         <span className="mt-2 inline-flex items-center gap-1.5 type-label text-fg-brand" aria-hidden>
           Read the case study
-          <ArrowRight className="size-4 transition-transform duration-[var(--duration-fast)] group-hover:translate-x-0.5" />
+          <ArrowRight className="size-4 transition-transform duration-(--duration-fast) group-hover:translate-x-0.5" />
         </span>
       </div>
     </article>
@@ -166,7 +166,7 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Se
       />
 
       <section aria-label="Track record" className="container-page">
-        <dl className="grid grid-cols-2 gap-3 md:gap-[var(--grid-gap)] xl:grid-cols-4">
+        <dl className="grid grid-cols-2 gap-3 md:gap-grid xl:grid-cols-4">
           {stats.map((s) => (
             <div key={s.label} className="flex flex-col rounded-md border border-line-subtle bg-surface-1 p-5 md:p-6">
               <dt className="order-last mt-1 type-caption font-normal text-fg-subtle">{s.label}</dt>
@@ -179,13 +179,13 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Se
         </dl>
       </section>
 
-      <section id="work" aria-labelledby="work-heading" className="scroll-mt-[calc(var(--nav-height)+16px)] section-y">
+      <section id="work" aria-labelledby="work-heading" className="scroll-mt-nav-offset section-y">
         <div className="container-page">
           <h2 id="work-heading" className="sr-only">
             {serviceName ? `${serviceName} case studies` : 'All case studies'}
           </h2>
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-            <nav aria-label="Filter by type" className="-mx-[var(--page-margin)] overflow-x-auto px-[var(--page-margin)] pb-1 xl:mx-0 xl:overflow-visible xl:px-0">
+            <nav aria-label="Filter by type" className="-mx-page overflow-x-auto px-page pb-1 xl:mx-0 xl:overflow-visible xl:px-0">
               <ul className="flex w-max gap-2 py-1">
                 <li>
                   <Link
@@ -213,7 +213,7 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Se
               </ul>
             </nav>
             <nav aria-label="Filter by status">
-              <ul className="inline-flex gap-1 rounded-[var(--button-radius)] border border-line-subtle p-1">
+              <ul className="inline-flex gap-1 rounded-button border border-line-subtle p-1">
                 {statuses.map((s) => {
                   const active = f.status === s.id;
                   return (
@@ -222,7 +222,7 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Se
                         href={hrefWith(f, { status: s.id, show: PAGE_SIZE })}
                         aria-current={active ? 'page' : undefined}
                         className={cn(
-                          'inline-flex h-8 items-center rounded-[var(--button-radius-sm)] px-3 type-label-sm transition-colors focus-visible:focus-ring',
+                          'inline-flex h-8 items-center rounded-button-sm px-3 type-label-sm transition-colors focus-visible:focus-ring',
                           active ? 'bg-action-primary text-fg-on-brand shadow-btn-primary' : 'text-fg-muted hover:text-fg'
                         )}
                       >
@@ -258,10 +258,10 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Se
               </div>
             </div>
           ) : (
-            <div className="mt-8 flex flex-col gap-[var(--grid-gap)]">
+            <div className="mt-8 flex flex-col gap-grid">
               {feature && <FeatureCase item={feature} />}
               {rest.length > 0 && (
-                <ul className="grid gap-[var(--grid-gap)] md:grid-cols-2 xl:grid-cols-3">
+                <ul className="grid gap-grid md:grid-cols-2 xl:grid-cols-3">
                   {rest.map((c) => (
                     <li key={c.slug}>
                       <CaseStudyCard item={c} sizes="(min-width: 1280px) 395px, (min-width: 768px) 46vw, 92vw" />

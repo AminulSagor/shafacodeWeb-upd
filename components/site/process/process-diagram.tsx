@@ -42,7 +42,7 @@ export function ProcessDiagram() {
 
   return (
     <>
-      <ol className="grid gap-[var(--grid-gap)] md:grid-cols-2 xl:grid-cols-3 min-[1440px]:hidden">
+      <ol className="grid gap-grid md:grid-cols-2 xl:grid-cols-3 min-[1440px]:hidden">
         {processSteps.map((step, i) => (
           <li key={step.title}>
             <StepCard step={step} index={i} />

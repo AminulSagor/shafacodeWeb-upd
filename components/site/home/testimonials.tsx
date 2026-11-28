@@ -19,7 +19,7 @@ export function Testimonials({ items }: { items: TextTestimonial[] }) {
           }
           lede="Real feedback from founders and product teams we have shipped with."
         />
-        <ul className="mt-[var(--section-head-gap)] grid border-y border-line-subtle md:grid-cols-3">
+        <ul className="mt-section-head grid border-y border-line-subtle md:grid-cols-3">
           {items.map((t) => (
             <li
               key={t.name}

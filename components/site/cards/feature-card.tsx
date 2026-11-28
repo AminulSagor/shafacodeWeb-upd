@@ -17,7 +17,7 @@ export function FeatureCard({
   as?: 'h2' | 'h3';
 }) {
   return (
-    <div className={cn('flex h-full flex-col rounded-md border border-line-subtle p-[var(--card-pad)] md:p-[var(--card-pad-lg)]', className)}>
+    <div className={cn('flex h-full flex-col rounded-md border border-line-subtle p-card md:p-card-lg', className)}>
       <span className="grid size-6 place-items-center text-icon-brand">
         <Icon className="size-5" strokeWidth={1.75} aria-hidden />
       </span>

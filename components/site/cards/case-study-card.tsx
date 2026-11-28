@@ -26,22 +26,22 @@ export function CaseStudyCard({
   return (
     <article
       className={cn(
-        'group card-focus relative flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color,translate] duration-[var(--duration-base)] ease-out hover:border-line-brand motion-safe:hover:-translate-y-0.5',
+        'group card-focus relative flex h-full flex-col overflow-hidden rounded-md border border-line-subtle bg-surface-1 transition-[border-color,translate] duration-(--duration-base) ease-out hover:border-line-brand motion-safe:hover:-translate-y-0.5',
         className
       )}
     >
       {item.cover && (
-        <div className="relative h-[var(--media-card)] w-full overflow-hidden bg-surface-2">
+        <div className="relative h-media-card w-full overflow-hidden bg-surface-2">
           <Image
             src={item.cover.src}
             alt={item.cover.alt}
             fill
             sizes={sizes}
-            className="object-cover transition-transform duration-[var(--duration-slow)] ease-out group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-(--duration-slow) ease-out group-hover:scale-[1.03]"
           />
         </div>
       )}
-      <div className="flex flex-1 flex-col gap-4 p-[var(--card-pad)]">
+      <div className="flex flex-1 flex-col gap-4 p-card">
         <ul className="flex flex-wrap gap-x-2 type-mono-xs text-fg-subtle" aria-label="Tags">
           {item.tags.map((t) => (
             <li key={t}>{t}</li>
@@ -55,7 +55,7 @@ export function CaseStudyCard({
         <p className="type-body-sm text-fg-muted">{item.summary}</p>
         <span className="mt-auto inline-flex items-center gap-1.5 pt-2 type-label text-fg-brand" aria-hidden>
           Read the case study
-          <ArrowRight className="size-4 shrink-0 transition-transform duration-[var(--duration-fast)] motion-safe:group-hover:translate-x-0.5" />
+          <ArrowRight className="size-4 shrink-0 transition-transform duration-(--duration-fast) motion-safe:group-hover:translate-x-0.5" />
         </span>
       </div>
     </article>

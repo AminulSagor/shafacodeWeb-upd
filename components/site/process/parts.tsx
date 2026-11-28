@@ -20,13 +20,13 @@ export function StepCard({
   return (
     <div
       className={cn(
-        'flex h-full flex-col rounded-md border bg-surface-1 p-[18px] transition-colors duration-[var(--duration-base)]',
+        'flex h-full flex-col rounded-md border bg-surface-1 p-[18px] transition-colors duration-(--duration-base)',
         active ? 'border-line-brand' : 'border-line',
         className
       )}
     >
       <div className="flex items-center gap-2.5">
-        <span className="grid size-8 shrink-0 place-items-center rounded-[var(--chip-radius)] bg-brand-soft text-icon-brand">
+        <span className="grid size-8 shrink-0 place-items-center rounded-chip bg-brand-soft text-icon-brand">
           <Icon className="size-4" strokeWidth={2} aria-hidden />
         </span>
         <h3 className="flex-1 type-h5 text-fg">{step.title}</h3>
@@ -66,7 +66,7 @@ export function CoreDisc({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'grid size-48 place-items-center rounded-full border-2 border-action-primary bg-[radial-gradient(circle_at_50%_35%,var(--surface-2),var(--canvas))] text-center',
+        'grid size-48 place-items-center rounded-full border-2 border-action-primary bg-core text-center',
         className
       )}
     >

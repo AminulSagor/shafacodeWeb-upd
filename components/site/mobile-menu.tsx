@@ -48,11 +48,11 @@ export function MobileMenu({ pathname }: { pathname: string }) {
           className={cn(
             'fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-canvas md:max-w-[420px] md:border-l md:border-line-subtle xl:hidden',
             'data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:animate-in data-[state=open]:slide-in-from-right',
-            'duration-[var(--duration-base)] ease-out'
+            'duration-(--duration-base) ease-out'
           )}
           aria-describedby={undefined}
         >
-          <div className="flex h-[var(--nav-height)] shrink-0 items-center justify-between border-b border-line-subtle px-[var(--page-margin)]">
+          <div className="flex h-nav shrink-0 items-center justify-between border-b border-line-subtle px-page">
             <Link href="/" onClick={() => setOpen(false)} className="rounded-sm focus-visible:focus-ring">
               <Logo />
             </Link>
@@ -64,7 +64,7 @@ export function MobileMenu({ pathname }: { pathname: string }) {
             </Dialog.Close>
           </div>
 
-          <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-[var(--page-margin)] pt-2 pb-6">
+          <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-page pt-2 pb-6">
             <Collapsible.Root open={servicesOpen} onOpenChange={setServicesOpen}>
               <Collapsible.Trigger className={cn(rowClass, 'cursor-pointer')}>
                 Services
@@ -118,7 +118,7 @@ export function MobileMenu({ pathname }: { pathname: string }) {
             </ul>
           </nav>
 
-          <div className="shrink-0 border-t border-line-subtle px-[var(--page-margin)] pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+          <div className="shrink-0 border-t border-line-subtle px-page pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
             <Button asChild size="lg" className="w-full">
               <Link href="/contact?type=project" onClick={() => setOpen(false)}>
                 Start a project

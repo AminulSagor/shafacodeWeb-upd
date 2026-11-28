@@ -31,7 +31,7 @@ export function Principles() {
           }
           lede="Engineered for performance. Designed for humans. We build software that powers growing companies."
         />
-        <ol className="mt-[var(--section-head-gap)] grid border-y border-line-subtle md:grid-cols-3">
+        <ol className="mt-section-head grid border-y border-line-subtle md:grid-cols-3">
           {principles.map((p, i) => (
             <li
               key={p.title}

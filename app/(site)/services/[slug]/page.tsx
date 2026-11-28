@@ -90,7 +90,7 @@ export default async function ServicePage({ params }: Props) {
       />
 
       <section aria-label="At a glance" className="container-page">
-        <dl className="grid grid-cols-2 gap-3 md:gap-[var(--grid-gap)] xl:grid-cols-4">
+        <dl className="grid grid-cols-2 gap-3 md:gap-grid xl:grid-cols-4">
           {facts.map((f) => (
             <div key={f.label} className="flex flex-col gap-1.5 rounded-md border border-line-subtle bg-surface-1 p-5">
               <dt className="type-mono-xs text-fg-subtle">{f.label}</dt>
@@ -109,7 +109,7 @@ export default async function ServicePage({ params }: Props) {
             lede={d.build.lede}
             ledeBelow
           />
-          <ul className="mt-[var(--section-head-gap)] grid gap-[var(--grid-gap)] md:grid-cols-2 xl:grid-cols-3">
+          <ul className="mt-section-head grid gap-grid md:grid-cols-2 xl:grid-cols-3">
             {d.build.items.map((item) => (
               <li key={item.title}>
                 <FeatureCard icon={item.icon} title={item.title} body={item.body} className="bg-surface-1" />
@@ -120,7 +120,7 @@ export default async function ServicePage({ params }: Props) {
       </section>
 
       <section aria-label="Best for and tech stack" className="section-y">
-        <div className="container-page grid gap-12 md:grid-cols-2 md:gap-[var(--grid-gap)]">
+        <div className="container-page grid gap-12 md:grid-cols-2 md:gap-grid">
           <div className="border-t border-line pt-7">
             <h2 className="type-h3 text-fg">Best for</h2>
             <p className="mt-5 type-body text-fg-muted">{d.bestFor.lede}</p>
@@ -128,7 +128,7 @@ export default async function ServicePage({ params }: Props) {
               {d.bestFor.audiences.map((a) => (
                 <li
                   key={a}
-                  className="inline-flex h-9 items-center rounded-[var(--chip-radius)] bg-action-secondary px-3.5 type-label-sm text-fg-muted shadow-btn-secondary"
+                  className="inline-flex h-9 items-center rounded-chip bg-action-secondary px-3.5 type-label-sm text-fg-muted shadow-btn-secondary"
                 >
                   {a}
                 </li>
@@ -157,7 +157,7 @@ export default async function ServicePage({ params }: Props) {
             title={<AccentText value={d.process.title} />}
             lede={d.process.lede}
           />
-          <div className="mt-[var(--section-head-gap)]">
+          <div className="mt-section-head">
             <LifecycleSteps steps={serviceSteps(d)} />
           </div>
         </div>
@@ -177,7 +177,7 @@ export default async function ServicePage({ params }: Props) {
               }
               className="xl:items-end"
             />
-            <ul className="mt-[var(--section-head-gap)] grid gap-[var(--grid-gap)] md:grid-cols-2">
+            <ul className="mt-section-head grid gap-grid md:grid-cols-2">
               {related.map((c) => (
                 <li key={c.slug}>
                   <CaseStudyCard item={c} />

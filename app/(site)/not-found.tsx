@@ -22,10 +22,10 @@ const quickLinks = [
 /** Branded 404. Figma: 404 52:8730 (mobile 53:17536) */
 export default function NotFound() {
   return (
-    <section aria-labelledby="nf-title" className="relative isolate pt-12 pb-[var(--section-y)] md:pt-20 xl:pt-[104px]">
+    <section aria-labelledby="nf-title" className="relative isolate pt-12 pb-section md:pt-20 xl:pt-[104px]">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 -top-[var(--nav-height)] -z-10 h-[900px] bg-[radial-gradient(50%_50%_at_50%_30%,var(--brand-glow)_0%,transparent_100%)] opacity-30 max-md:opacity-20"
+        className="pointer-events-none absolute inset-x-0 -top-nav -z-10 h-[900px] bg-glow opacity-30 max-md:opacity-20"
       />
       <div className="container-page flex flex-col items-center text-center">
         <OctopusIllustration className="h-auto w-[260px] md:w-[360px]" />
@@ -48,11 +48,11 @@ export default function NotFound() {
         </div>
       </div>
       <nav aria-label="Popular pages" className="container-page mt-10">
-        <ul className="grid gap-[var(--grid-gap)] sm:grid-cols-2 xl:grid-cols-4">
+        <ul className="grid gap-grid sm:grid-cols-2 xl:grid-cols-4">
           {quickLinks.map(({ title, body, href, icon: Icon }) => (
             <li
               key={href}
-              className="group card-focus relative flex flex-col rounded-panel border border-line-subtle bg-surface-1 p-[var(--card-pad)] transition-colors duration-[var(--duration-base)] hover:border-line xl:min-h-[212px] xl:p-10"
+              className="group card-focus relative flex flex-col rounded-panel border border-line-subtle bg-surface-1 p-card transition-colors duration-(--duration-base) hover:border-line xl:min-h-[212px] xl:p-10"
             >
               <Icon className="size-5 text-icon-brand" strokeWidth={1.75} aria-hidden />
               <h2 className="mt-6 type-h4 text-fg xl:mt-auto">

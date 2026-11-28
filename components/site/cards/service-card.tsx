@@ -35,7 +35,7 @@ export function ServiceCard({
   return (
     <article
       className={cn(
-        'group card-focus relative flex h-full flex-col gap-5 rounded-md border border-line-subtle bg-surface-1 p-[var(--card-pad)] transition-[border-color,translate] duration-[var(--duration-base)] ease-out hover:border-line-brand motion-safe:hover:-translate-y-0.5 md:p-[var(--card-pad-lg)]',
+        'group card-focus relative flex h-full flex-col gap-5 rounded-md border border-line-subtle bg-surface-1 p-card transition-[border-color,translate] duration-(--duration-base) ease-out hover:border-line-brand motion-safe:hover:-translate-y-0.5 md:p-card-lg',
         wide && 'md:grid md:grid-cols-2 md:gap-x-12 xl:gap-x-16'
       )}
     >
@@ -68,7 +68,7 @@ export function ServiceCard({
         </ul>
         <span className="mt-auto inline-flex items-center gap-1.5 pt-3 type-label text-fg-brand" aria-hidden>
           {service.exploreLabel}
-          <ArrowRight className="size-4 shrink-0 transition-transform duration-[var(--duration-fast)] motion-safe:group-hover:translate-x-0.5" />
+          <ArrowRight className="size-4 shrink-0 transition-transform duration-(--duration-fast) motion-safe:group-hover:translate-x-0.5" />
         </span>
       </div>
     </article>

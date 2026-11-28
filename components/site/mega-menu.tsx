@@ -17,9 +17,9 @@ export function MegaMenu() {
               <NavigationMenu.Link asChild>
                 <Link
                   href={serviceHref(s.slug)}
-                  className="group flex gap-3.5 rounded-[var(--field-radius)] p-3 transition-colors hover:bg-hover focus-visible:focus-ring"
+                  className="group flex gap-3.5 rounded-field p-3 transition-colors hover:bg-hover focus-visible:focus-ring"
                 >
-                  <span className="grid size-9 shrink-0 place-items-center rounded-[var(--chip-radius)] border border-brand-soft-border bg-brand-soft text-icon-brand">
+                  <span className="grid size-9 shrink-0 place-items-center rounded-chip border border-brand-soft-border bg-brand-soft text-icon-brand">
                     <Icon className="size-[18px]" strokeWidth={1.75} aria-hidden />
                   </span>
                   <span className="flex flex-col gap-1">
@@ -32,7 +32,7 @@ export function MegaMenu() {
           );
         })}
       </ul>
-      <div className="flex flex-col rounded-[var(--field-radius)] border border-brand-soft-border bg-brand-soft p-5">
+      <div className="flex flex-col rounded-field border border-brand-soft-border bg-brand-soft p-5">
         <p className="type-h4 text-fg">Not sure which service fits?</p>
         <p className="mt-3 type-body text-fg-muted">
           Tell us the problem. We will suggest the right scope, timeline and budget.

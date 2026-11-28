@@ -33,7 +33,7 @@ export function FaqSection({
     <section aria-labelledby={`${id}-title`} className={cn('section-y', className)}>
       <JsonLd data={faqLd(items)} />
       <div className="container-page grid gap-10 xl:grid-cols-[minmax(0,436px)_minmax(0,1fr)] xl:gap-x-14">
-        <div className="flex flex-col items-start gap-5 xl:sticky xl:top-[calc(var(--nav-height)+32px)] xl:self-start">
+        <div className="flex flex-col items-start gap-5 xl:sticky xl:top-sticky xl:self-start">
           <Eyebrow>{eyebrow}</Eyebrow>
           <h2 id={`${id}-title`} className="type-h2 text-fg">
             {title}

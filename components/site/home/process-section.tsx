@@ -17,7 +17,7 @@ export function ProcessSection({ id = 'process' }: { id?: string }) {
           }
           lede="Six transparent stages with demos and written updates, so you always know what is happening and what comes next."
         />
-        <div className="mt-[var(--section-head-gap)]">
+        <div className="mt-section-head">
           <ProcessDiagram />
         </div>
       </div>

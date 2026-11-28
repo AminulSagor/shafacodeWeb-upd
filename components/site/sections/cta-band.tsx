@@ -43,7 +43,7 @@ export function CtaBand({
     <section aria-labelledby="cta-title" className="relative isolate section-y">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(50%_50%_at_50%_45%,var(--brand-glow)_0%,transparent_100%)] opacity-40 max-md:opacity-25"
+        className="pointer-events-none absolute inset-0 -z-10 bg-glow opacity-40 max-md:opacity-25"
       />
       <div className="container-page flex flex-col items-center text-center">
         <Eyebrow>Start your journey</Eyebrow>

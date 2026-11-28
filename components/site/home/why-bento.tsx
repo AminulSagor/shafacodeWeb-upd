@@ -31,7 +31,7 @@ function CellText({ index, title, body }: { index: string; title: string; body: 
   );
 }
 
-const cell = 'flex flex-col p-[var(--card-pad)] xl:p-10';
+const cell = 'flex flex-col p-card xl:p-10';
 const visual = 'flex flex-col xl:min-h-[300px]';
 
 function ProgressVisual() {
@@ -49,7 +49,7 @@ function ProgressVisual() {
         role="img"
         aria-label="Project 62% complete"
       >
-        <div className="h-full w-[62%] origin-left rounded-full bg-action-primary transition-transform delay-150 duration-[1200ms] ease-[var(--ease-out)] group-data-[inview=false]:scale-x-0" />
+        <div className="h-full w-[62%] origin-left rounded-full bg-action-primary transition-transform delay-150 duration-[1200ms] ease-out group-data-[inview=false]:scale-x-0" />
       </div>
       <ul className="mt-4 flex flex-col gap-4">
         {sprints.map((s) => (
@@ -106,7 +106,7 @@ function Gauge({ label, value }: { label: string; value: number }) {
             strokeLinecap="round"
             strokeDasharray={c}
             strokeDashoffset={c * (1 - value / 100)}
-            className="transition-[stroke-dashoffset] delay-200 duration-[1400ms] ease-[var(--ease-out)] group-data-[inview=false]:[stroke-dashoffset:var(--c)]"
+            className="gauge-arc transition-[stroke-dashoffset] delay-200 duration-[1400ms] ease-out"
             style={{ '--c': c } as React.CSSProperties}
           />
         </svg>
@@ -145,7 +145,7 @@ export function WhyBento() {
           }
           lede="Many businesses struggle with unclear timelines, poor communication, weak UI/UX and teams that disappear after delivery. We combine product planning, transparent development and long-term technical support."
         />
-        <div className="mt-[var(--section-head-gap)] overflow-hidden rounded-[var(--card-radius)] border border-line-subtle bg-surface-1">
+        <div className="mt-section-head overflow-hidden rounded-card border border-line-subtle bg-surface-1">
           <div className="grid divide-line-subtle max-xl:divide-y xl:grid-cols-[7fr_5fr] xl:divide-x">
             <div className={cell}>
               <ProgressVisual />
