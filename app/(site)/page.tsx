@@ -17,10 +17,10 @@ import { Testimonials } from '@/components/site/home/testimonials';
 import { VideoStories } from '@/components/site/home/video-stories';
 import { WorkAnywhere } from '@/components/site/home/work-anywhere';
 import { homeFaqs } from '@/content/faq';
-import { textTestimonials, videoStories } from '@/content/testimonials';
 import { getFeaturedCaseStudies } from '@/lib/data/case-studies';
 import { buildMetadata } from '@/lib/seo';
 import { organizationLd, professionalServiceLd, websiteLd } from '@/lib/structured-data';
+import { getTestimonials } from '@/lib/data/testimonials';
 
 export const metadata: Metadata = {
   ...buildMetadata({
@@ -34,6 +34,7 @@ export const metadata: Metadata = {
 
 /** Home. Figma: Home 24:2397 (mobile 53:11850, tablet 53:20551) */
 export default async function HomePage() {
+  const testimonials = await getTestimonials();
   const caseStudies = await getFeaturedCaseStudies();
 
   return (
@@ -48,8 +49,8 @@ export default async function HomePage() {
       <Principles />
       <TechGrid />
       <PricingTeaser />
-      <Testimonials items={textTestimonials} />
-      <VideoStories items={videoStories} />
+      <Testimonials items={testimonials.text} />
+      <VideoStories items={testimonials.video} />
       <FaqSection
         items={homeFaqs}
         title={

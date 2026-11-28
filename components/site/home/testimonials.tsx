@@ -33,13 +33,17 @@ export function Testimonials({ items }: { items: TextTestimonial[] }) {
                   <p>{t.quote}</p>
                 </blockquote>
                 <figcaption className="mt-auto flex items-center gap-3.5 pt-8">
-                  <Image
-                    src={t.photo}
-                    alt=""
-                    width={44}
-                    height={44}
-                    className="size-11 rounded-full object-cover"
-                  />
+                  {t.photo ? (
+                    <Image src={t.photo} alt="" width={44} height={44} className="size-11 rounded-full object-cover" />
+                  ) : (
+                    <span aria-hidden className="grid size-11 shrink-0 place-items-center rounded-full bg-surface-2 type-label-sm text-fg-muted">
+                      {t.name
+                        .split(/\s+/)
+                        .slice(0, 2)
+                        .map((w) => w[0])
+                        .join('')}
+                    </span>
+                  )}
                   <span className="flex flex-col gap-0.5">
                     <span className="type-label text-fg">{t.name}</span>
                     <span className="type-caption font-normal text-fg-subtle">{t.role}</span>
