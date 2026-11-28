@@ -19,7 +19,7 @@ function Toaster({ theme = 'dark', ...props }: ToasterProps) {
       toastOptions={{
         classNames: {
           toast:
-            'squircle !rounded-[var(--field-radius)] !border !border-line !bg-surface-1 !text-fg !font-sans',
+            '!rounded-[var(--field-radius)] !border !border-line !bg-surface-1 !text-fg !font-sans',
           description: '!text-fg-muted',
         },
       }}

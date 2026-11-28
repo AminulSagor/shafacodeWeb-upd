@@ -52,7 +52,7 @@ export default function NotFound() {
           {quickLinks.map(({ title, body, href, icon: Icon }) => (
             <li
               key={href}
-              className="squircle group relative flex flex-col rounded-panel border border-line-subtle bg-surface-1 p-[var(--card-pad)] transition-colors duration-[var(--duration-base)] hover:border-line xl:min-h-[212px] xl:p-10"
+              className="group relative flex flex-col rounded-panel border border-line-subtle bg-surface-1 p-[var(--card-pad)] transition-colors duration-[var(--duration-base)] hover:border-line xl:min-h-[212px] xl:p-10"
             >
               <Icon className="size-5 text-icon-brand" strokeWidth={1.75} aria-hidden />
               <h2 className="mt-6 type-h4 text-fg xl:mt-auto">

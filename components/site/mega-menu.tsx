@@ -8,7 +8,7 @@ import { serviceHref, services } from '@/content/services';
 /** Figma: Services Mega Menu 16:2592 */
 export function MegaMenu() {
   return (
-    <div className="squircle grid w-[914px] grid-cols-[1fr_1fr_252px] gap-x-6 rounded-panel border border-line bg-surface-1 p-3">
+    <div className="grid w-[914px] grid-cols-[1fr_1fr_252px] gap-x-6 rounded-panel border border-line bg-surface-1 p-3">
       <ul className="col-span-2 grid grid-cols-2 gap-x-2 gap-y-1 py-2 pl-2">
         {services.map((s) => {
           const Icon = s.icon;
@@ -19,7 +19,7 @@ export function MegaMenu() {
                   href={serviceHref(s.slug)}
                   className="group flex gap-3.5 rounded-[var(--field-radius)] p-3 transition-colors hover:bg-hover focus-visible:focus-ring"
                 >
-                  <span className="squircle grid size-9 shrink-0 place-items-center rounded-[var(--chip-radius)] border border-brand-soft-border bg-brand-soft text-icon-brand">
+                  <span className="grid size-9 shrink-0 place-items-center rounded-[var(--chip-radius)] border border-brand-soft-border bg-brand-soft text-icon-brand">
                     <Icon className="size-[18px]" strokeWidth={1.75} aria-hidden />
                   </span>
                   <span className="flex flex-col gap-1">
@@ -32,7 +32,7 @@ export function MegaMenu() {
           );
         })}
       </ul>
-      <div className="squircle flex flex-col rounded-[var(--field-radius)] border border-brand-soft-border bg-brand-soft p-5">
+      <div className="flex flex-col rounded-[var(--field-radius)] border border-brand-soft-border bg-brand-soft p-5">
         <p className="type-h4 text-fg">Not sure which service fits?</p>
         <p className="mt-3 type-body text-fg-muted">
           Tell us the problem. We will suggest the right scope, timeline and budget.

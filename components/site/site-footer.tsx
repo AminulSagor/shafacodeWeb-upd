@@ -31,7 +31,7 @@ function FooterColumn({ title, links }: { title: string; links: NavItem[] }) {
           <li key={l.href}>
             <Link
               href={l.href}
-              className="rounded-sm type-body-sm text-fg-muted transition-colors hover:text-fg focus-visible:focus-ring md:type-body"
+              className="rounded-sm type-body-sm text-fg-muted transition-colors hover:text-fg focus-visible:focus-ring"
             >
               {l.label}
             </Link>
@@ -48,8 +48,8 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-line-subtle">
       <div className="container-page pt-16 md:pt-20">
-        <div className="grid gap-x-6 gap-y-12 md:grid-cols-3 xl:grid-cols-4">
-          <div className="flex flex-col gap-6 md:col-span-3 xl:col-span-1 xl:pr-4">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-3 xl:grid-cols-4">
+          <div className="col-span-2 flex flex-col gap-6 md:col-span-3 xl:col-span-1 xl:pr-4">
             <LogoLink className="self-start" />
             <p className="max-w-sm type-body-sm text-fg-muted">{site.description}</p>
             <ul className="flex flex-col gap-3 type-body-sm text-fg-muted">

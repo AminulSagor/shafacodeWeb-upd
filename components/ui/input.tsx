@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
  * 16px text on mobile so iOS does not zoom.
  */
 export const fieldBase = [
-  'squircle w-full min-w-0 rounded-[var(--field-radius)] bg-field text-fg shadow-field',
+  'w-full min-w-0 rounded-[var(--field-radius)] bg-field text-fg shadow-field',
   'type-body',
   'placeholder:text-fg-subtle',
   'transition-[box-shadow,background-color] duration-100 outline-none',

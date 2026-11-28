@@ -309,6 +309,7 @@
   }
 }
 
+@layer base {
 html {
   scroll-padding-top: calc(var(--nav-height) + 16px);
   -webkit-text-size-adjust: 100%;
@@ -325,12 +326,14 @@ body {
 ::after {
   border-color: var(--line-subtle);
 }
+/* pretty, not balance: balance re-flows headings away from the Figma line breaks */
 h1, h2, h3, h4 {
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 ::selection {
   background: var(--p-lime-400);
   color: var(--p-lime-950);
+}
 }
 
 /* Stronger lines when the user asks for more contrast */
@@ -351,9 +354,11 @@ h1, h2, h3, h4 {
   }
 }
 
-/* iOS continuous corners where the browser supports them */
+/* iOS continuous corners (Figma corner smoothing 60%) on every rounded box,
+   where the browser supports corner-shape. Circles and pills stay round.
+   Unsupported browsers keep plain border-radius. */
 @supports (corner-shape: squircle) {
-  .squircle { corner-shape: squircle; }
+  :where(*:not(.rounded-full, [data-round])) { corner-shape: squircle; }
 }
 
 /* Utilities from the semantic layer */

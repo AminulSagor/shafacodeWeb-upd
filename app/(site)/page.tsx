@@ -1,36 +1,65 @@
-import { getProjects } from '@/actions/projects/get-projects';
-import CtaSection from '@/components/home/cta';
-import Faq from '@/components/home/faq';
-import HeroSection from '@/components/home/hero';
-import Kickoff from '@/components/home/kickoff';
-import Offer from '@/components/home/offer';
-import PortfolioSection from '@/components/home/portfolio';
-import PricingCta from '@/components/home/pricing-cta';
-import Process from '@/components/home/process';
-import TechStack from '@/components/home/tech-stack';
-import Testimonials from '@/components/home/testimonials';
-import ValueProps from '@/components/home/value-props';
-import WhyChooseUs from '@/components/home/why-choose';
+import type { Metadata } from 'next';
 
-const Homepage = async () => {
-  const projects = await getProjects();
+import { Accent } from '@/components/ui/accent';
+import { JsonLd } from '@/components/site/json-ld';
+import { CtaBand } from '@/components/site/sections/cta-band';
+import { FaqSection } from '@/components/site/sections/faq-section';
+import { HomeHero } from '@/components/site/home/hero';
+import { ClientLogos } from '@/components/site/home/client-logos';
+import { WhyBento } from '@/components/site/home/why-bento';
+import { ServicesIndex } from '@/components/site/home/services-index';
+import { FeaturedWork } from '@/components/site/home/featured-work';
+import { ProcessSection } from '@/components/site/home/process-section';
+import { Principles } from '@/components/site/home/principles';
+import { TechGrid } from '@/components/site/home/tech-grid';
+import { PricingTeaser } from '@/components/site/home/pricing-teaser';
+import { Testimonials } from '@/components/site/home/testimonials';
+import { VideoStories } from '@/components/site/home/video-stories';
+import { WorkAnywhere } from '@/components/site/home/work-anywhere';
+import { homeFaqs } from '@/content/faq';
+import { textTestimonials, videoStories } from '@/content/testimonials';
+import { getFeaturedCaseStudies } from '@/lib/data/case-studies';
+import { buildMetadata } from '@/lib/seo';
+import { organizationLd, professionalServiceLd, websiteLd } from '@/lib/structured-data';
 
-  return (
-    <main>
-      <HeroSection />
-      <ValueProps />
-      <Offer />
-      <PortfolioSection projects={projects} />
-      <Process />
-      <WhyChooseUs />
-      <TechStack />
-      <PricingCta />
-      <Testimonials />
-      <Faq />
-      <Kickoff />
-      <CtaSection />
-    </main>
-  );
+export const metadata: Metadata = {
+  ...buildMetadata({
+    title: 'ShafaCode: transparent software partner for growing teams',
+    description:
+      'Websites, web apps, mobile apps, SaaS, custom software and IoT from Barishal, Bangladesh. Clear milestones, weekly demos and scalable engineering.',
+    path: '/',
+  }),
+  title: { absolute: 'ShafaCode: transparent software partner for growing teams' },
 };
 
-export default Homepage;
+/** Home. Figma: Home 24:2397 (mobile 53:11850, tablet 53:20551) */
+export default async function HomePage() {
+  const caseStudies = await getFeaturedCaseStudies();
+
+  return (
+    <>
+      <JsonLd data={[organizationLd(), professionalServiceLd(), websiteLd()]} />
+      <HomeHero />
+      <ClientLogos />
+      <WhyBento />
+      <ServicesIndex />
+      <FeaturedWork items={caseStudies} />
+      <ProcessSection />
+      <Principles />
+      <TechGrid />
+      <PricingTeaser />
+      <Testimonials items={textTestimonials} />
+      <VideoStories items={videoStories} />
+      <FaqSection
+        items={homeFaqs}
+        title={
+          <>
+            Common questions <Accent>before starting</Accent> a project
+          </>
+        }
+      />
+      <WorkAnywhere />
+      <CtaBand />
+    </>
+  );
+}

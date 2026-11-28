@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
  */
 const buttonVariants = cva(
   [
-    'squircle relative inline-flex shrink-0 items-center justify-center whitespace-nowrap select-none',
+    'relative inline-flex shrink-0 items-center justify-center whitespace-nowrap select-none',
     'transition-[background-color,box-shadow,translate,color] duration-100 ease-out',
     'cursor-pointer focus-visible:focus-ring active:not-aria-[haspopup]:translate-y-px',
     'disabled:pointer-events-none disabled:opacity-55 disabled:shadow-none aria-disabled:pointer-events-none aria-disabled:opacity-55',
